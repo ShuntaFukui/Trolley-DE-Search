@@ -1,0 +1,811 @@
+/* ========================================
+   トロッコアドベンチャー - メインスタイルシート
+   ネプリーグのトロッコアドベンチャーを模倣した
+   2択アンケートゲームのスタイル定義
+   ======================================== */
+
+/* ========================================
+   ゲーム全体のコンテナ
+   ======================================== */
+.trolley-game {
+  width: 100vw; /* ビューポート幅100% */
+  height: 100vh; /* ビューポート高さ100% */
+  display: flex;
+  align-items: center; /* 縦方向中央揃え */
+  justify-content: center; /* 横方向中央揃え */
+  background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%); /* 暗い背景グラデーション */
+  font-family: 'Arial Black', 'Arial Bold', sans-serif; /* 太字フォント */
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* はみ出し防止 */
+  position: relative;
+}
+
+/* ========================================
+   スタート画面
+   ゲーム開始前の初期画面
+   ======================================== */
+.start-screen {
+  text-align: center;
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); /* 青系グラデーション背景 */
+  padding: 60px 50px;
+  border-radius: 30px; /* 角丸 */
+  /* 金色の光るエフェクト - 2重のボックスシャドウで立体感 */
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), 0 0 100px rgba(255, 215, 0, 0.1);
+  border: 4px solid #ffd700; /* 金色のボーダー */
+  max-width: 600px;
+  animation: slideDown 0.6s ease-out; /* 登場アニメーション */
+}
+
+/* タイトルエリア */
+.game-title {
+  margin-bottom: 40px;
+}
+
+/* メインタイトル - 「トロッコアドベンチャー」 */
+.title-main {
+  font-size: 3em;
+  font-weight: bold;
+  color: #ffd700; /* 金色 */
+  /* 金色の光るテキストシャドウ - 3層構造で発光効果 */
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+               0 4px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: 3px; /* 文字間隔 */
+  margin-bottom: 10px;
+}
+
+/* サブタイトル - 「TROLLEY ADVENTURE」 */
+.title-sub {
+  font-size: 1.2em;
+  color: #87ceeb; /* スカイブルー */
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* 影で立体感 */
+}
+
+/* ゲーム情報エリア */
+.game-info {
+  margin: 30px 0;
+}
+
+/* ゲーム説明テキスト */
+.game-info p {
+  font-size: 1.3em;
+  color: #ffffff;
+  margin: 15px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* 問題数表示 - 「全5問」など */
+.question-count {
+  font-size: 1.8em !important;
+  color: #ffd700 !important; /* 金色で強調 */
+  font-weight: bold;
+  margin-top: 20px !important;
+}
+
+/* スタートボタン */
+.start-button {
+  margin-top: 40px;
+  padding: 20px 80px; /* 大きめのパディング */
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #0f3460; /* 濃い青 */
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); /* 金色グラデーション */
+  border: 4px solid #ffffff; /* 白いボーダー */
+  border-radius: 50px; /* 完全な角丸 */
+  cursor: pointer;
+  transition: all 0.3s; /* ホバー時の滑らかな変化 */
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5); /* 金色の影 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* スタートボタンのホバー効果 - 浮き上がる */
+.start-button:hover {
+  transform: translateY(-5px) scale(1.05); /* 上に移動して拡大 */
+  box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7); /* 影も強調 */
+}
+
+/* ========================================
+   カウントダウン画面
+   ゲーム開始前の3,2,1カウントダウン
+   ======================================== */
+.countdown-screen {
+  display: flex;
+  align-items: center; /* 縦方向中央 */
+  justify-content: center; /* 横方向中央 */
+  width: 100%;
+  height: 100vh; /* 画面全体 */
+}
+
+/* カウントダウン数字 - 巨大な数字表示 */
+.countdown-number {
+  font-size: 15em; /* 非常に大きいフォントサイズ */
+  font-weight: bold;
+  color: #ffd700; /* 金色 */
+  /* 二重の発光エフェクト */
+  text-shadow: 0 0 40px rgba(255, 215, 0, 1),
+               0 0 80px rgba(255, 215, 0, 0.6);
+  animation: countdownPulse 1s ease-in-out; /* 脈打つアニメーション */
+}
+
+/* カウントダウンの登場アニメーション - 拡大しながら出現 */
+@keyframes countdownPulse {
+  0% {
+    transform: scale(0); /* 点から開始 */
+    opacity: 0; /* 透明 */
+  }
+  50% {
+    transform: scale(1.2); /* 少し大きく */
+    opacity: 1; /* 完全に表示 */
+  }
+  100% {
+    transform: scale(1); /* 通常サイズに戻る */
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   ゲーム画面
+   実際のアンケート・ゲームプレイ画面
+   ======================================== */
+.game-screen {
+  width: 100vw; /* ビューポート幅100% */
+  height: 100vh; /* ビューポート高さ100% */
+  background: #0a0a1a; /* 暗い背景色 */
+  position: relative; /* 子要素の基準 */
+  overflow: hidden; /* はみ出し防止 */
+  display: flex;
+  flex-direction: column; /* 縦方向のフレックス配置 */
+}
+
+/* ========================================
+   背景画像レイヤー - 二重レイヤー構造
+   回答時に古い背景が消え、新しい背景が出現する仕組み
+   ======================================== */
+
+/* 第1レイヤー - 現在表示されている背景 */
+.game-screen::before {
+  content: ''; /* 擬似要素 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/BackGround.png'); /* 線路の背景画像 */
+  background-size: cover; /* 画面全体をカバー */
+  background-position: center center; /* 中央配置 */
+  background-repeat: no-repeat;
+  z-index: 0; /* 最背面 */
+}
+
+/* 第2レイヤー - 次に出現する背景(初期状態は非表示) */
+.game-screen {
+  position: relative;
+}
+
+.game-screen .background-next {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/BackGround.png'); /* 同じ背景画像 */
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0; /* 初期状態は透明 */
+  z-index: 0;
+  pointer-events: none; /* クリックイベントを貫通 */
+}
+
+/* PC用: coverで画面全体をカバー */
+@media (min-width: 769px) {
+  .game-screen .background-next {
+    background-size: cover;
+    transform: scale(1);
+  }
+}
+
+/* スマホ用: containで元の画像サイズを保持 */
+@media (max-width: 768px) {
+  .game-screen .background-next {
+    background-size: contain;
+    transform: scale(0.3);
+  }
+}
+
+/* ========================================
+   背景アニメーション - 左の選択肢を選んだ時
+   ======================================== */
+
+/* PC用: 第1レイヤー(現在の背景)が左方向に消えるアニメーション */
+@media (min-width: 769px) {
+  .game-screen.animating-left::before {
+    animation: disappearCommonPC 1.5s ease-in-out forwards, disappearLeftPC 1.5s ease-in-out forwards;
+  }
+
+  .game-screen.animating-left .background-next {
+    animation: appearFromBehindPC 1.5s ease-in-out forwards;
+  }
+}
+
+/* スマホ用: 第1レイヤー(現在の背景)が左方向に消えるアニメーション */
+@media (max-width: 768px) {
+  .game-screen.animating-left::before {
+    animation: disappearCommon 1.5s ease-in-out forwards, disappearLeft 1.5s ease-in-out forwards;
+  }
+
+  .game-screen.animating-left .background-next {
+    animation: appearFromBehind 1.5s ease-in-out forwards;
+  }
+}
+
+/* スマホ用: 左方向への移動(background-positionのみ) */
+@keyframes disappearLeft {
+  0% {
+    background-position: center center; /* 中央から開始 */
+  }
+  100% {
+    background-position: -70% center; /* 左-70%の位置に移動 */
+  }
+}
+
+/* PC用: 左方向への移動(background-positionのみ) - より大きく移動 */
+@keyframes disappearLeftPC {
+  0% {
+    background-position: center center; /* 中央から開始 */
+  }
+  100% {
+    background-position: -150% center; /* 左-150%の位置に移動 */
+  }
+}
+
+/* ========================================
+   背景アニメーション - 右の選択肢を選んだ時
+   ======================================== */
+
+/* PC用: 第1レイヤー(現在の背景)が右方向に消えるアニメーション */
+@media (min-width: 769px) {
+  .game-screen.animating-right::before {
+    animation: disappearCommonPC 1.5s ease-in-out forwards, disappearRightPC 1.5s ease-in-out forwards;
+  }
+
+  .game-screen.animating-right .background-next {
+    animation: appearFromBehindPC 1.2s ease-in-out forwards;
+  }
+}
+
+/* スマホ用: 第1レイヤー(現在の背景)が右方向に消えるアニメーション */
+@media (max-width: 768px) {
+  .game-screen.animating-right::before {
+    animation: disappearCommon 1.5s ease-in-out forwards, disappearRight 1.5s ease-in-out forwards;
+  }
+
+  .game-screen.animating-right .background-next {
+    animation: appearFromBehind 1.2s ease-in-out forwards;
+  }
+}
+
+/* スマホ用: 右方向への移動(background-positionのみ) */
+@keyframes disappearRight {
+  0% {
+    background-position: center center; /* 中央から開始 */
+  }
+  100% {
+    background-position: 170% center; /* 右170%の位置に移動 */
+  }
+}
+
+/* PC用: 右方向への移動(background-positionのみ) - より大きく移動 */
+@keyframes disappearRightPC {
+  0% {
+    background-position: center center; /* 中央から開始 */
+  }
+  100% {
+    background-position: 250% center; /* 右250%の位置に移動 */
+  }
+}
+
+/* ========================================
+   背景消失の共通アニメーション
+   transform, opacity, filterを定義
+   ======================================== */
+
+/* スマホ用: containで拡大するアニメーション */
+@keyframes disappearCommon {
+  0% {
+    transform: scale(1); /* 通常サイズ */
+    opacity: 1; /* 完全に表示 */
+    filter: blur(0px); /* ぼかしなし */
+  }
+  70% {
+    filter: blur(4px); /* 中盤で強くぼかす */
+  }
+  100% {
+    transform: scale(5); /* 5倍に拡大(奥に進む感覚) */
+    opacity: 0; /* 完全に透明化(消える) */
+    filter: blur(15px); /* 最後は強くぼかして消える */
+  }
+}
+
+/* PC用: coverで左右に移動しながら消失 */
+@keyframes disappearCommonPC {
+  0% {
+    transform: scale(1); /* 通常サイズ */
+    opacity: 1; /* 完全に表示 */
+    filter: blur(0px); /* ぼかしなし */
+  }
+  70% {
+    filter: blur(4px); /* 中盤で強くぼかす */
+  }
+  100% {
+    transform: scale(5); /* 5倍に拡大(奥に進む感覚) */
+    opacity: 0; /* 完全に透明化(消える) */
+    filter: blur(15px); /* 最後は強くぼかして消える */
+  }
+}
+
+/* ========================================
+   新しい背景の出現アニメーション
+   左右共通で使用される
+   ======================================== */
+
+/* スマホ用: containで拡大しながら出現 */
+@keyframes appearFromBehind {
+  0% {
+    transform: scale(0.5); /* 30%サイズ(遠く)から開始 */
+    opacity: 0; /* 透明 */
+    filter: blur(10px); /* 最初は強くぼかす */
+  }
+  60% {
+    filter: blur(6px); /* 徐々にぼかしを弱める */
+  }
+  100% {
+    transform: scale(1.66); /* containで画面全体をカバーする拡大率 */
+    opacity: 1; /* 完全に表示 */
+    filter: blur(0px); /* ぼかしなし(鮮明) */
+  }
+}
+
+/* PC用: coverで奥から出現 */
+@keyframes appearFromBehindPC {
+  0% {
+    transform: scale(0.5); /* 30%サイズ(遠く)から開始 */
+    opacity: 0; /* 透明 */
+    filter: blur(10px); /* 最初は強くぼかす */
+  }
+  60% {
+    filter: blur(6px); /* 徐々にぼかしを弱める */
+  }
+  100% {
+    transform: scale(1); /* containで画面全体をカバーする拡大率 */
+    opacity: 1; /* 完全に表示 */
+    filter: blur(0px); /* ぼかしなし(鮮明) */
+  }
+}
+
+/* ========================================
+   ゲームヘッダー
+   画面上部の問題番号表示エリア
+   ======================================== */
+.game-header {
+  display: flex;
+  align-items: center; /* 縦方向中央揃え */
+  justify-content: center; /* 横方向中央揃え */
+  padding: 20px 40px;
+  position: relative;
+  z-index: 10; /* 背景より前面 */
+  /* 上部から透明になるグラデーション背景 */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+}
+
+/* 問題番号表示 - 「第1問 / 全5問」など */
+.question-number {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #ffd700; /* 金色 */
+  /* 三重の発光テキストシャドウ */
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 215, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   トロッコ表示
+   画面下部中央に配置されるプレイヤーの視点トロッコ
+   ======================================== */
+
+/* トロッココンテナ - 画面下部から上部50%まで */
+.trolley-container {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  bottom: 0; /* 画面下端 */
+  left: 0; /* 左端から */
+  right: 0; /* 右端まで */
+  width: 100%; /* 横幅100% */
+  height: 50vh; /* 画面高さの50% */
+  z-index: 5; /* 背景より前、UIより後ろ */
+  pointer-events: none; /* クリックイベント無効 */
+  display: flex;
+  align-items: flex-end; /* 下端揃え */
+  justify-content: center; /* 中央揃え */
+}
+
+/* トロッコ画像 - コンテナの上端(=画面中央)に配置 */
+.trolley-image {
+  margin: 0;
+  padding: 0;
+  position: relative; /* absolute から relative に変更 */
+  height: 50vh; 
+  width: auto; /* アスペクト比維持 */
+  max-width: 100%; /* 画面幅を超えないように */
+  object-fit: contain; /* アスペクト比を保ちながら収める */
+  animation: trolleyRun 0.15s ease-in-out infinite; /* 走行中の揺れ */
+  /* 二重の影で立体感 */
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8))
+          drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+  transform-origin: bottom center; /* 下端中央を基準に変形 */
+}
+
+/* トロッコの走行中の揺れアニメーション - 0.15秒周期 */
+@keyframes trolleyRun {
+  0%, 100% {
+    transform: translateY(0) rotate(-0.5deg); /* 左に微傾斜 */
+  }
+  50% {
+    transform: translateY(-3px) rotate(0.5deg); /* 右に微傾斜して少し浮く */
+  }
+}
+
+/* ========================================
+   回答ボタン
+   画面上部に表示される2択のアンケート選択肢
+   ======================================== */
+
+/* 回答ボタンコンテナ - 横並びレイアウト */
+.answer-buttons {
+  display: flex;
+  gap: 30px; /* ボタン間の間隔 */
+  justify-content: center; /* 中央揃え */
+  padding: 10px 40px 20px;
+  position: relative;
+  z-index: 10; /* 背景より前面 */
+}
+
+/* 回答中のボタンフェードアウト */
+.game-screen.animating-left .answer-buttons,
+.game-screen.animating-right .answer-buttons {
+  animation: buttonsFadeOut 0.5s ease-out forwards;
+}
+
+@keyframes buttonsFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+}
+
+/* 回答ボタン本体 - 固定サイズで統一感を出す */
+.answer-btn {
+  /* サイズ固定 - 幅280px、高さ120px */
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
+  padding: 20px;
+  font-size: 2.2em; /* 大きめの文字 */
+  font-weight: bold;
+  /* ターコイズグリーンのグラデーション背景 */
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.98) 0%, rgba(68, 160, 141, 0.98) 100%);
+  color: #ffffff; /* 白文字 */
+  border: 5px solid #ffffff; /* 白いボーダー */
+  border-radius: 20px; /* 角丸 */
+  cursor: pointer;
+  transition: all 0.2s; /* ホバー時の滑らかな変化 */
+  /* 三重の影で立体感 */
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.8), /* 基本の影 */
+    0 0 25px rgba(78, 205, 196, 0.5), /* 発光エフェクト */
+    inset 0 -5px 12px rgba(0, 0, 0, 0.3); /* 内側の影 */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  position: relative;
+  backdrop-filter: blur(5px); /* 背景ぼかし */
+  transform-style: preserve-3d; /* 3D変形を保持 */
+  /* テキストの折り返し設定 */
+  display: flex;
+  align-items: center; /* 縦方向中央 */
+  justify-content: center; /* 横方向中央 */
+  word-break: keep-all; /* 単語の途中で改行しない */
+  overflow-wrap: break-word; /* 必要に応じて改行 */
+  /* 初期表示アニメーション */
+  animation: buttonFadeIn 0.6s ease-out;
+}
+
+@keyframes buttonFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ボタンのホバー効果用擬似要素 - 白い光沢 */
+.answer-btn::before {
+  content: '';
+  position: absolute;
+  inset: -5px; /* 5px外側に拡張 */
+  border-radius: 30px;
+  /* 半透明の白いグラデーション */
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.3));
+  opacity: 0; /* 初期状態は非表示 */
+  transition: opacity 0.2s;
+}
+
+/* ホバー時に擬似要素を表示 */
+.answer-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+/* ホバー時のボタン浮き上がりエフェクト */
+.answer-btn:hover:not(:disabled) {
+  transform: translateY(-15px) scale(1.05); /* 上に15px移動して5%拡大 */
+  box-shadow: 
+    0 30px 70px rgba(0, 0, 0, 0.9), /* 影を大きく */
+    0 0 60px rgba(78, 205, 196, 1); /* 発光を強調 */
+}
+
+/* クリック時のボタン押下エフェクト */
+.answer-btn:active:not(:disabled) {
+  transform: translateY(-8px) scale(1.02); /* 少し戻る */
+}
+
+/* 無効化時のボタンスタイル - 回答後など */
+.answer-btn:disabled {
+  cursor: not-allowed; /* カーソルを禁止マークに */
+}
+
+/* ボタン内のテキスト */
+.answer-text {
+  display: block;
+}
+
+/* ========================================
+   結果画面
+   最終的なアンケート完了画面のスタイル
+   ======================================== */
+
+/* 結果画面 */
+.result-screen {
+  text-align: center;
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  padding: 60px 50px;
+  border-radius: 30px;
+  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+  border: 4px solid #ffd700;
+  max-width: 700px;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-title {
+  font-size: 3em;
+  font-weight: bold;
+  color: #ffd700;
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.result-message {
+  margin: 30px 0;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.result-message .perfect {
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  animation: perfectPulse 1s ease-in-out infinite;
+}
+
+@keyframes perfectPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.retry-button {
+  margin-top: 40px;
+  padding: 20px 60px;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #0f3460;
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  border: 4px solid #ffffff;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+}
+
+.retry-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
+}
+
+/* ========================================
+   レスポンシブデザイン - スマホ用UI
+   ======================================== */
+/* タブレット・大型スマホ (画面幅768px以下) */
+@media (max-width: 768px) {
+  /* スタート画面の調整 */
+  .start-screen {
+    padding: 40px 30px;
+    max-width: 100%;
+  }
+
+  .title-main {
+    font-size: 2.2em;
+    letter-spacing: 2px;
+  }
+
+  .title-sub {
+    font-size: 1em;
+    letter-spacing: 1px;
+  }
+
+  .game-info p {
+    font-size: 1.1em;
+  }
+
+  .question-count {
+    font-size: 1.5em !important;
+  }
+
+  .start-button {
+    padding: 18px 60px;
+    font-size: 1.5em;
+  }
+
+  /* カウントダウンの調整 */
+  .countdown-number {
+    font-size: 12em;
+  }
+
+  /* ゲーム画面ヘッダーの調整 */
+  .game-header {
+    padding: 12px 15px;
+  }
+
+  .question-number {
+    font-size: 1.3em;
+  }
+
+  /* 回答ボタンの調整 - 左右並びを維持 */
+  .answer-buttons {
+    gap: 15px;
+    padding: 10px 15px 15px;
+    flex-direction: row; /* 左右並びを維持 */
+    justify-content: center;
+  }
+
+  .answer-btn {
+    font-size: 1.6em;
+    padding: 12px;
+    width: 220px; /* 固定幅 */
+    max-width: 220px;
+    min-width: 220px;
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+  }
+
+  /* ホバーエフェクトを控えめに */
+  .answer-btn:hover:not(:disabled) {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  /* 結果画面の調整 */
+  .result-screen {
+    padding: 40px 30px;
+    max-width: 100%;
+  }
+
+  .result-title {
+    font-size: 2.2em;
+    margin-bottom: 30px;
+  }
+
+  .result-message {
+    font-size: 1.8em;
+    margin: 20px 0;
+  }
+
+  .retry-button {
+    padding: 18px 50px;
+    font-size: 1.4em;
+  }
+}
+
+/* 小型スマホ (画面幅480px以下) */
+@media (max-width: 480px) {
+  .title-main {
+    font-size: 1.8em;
+  }
+
+  .title-sub {
+    font-size: 0.9em;
+  }
+
+  .start-button {
+    padding: 15px 50px;
+    font-size: 1.3em;
+  }
+
+  .countdown-number {
+    font-size: 10em;
+  }
+
+  .question-number {
+    font-size: 1.1em;
+  }
+
+  /* 小型スマホでもボタンを左右に並べる */
+  .answer-btn {
+    font-size: 1.3em;
+    width: 180px; /* 固定幅 */
+    max-width: 180px;
+    min-width: 180px;
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
+  }
+
+  .result-title {
+    font-size: 1.8em;
+  }
+
+  .result-message {
+    font-size: 1.5em;
+  }
+
+  .retry-button {
+    padding: 15px 40px;
+    font-size: 1.2em;
+  }
+}
+
+/* 横向きスマホ (画面幅768px以下 かつ 横向き) */
+@media (max-width: 768px) and (orientation: landscape) {
+
+  /* 横向きでもボタンサイズを調整 */
+  .answer-btn {
+    width: 35vw; /* 画面幅の35% */
+    max-width: 220px;
+    min-width: 180px;
+    height: 90px;
+  }
+}
