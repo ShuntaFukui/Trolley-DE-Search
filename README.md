@@ -10,18 +10,19 @@
 
 ### 開発環境（モックサーバー使用）
 
-開発環境ではローカルまたはLAN上のモックサーバーに接続します。
+開発環境では**自動フォールバック機能**によりローカルまたはLAN上のモックサーバーに接続します。
 
-1. **環境変数ファイルの確認**
-   ```bash
-   # .env.development の内容
-   VITE_API_BASE_URL=http://172.20.10.4:3001/api  # LAN経由
-   # または
-   VITE_API_BASE_URL=http://localhost:3001/api     # ローカルのみ
-   VITE_USE_MOCK=true
-   ```
+#### 自動フォールバック機能
 
-2. **モックサーバーの起動**
+`src/services/api.ts`で以下の順序で自動的に接続を試みます:
+1. `http://localhost:3001/api` (ローカル優先)
+2. `http://172.20.10.4:3001/api` (LAN経由フォールバック)
+
+接続失敗時は自動的に次のURLを試行します(タイムアウト: 5秒)。
+
+#### セットアップ手順
+
+1. **モックサーバーの起動**
    ```bash
    # 別のターミナルでモックサーバーを起動
    cd ../mock
@@ -31,7 +32,7 @@
    - ローカル: `http://localhost:3001`
    - LAN経由: `http://172.20.10.4:3001`
 
-3. **開発サーバーの起動**
+2. **開発サーバーの起動**
    ```bash
    npm run dev
    ```
@@ -39,9 +40,21 @@
    - ローカル: `http://localhost:5173/`
    - LAN経由: `http://172.20.10.4:5173/`
 
+#### URLの変更方法
+
+フォールバックURLを変更する場合は、`src/services/api.ts`の`constructor`内を編集:
+```typescript
+if (isDevelopment) {
+  this.baseUrls = [
+    'http://localhost:3001/api',
+    'http://新しいIP:3001/api',  // ここを変更
+  ];
+}
+```
+
 ### 本番環境（AWS使用）
 
-本番環境ではAWS API Gatewayに接続します。
+本番環境ではAWS API Gatewayに接続します。フォールバック機能は無効です。
 
 1. **環境変数ファイルの編集**
    ```bash
@@ -65,11 +78,11 @@
 
 開発者ツールのConsoleで以下を確認:
 ```javascript
-// 現在のAPI URL
-console.log(import.meta.env.VITE_API_BASE_URL)
-
-// モックモード
-console.log(import.meta.env.VITE_USE_MOCK)
+// フォールバック機能により、接続成功時にログが表示されます
+// ✅ Connected to: http://localhost:3001/api
+// または
+// ⚠️ Failed to connect to http://localhost:3001/api
+// ✅ Connected to: http://172.20.10.4:3001/api
 ```
 
 ## 📦 セットアップ
@@ -132,27 +145,27 @@ npm run preview
 develop/
 ├── src/
 │   ├── common/           # 共通コンポーネント
-│   │   ├── App.tsx       # ルートコンポーネント
+│   │   ├── App.tsx       # ルートコンポーネント（ルーティング設定）
 │   │   ├── main.tsx      # エントリーポイント
-│   │   └── config.ts     # 環境設定
+│   │   └── config.ts     # 環境設定（※現在未使用）
 │   ├── components/       # Reactコンポーネント
+│   │   ├── home/         # ホーム画面
+│   │   │   └── Home.tsx          # 初期画面・スタート画面
 │   │   ├── game/         # ゲーム関連
 │   │   │   ├── TrolleyGame.tsx   # メインゲーム画面
 │   │   │   └── Countdown.tsx     # カウントダウン
 │   │   └── result/       # 結果関連
 │   │       └── ResultPage.tsx    # 結果表示画面
 │   ├── services/         # APIクライアント
-│   │   └── api.ts        # API通信サービス
+│   │   └── api.ts        # API通信サービス（フォールバック機能含む）
 │   ├── styles/           # スタイルシート
-│   │   ├── App.css
 │   │   ├── TrolleyGame.css
 │   │   └── index.css
-│   └── assets/           # 静的アセット
+│   └── assets/           # 静的アセット（※削除済み）
 ├── public/               # 公開ディレクトリ
 │   └── images/           # 画像ファイル
-│       ├── BackGround.png
 │       └── trolley_1.png
-├── .env.development      # 開発環境変数
+├── .env.development      # 開発環境変数（※現在未使用・コメントアウト済み）
 ├── .env.production       # 本番環境変数
 └── index.html            # HTMLテンプレート
 ```
@@ -234,28 +247,51 @@ interface TournamentResult {
 
 ## 📝 開発時の注意事項
 
+### API接続について
+
+- **自動フォールバック機能**: 開発環境では`localhost:3001` → `172.20.10.4:3001`の順で自動接続
+- **タイムアウト**: 各URLへの接続試行は5秒でタイムアウト
+- **ログ出力**: コンソールに接続状況が表示されます
+
 ### LAN経由アクセス時
 
 別端末からアクセスする場合:
-1. 開発サーバーを `--host` オプション付きで起動（`npm run dev` で自動）
-2. `.env.development` の `VITE_API_BASE_URL` をローカルIPアドレスに設定
-3. モックサーバーも同様に `0.0.0.0` でリッスン設定済み
+1. 開発サーバーは `--host` オプション付きで起動（`npm run dev` で自動）
+2. モックサーバーも `0.0.0.0` でリッスン設定済み
+3. フォールバック機能により、localhostが失敗すると自動的にLAN IPに接続
 
-### 環境変数の変更時
+### URLの変更が必要な場合
 
-環境変数を変更した場合は開発サーバーの再起動が必要:
-```bash
-# Ctrl+C で停止
-npm run dev
-```
+`src/services/api.ts`の`constructor`内で直接編集してください。
+`.env.development`ファイルは現在使用されていません（コメントアウト済み）。
 
 ## 🐛 トラブルシューティング
 
 ### 「選択肢の読み込みに失敗しました」が表示される
 
 1. モックサーバーが起動しているか確認
-2. `.env.development` のURLが正しいか確認
+   ```bash
+   cd ../mock
+   npm start
+   ```
+2. コンソールで接続ログを確認
+   - `⚠️ Failed to connect to http://localhost:3001/api`
+   - `⚠️ Failed to connect to http://172.20.10.4:3001/api`
+   - 両方失敗している場合はサーバー起動を確認
 3. ネットワーク接続を確認（LAN経由の場合）
+4. ファイアウォール設定を確認
+
+### フォールバックが動作しない
+
+`src/services/api.ts`で正しくURLが設定されているか確認:
+```typescript
+if (isDevelopment) {
+  this.baseUrls = [
+    'http://localhost:3001/api',
+    'http://172.20.10.4:3001/api',
+  ];
+}
+```
 
 ### ビルドエラー
 

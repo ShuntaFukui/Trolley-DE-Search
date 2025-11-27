@@ -1,5 +1,3 @@
-import { config } from '../common/config';
-
 export interface Restaurant {
   shop_id: string;
   name: string;
@@ -76,10 +74,58 @@ export interface Stats {
 }
 
 class ApiService {
-  private baseUrl: string;
+  private baseUrls: string[];
 
   constructor() {
-    this.baseUrl = config.apiBaseUrl;
+    const isDevelopment = import.meta.env.DEV;
+    
+    if (isDevelopment) {
+      // 開発環境: フォールバック用に複数のベースURLを設定
+      // localhostを優先し、失敗時にLAN IPにフォールバック
+      this.baseUrls = [
+        'http://localhost:3001/api',
+        'http://172.20.10.4:3001/api',
+      ];
+    } else {
+      // 本番環境: 環境変数から取得したURLのみ使用
+      const prodUrl = import.meta.env.VITE_API_BASE_URL || '';
+      this.baseUrls = [prodUrl];
+    }
+  }
+
+  /**
+   * フォールバック機能付きfetch
+   * 最初のURLで失敗した場合、次のURLを試す
+   */
+  private async fetchWithFallback(
+    endpoint: string,
+    options?: RequestInit
+  ): Promise<Response> {
+    let lastError: Error | null = null;
+
+    for (const baseUrl of this.baseUrls) {
+      try {
+        const response = await fetch(`${baseUrl}${endpoint}`, {
+          ...options,
+          signal: AbortSignal.timeout(5000), // 5秒でタイムアウト
+        });
+
+        if (response.ok) {
+          console.log(`✅ Connected to: ${baseUrl}`);
+          return response;
+        }
+      } catch (error) {
+        console.warn(`⚠️ Failed to connect to ${baseUrl}:`, error);
+        lastError = error as Error;
+        // 次のURLを試す
+        continue;
+      }
+    }
+
+    // すべてのURLで失敗した場合
+    throw new Error(
+      `All API endpoints failed. Last error: ${lastError?.message || 'Unknown error'}`
+    );
   }
 
   /**
@@ -87,17 +133,13 @@ class ApiService {
    */
   async saveResult(result: GameResult): Promise<SavedResult> {
     try {
-      const response = await fetch(`${this.baseUrl}/results`, {
+      const response = await this.fetchWithFallback('/results', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(result),
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data: ApiResponse<SavedResult> = await response.json();
       
@@ -117,12 +159,7 @@ class ApiService {
    */
   async getResults(): Promise<SavedResult[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/results`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
+      const response = await this.fetchWithFallback('/results');
       return await response.json();
     } catch (error) {
       console.error('Error fetching results:', error);
@@ -135,12 +172,7 @@ class ApiService {
    */
   async getResult(id: string): Promise<SavedResult> {
     try {
-      const response = await fetch(`${this.baseUrl}/results/${id}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
+      const response = await this.fetchWithFallback(`/results/${id}`);
       return await response.json();
     } catch (error) {
       console.error('Error fetching result:', error);
@@ -153,12 +185,7 @@ class ApiService {
    */
   async getStats(): Promise<Stats> {
     try {
-      const response = await fetch(`${this.baseUrl}/stats`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
+      const response = await this.fetchWithFallback('/stats');
       return await response.json();
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -171,13 +198,28 @@ class ApiService {
    */
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
     try {
-      const response = await fetch(`${this.baseUrl.replace('/api', '')}/health`);
+      // ヘルスチェックは/apiなしのパスなので、独自に実装
+      let lastError: Error | null = null;
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      for (const baseUrl of this.baseUrls) {
+        try {
+          const healthUrl = baseUrl.replace('/api', '/health');
+          const response = await fetch(healthUrl, {
+            signal: AbortSignal.timeout(5000),
+          });
+
+          if (response.ok) {
+            console.log(`✅ Health check OK: ${healthUrl}`);
+            return await response.json();
+          }
+        } catch (error) {
+          console.warn(`⚠️ Health check failed for ${baseUrl}:`, error);
+          lastError = error as Error;
+          continue;
+        }
       }
 
-      return await response.json();
+      throw new Error(`Health check failed. Last error: ${lastError?.message || 'Unknown error'}`);
     } catch (error) {
       console.error('Error in health check:', error);
       throw error;
@@ -189,16 +231,12 @@ class ApiService {
    */
   async getOptions(): Promise<Restaurant[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/options`, {
+      const response = await this.fetchWithFallback('/options', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
       
