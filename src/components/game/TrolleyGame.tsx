@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/TrolleyGame.css';
 import Countdown from './Countdown';
 import { apiService, type Restaurant, type TournamentMatch, type TournamentResult } from '../../services/api';
 
-type GameState = 'start' | 'countdown' | 'playing' | 'answering' | 'result' | 'loading';
+type GameState = 'countdown' | 'playing' | 'answering' | 'result';
 type RoundType = '1回戦' | '準決勝' | '3位決定戦' | '決勝';
 
 interface CurrentMatch {
@@ -15,14 +15,14 @@ interface CurrentMatch {
 
 export default function TrolleyGame() {
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState<GameState>('loading');
+  const location = useLocation();
+  const [gameState, setGameState] = useState<GameState>('countdown');
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
 
   // 選択肢
   const [allOptions, setAllOptions] = useState<Restaurant[]>([]);
-  const [loadingError, setLoadingError] = useState<string | null>(null);
 
   // トーナメント用の状態
   const [shuffledOptions, setShuffledOptions] = useState<Restaurant[]>([]);
@@ -37,24 +37,15 @@ export default function TrolleyGame() {
   const [thirdPlaceWinner, setThirdPlaceWinner] = useState<Restaurant | null>(null);
   const [thirdPlaceLoser, setThirdPlaceLoser] = useState<Restaurant | null>(null);
 
-  // 初回マウント時に選択肢を取得
+  // Home画面から渡されたレストランデータを受け取る
   useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        setGameState('loading');
-        const options = await apiService.getOptions();
-        setAllOptions(options);
-        setLoadingError(null);
-        setGameState('start');
-      } catch (error) {
-        console.error('Failed to load options:', error);
-        setLoadingError('選択肢の読み込みに失敗しました');
-        setGameState('start');
-      }
-    };
-
-    fetchOptions();
-  }, []);
+    const restaurants = location.state?.restaurants;
+    if (!restaurants || restaurants.length === 0) {
+      navigate('/');
+      return;
+    }
+    setAllOptions(restaurants);
+  }, [location, navigate]);
 
   // Fisher-Yates シャッフル
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -67,12 +58,6 @@ export default function TrolleyGame() {
   };
 
   const startGame = () => {
-    // 選択肢が取得できていない場合は開始しない
-    if (allOptions.length === 0) {
-      setLoadingError('選択肢が読み込まれていません');
-      return;
-    }
-
     // 選択肢をシャッフル
     const shuffled = shuffleArray(allOptions);
     setShuffledOptions(shuffled);
@@ -91,6 +76,13 @@ export default function TrolleyGame() {
     
     setGameState('countdown');
   };
+
+  // allOptionsが設定されたらゲーム開始
+  useEffect(() => {
+    if (allOptions.length > 0) {
+      startGame();
+    }
+  }, [allOptions]);
 
   const handleCountdownComplete = () => {
     // 1回戦の最初の対戦を設定
@@ -261,35 +253,6 @@ export default function TrolleyGame() {
 
   return (
     <div className="trolley-game">
-      {gameState === 'loading' && (
-        <div className="start-screen">
-          <div className="game-title">
-            <div className="title-main">トロッコ DE サーチ</div>
-            <div className="title-sub">TROLLEY de SEARCH</div>
-          </div>
-          <div className="game-info">
-            <p className="loading-message">選択肢を読み込み中...</p>
-          </div>
-        </div>
-      )}
-
-      {gameState === 'start' && (
-        <div className="start-screen">
-          <div className="game-title">
-            <div className="title-main">トロッコ DE サーチ</div>
-            <div className="title-sub">TROLLEY de SEARCH</div>
-          </div>
-          <div className="game-info">
-            <p>トーナメント形式で好みを決定！</p>
-            <p className="question-count">全7試合（1回戦4試合・準決勝2試合・3位決定戦・決勝）</p>
-            {loadingError && <p className="error-message">{loadingError}</p>}
-          </div>
-          <button className="start-button" onClick={startGame} disabled={allOptions.length === 0}>
-            スタート
-          </button>
-        </div>
-      )}
-
       {gameState === 'countdown' && (
         <Countdown onComplete={handleCountdownComplete} />
       )}
