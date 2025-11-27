@@ -119,14 +119,32 @@ export default function TrolleyGame() {
     setAnimationDirection(answerIndex === 0 ? 'left' : 'right');
     setIsAnimating(true);
 
-    setTimeout(() => {
-      setIsAnimating(false);
-      setAnimationDirection(null);
-      setSelectedAnswer(null);
-      
-      // 次の対戦を決定
-      proceedToNextMatch(currentMatch, winner, loser, updatedMatches);
-    }, 1500);
+    // 決勝の場合は背景アニメーション後に暗転→結果画面
+    if (currentMatch.round === '決勝') {
+      setTimeout(() => {
+        // 背景アニメーション完了後、画面を非表示にして暗転
+        setIsAnimating(false);
+        setAnimationDirection(null);
+        setCurrentMatch(null); // 画面を非表示
+        setGameState('result'); // 状態を結果に変更
+        
+        // 暗転エフェクトのための追加待機
+        setTimeout(() => {
+          setSelectedAnswer(null);
+          proceedToNextMatch(currentMatch, winner, loser, updatedMatches);
+        }, 0); // 暗転時間を短縮
+      }, 1500); // 背景アニメーション時間
+    } else {
+      // 通常の試合は1.5秒待機
+      setTimeout(() => {
+        setIsAnimating(false);
+        setAnimationDirection(null);
+        setSelectedAnswer(null);
+        
+        // 次の対戦を決定
+        proceedToNextMatch(currentMatch, winner, loser, updatedMatches);
+      }, 1500);
+    }
   };
 
   const proceedToNextMatch = (
@@ -261,8 +279,8 @@ export default function TrolleyGame() {
         <div 
           className={`game-screen ${isAnimating ? `animating-${animationDirection}` : ''}`}
         >
-          {/* 次の背景レイヤー */}
-          <div className="background-next"></div>
+          {/* 次の背景レイヤー - 決勝では表示しない */}
+          {currentMatch.round !== '決勝' && <div className="background-next"></div>}
           
           <div className="game-header">
             <div className="tournament-info">

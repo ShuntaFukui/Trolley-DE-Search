@@ -9,15 +9,16 @@
    ======================================== */
 .trolley-game {
   width: 100vw; /* ビューポート幅100% */
-  height: 100vh; /* ビューポート高さ100% */
+  min-height: 100vh; /* 最小高さ100vh、コンテンツに応じて拡張 */
   display: flex;
   align-items: center; /* 縦方向中央揃え */
   justify-content: center; /* 横方向中央揃え */
   background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%); /* 暗い背景グラデーション */
   font-family: 'Arial Black', 'Arial Bold', sans-serif; /* 太字フォント */
   margin: 0;
-  padding: 0;
-  overflow: hidden; /* はみ出し防止 */
+  padding: 20px; /* スクロール時の余白 */
+  overflow-y: auto; /* 縦スクロール有効化 */
+  overflow-x: hidden; /* 横スクロールは無効 */
   position: relative;
 }
 
@@ -677,6 +678,8 @@
   box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
   border: 4px solid #ffd700;
   max-width: 700px;
+  width: 100%;
+  max-height: none; /* 高さ制限を解除 */
   animation: slideDown 0.6s ease-out;
 }
 
