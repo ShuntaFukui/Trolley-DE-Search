@@ -46,7 +46,7 @@
 1. **環境変数ファイルの編集**
    ```bash
    # .env.production の内容を実際のAPI Gatewayエンドポイントに設定
-   VITE_API_BASE_URL=https://your-api-gateway.execute-api.ap-northeast-1.amazonaws.com/prod/api
+   VITE_API_BASE_URL=https://hn9e5kup8i.execute-api.ap-northeast-1.amazonaws.com/prod/
    VITE_USE_MOCK=false
    ```
 
