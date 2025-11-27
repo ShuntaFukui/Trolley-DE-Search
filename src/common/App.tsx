@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TrolleyGame from '../components/game/TrolleyGame';
 import ResultPage from '../components/result/ResultPage';
-import '../styles/App.css';
 
 function App() {
   return (
