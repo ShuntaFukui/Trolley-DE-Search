@@ -1,7 +1,8 @@
-<<<<<<< HEAD
 # Trolley DE Search - Mock Server
 
-トロッコゲームの結果を保存・管理するモックサーバー
+ワッカソン2025 チームI「トロッコDEサーチ」のモックサーバー
+
+トーナメント形式のレストラン選択ゲームの結果を保存・管理するモックサーバー
 
 ## セットアップ
 
@@ -16,12 +17,9 @@ npm install
 npm start
 ```
 
-開発モード（ファイル変更時に自動再起動）:
-```bash
-npm run dev
-```
-
-サーバーは `http://localhost:3001` で起動します。
+サーバーは以下で起動します:
+- **ローカル**: `http://localhost:3001`
+- **LAN経由**: `http://172.20.10.4:3001` (同一ネットワーク内の別端末からアクセス可能)
 
 ## API エンドポイント
 
@@ -30,7 +28,7 @@ npm run dev
 GET /health
 ```
 
-### 選択肢の取得
+### レストラン選択肢の取得
 ```
 POST /api/options
 Content-Type: application/json
@@ -38,38 +36,64 @@ Content-Type: application/json
 Response:
 {
   "success": true,
-  "options": ["犬派", "猫派", "朝型", "夜型", "海派", "山派", "暑い夏", "寒い冬"]
+  "options": [
+    {
+      "shop_id": "shop001",
+      "name": "和食ダイニング 四季",
+      "address": "東京都千代田区丸の内1-1-1",
+      "genre": "和食",
+      "budget": 6000,
+      "url": "https://www.hotpepper.jp/shop001",
+      "walk": 3,
+      "private_room": true,
+      "course": true,
+      "free_drink": true,
+      "card": true,
+      "seats": 50,
+      "catch": "旬の食材を使った本格和食",
+      "selection_reason": "Tier1: 和食ジャンル・コース有・駅近3分。Tier2: 個室・カード・飲み放題完備で会食に最適。"
+    },
+    // ... 全8店舗
+  ]
+}
+```
+
+### トーナメント結果の保存
+```
+POST /api/results
+Content-Type: application/json
+
+Request Body:
+{
+  "userId": "user123",
+  "tournament": {
+    "initialOptions": [/* 8つのレストランオブジェクト */],
+    "matches": [
+      {
+        "round": "1回戦",
+        "matchNumber": 1,
+        "options": [/* レストランオブジェクト2つ */],
+        "winner": {/* レストランオブジェクト */},
+        "loser": {/* レストランオブジェクト */},
+        "answeredAt": "2025-11-27T10:00:00.000Z"
+      },
+      // ... 全7試合
+    ],
+    "finalRanking": {
+      "first": {/* レストランオブジェクト */},
+      "second": {/* レストランオブジェクト */},
+      "third": {/* レストランオブジェクト */},
+      "fourth": {/* レストランオブジェクト */},
+      "fifth": [/* レストランオブジェクト4つ */]
+    }
+  },
+  "completedAt": "2025-11-27T10:00:30.000Z"
 }
 ```
 
 ### 全結果の取得
 ```
 GET /api/results
-```
-
-### 結果の保存
-```
-POST /api/results
-Content-Type: application/json
-
-{
-  "userId": "user123",
-  "answers": [
-    {
-      "questionId": 1,
-      "options": ["犬派", "猫派"],
-      "selectedOption": 0,
-      "answeredAt": "2025-11-27T10:00:00.000Z"
-    },
-    {
-      "questionId": 2,
-      "options": ["朝型", "夜型"],
-      "selectedOption": 1,
-      "answeredAt": "2025-11-27T10:00:05.000Z"
-    }
-  ],
-  "completedAt": "2025-11-27T10:00:10.000Z"
-}
 ```
 
 ### 特定の結果の取得
@@ -89,46 +113,71 @@ DELETE /api/results
 
 ## データ形式
 
-### 結果オブジェクト
+### レストランオブジェクト
 ```json
 {
-  "id": "1732694400000",
-  "userId": "user123",
-  "answers": [
-    {
-      "questionId": 1,
-      "options": ["犬派", "猫派"],
-      "selectedOption": 0,
-      "answeredAt": "2025-11-27T10:00:00.000Z"
-    }
-  ],
-  "completedAt": "2025-11-27T10:00:10.000Z",
-  "createdAt": "2025-11-27T10:00:10.000Z"
+  "shop_id": "shop001",
+  "name": "和食ダイニング 四季",
+  "address": "東京都千代田区丸の内1-1-1",
+  "genre": "和食",
+  "budget": 6000,
+  "url": "https://www.hotpepper.jp/shop001",
+  "walk": 3,
+  "private_room": true,
+  "course": true,
+  "free_drink": true,
+  "card": true,
+  "seats": 50,
+  "catch": "旬の食材を使った本格和食",
+  "selection_reason": "Tier1: 和食ジャンル・コース有・駅近3分。Tier2: 個室・カード・飲み放題完備で会食に最適。"
 }
 ```
 
-### 統計情報
+### トーナメント試合オブジェクト
 ```json
 {
-  "totalGames": 10,
-  "totalUsers": 5,
-  "answerStats": {
-    "0": {
-      "questionId": 1,
-      "option0Count": 6,
-      "option1Count": 4
-    }
-  }
+  "round": "1回戦",
+  "matchNumber": 1,
+  "options": [/* レストランオブジェクト2つ */],
+  "winner": {/* レストランオブジェクト */},
+  "loser": {/* レストランオブジェクト */},
+  "answeredAt": "2025-11-27T10:00:00.000Z"
 }
 ```
+
+### トーナメント順位
+```json
+{
+  "first": {/* 1位のレストラン */},
+  "second": {/* 2位のレストラン */},
+  "third": {/* 3位のレストラン */},
+  "fourth": {/* 4位のレストラン */},
+  "fifth": [/* 同率5位の4店舗 */]
+}
+```
+
+## トーナメント形式
+
+- **1回戦**: 8店舗 → 4試合 → 勝者4店舗、敗者4店舗
+- **準決勝**: 勝者4店舗 → 2試合 → 勝者2店舗、敗者2店舗
+- **3位決定戦**: 準決勝敗者2店舗 → 1試合 → 3位・4位決定
+- **決勝**: 準決勝勝者2店舗 → 1試合 → 1位・2位決定
+- **結果**: 1位〜4位 + 同率5位(1回戦敗者4店舗)
+
+合計7試合で順位決定
 
 ## ファイル構成
 
 - `server.js` - Express サーバー本体
-- `options.json` - トーナメントの選択肢データ（8個）
-- `results.json` - 結果データの保存ファイル（自動生成）
+- `options.json` - レストラン選択肢データ(8店舗)
+- `results.json` - トーナメント結果の保存ファイル(自動生成)
 - `package.json` - Node.js パッケージ設定
-=======
-# Trolley-DE-Search
-ワッカソン2025 チームI「トロッコDEサーチ」
->>>>>>> 339f75a33f79402bf28ea66730ffebdd3e8fe65a
+- `.gitignore` - Git除外設定
+
+## 技術スタック
+
+- **Node.js** - ランタイム
+- **Express** - Webフレームワーク
+- **CORS** - クロスオリジン対応
+- **ポート**: 3001
+- **ホスト**: 0.0.0.0 (LAN経由アクセス対応)
