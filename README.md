@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Trolley DE Search - Mock Server
 
 トロッコゲームの結果を保存・管理するモックサーバー
@@ -127,3 +128,7 @@ DELETE /api/results
 - `options.json` - トーナメントの選択肢データ（8個）
 - `results.json` - 結果データの保存ファイル（自動生成）
 - `package.json` - Node.js パッケージ設定
+=======
+# Trolley-DE-Search
+ワッカソン2025 チームI「トロッコDEサーチ」
+>>>>>>> 339f75a33f79402bf28ea66730ffebdd3e8fe65a
