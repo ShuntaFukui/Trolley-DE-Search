@@ -38,20 +38,20 @@ Response:
   "success": true,
   "options": [
     {
-      "shop_id": "STRING",              // 店舗を一意に識別するID
-      "name": "STRING",                 // 店舗名
-      "address": "STRING",              // 住所
-      "genre": "STRING",                // ジャンル（例：和食、洋食など）
-      "budget": "INTEGER",              // 平均予算
-      "url": "STRING",                  // 店舗ページURL
-      "walk": "INTEGER",                // 駅からの徒歩時間（分）
-      "private_room": "BOOLEAN",        // 個室の有無
-      "course": "BOOLEAN",              // コース料理の有無
-      "free_drink": "BOOLEAN",          // 飲み放題の有無
-      "card": "BOOLEAN",                // クレジットカード利用可否
-      "seats": "INTEGER",               // 座席数
-      "catch": "STRING",                // キャッチコピー等の短文
-      "selection_reason": "STRING"      // 選定理由の詳細コメント
+      "shop_id": "shop002",
+      "name": "イタリアンバール ロッソ",
+      "address": "東京都中央区八重洲1-2-3",
+      "genre": "イタリアン",
+      "budget": 5000,
+      "url": "https://www.hotpepper.jp/shop002",
+      "walk": 5,
+      "private_room": true,
+      "course": true,
+      "free_drink": true,
+      "card": true,
+      "seats": 40,
+      "catch": "本格イタリアン×カジュアル空間",
+      "selection_reason": "Tier1: 好みのジャンル・コース有・駅近5分。Tier2: 個室・カード・飲み放題完備で10名に最適。"
     },
     // ... 全8店舗
   ]
