@@ -38,27 +38,27 @@ Response:
   "success": true,
   "options": [
     {
-      "shop_id": "shop001",
-      "name": "和食ダイニング 四季",
-      "address": "東京都千代田区丸の内1-1-1",
-      "genre": "和食",
-      "budget": 6000,
-      "url": "https://www.hotpepper.jp/shop001",
-      "walk": 3,
-      "private_room": true,
-      "course": true,
-      "free_drink": true,
-      "card": true,
-      "seats": 50,
-      "catch": "旬の食材を使った本格和食",
-      "selection_reason": "Tier1: 和食ジャンル・コース有・駅近3分。Tier2: 個室・カード・飲み放題完備で会食に最適。"
+      "shop_id": "STRING",              // 店舗を一意に識別するID
+      "name": "STRING",                 // 店舗名
+      "address": "STRING",              // 住所
+      "genre": "STRING",                // ジャンル（例：和食、洋食など）
+      "budget": "INTEGER",              // 平均予算
+      "url": "STRING",                  // 店舗ページURL
+      "walk": "INTEGER",                // 駅からの徒歩時間（分）
+      "private_room": "BOOLEAN",        // 個室の有無
+      "course": "BOOLEAN",              // コース料理の有無
+      "free_drink": "BOOLEAN",          // 飲み放題の有無
+      "card": "BOOLEAN",                // クレジットカード利用可否
+      "seats": "INTEGER",               // 座席数
+      "catch": "STRING",                // キャッチコピー等の短文
+      "selection_reason": "STRING"      // 選定理由の詳細コメント
     },
     // ... 全8店舗
   ]
 }
 ```
 
-### トーナメント結果の保存
+### トーナメント結果の保存（未確定につき要修正）
 ```
 POST /api/results
 Content-Type: application/json
@@ -116,21 +116,22 @@ DELETE /api/results
 ### レストランオブジェクト
 ```json
 {
-  "shop_id": "shop001",
-  "name": "和食ダイニング 四季",
-  "address": "東京都千代田区丸の内1-1-1",
-  "genre": "和食",
-  "budget": 6000,
-  "url": "https://www.hotpepper.jp/shop001",
-  "walk": 3,
-  "private_room": true,
-  "course": true,
-  "free_drink": true,
-  "card": true,
-  "seats": 50,
-  "catch": "旬の食材を使った本格和食",
-  "selection_reason": "Tier1: 和食ジャンル・コース有・駅近3分。Tier2: 個室・カード・飲み放題完備で会食に最適。"
+  "shop_id": "STRING",              // 店舗を一意に識別するID
+  "name": "STRING",                 // 店舗名
+  "address": "STRING",              // 住所
+  "genre": "STRING",                // ジャンル（例：和食、洋食など）
+  "budget": "INTEGER",              // 平均予算
+  "url": "STRING",                  // 店舗ページURL
+  "walk": "INTEGER",                // 駅からの徒歩時間（分）
+  "private_room": "BOOLEAN",        // 個室の有無
+  "course": "BOOLEAN",              // コース料理の有無
+  "free_drink": "BOOLEAN",          // 飲み放題の有無
+  "card": "BOOLEAN",                // クレジットカード利用可否
+  "seats": "INTEGER",               // 座席数
+  "catch": "STRING",                // キャッチコピー等の短文
+  "selection_reason": "STRING"      // 選定理由の詳細コメント
 }
+
 ```
 
 ### トーナメント試合オブジェクト
