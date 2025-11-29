@@ -2,88 +2,73 @@
 
 ワッカソン2025 チームI「トロッコDEサーチ」のフロントエンドアプリケーション
 
-トーナメント形式でレストランを選択するWebアプリケーション
+## 機能概要
 
-## 🔄 環境切り替え手順
+本アプリケーションは2つの主要機能を提供します:
 
-本アプリケーションは開発環境と本番環境で異なるAPIサーバーに接続します。
+1. **トーナメントゲーム**: トロッコアドベンチャー風のレストラン選択ゲーム
+2. **レストラン検索・管理**: AWS Lambda経由の飲食店検索システム
 
-### 開発環境（モックサーバー使用）
+## 🔄 環境とAPI接続
 
-開発環境では**自動フォールバック機能**によりローカルまたはLAN上のモックサーバーに接続します。
+### API構成
 
-#### 自動フォールバック機能
+- **Lambda API (AWS)**: レストラン検索・エリア情報・フォーム連携
+  - エンドポイント: `https://1tebott34m.execute-api.ap-northeast-1.amazonaws.com/prod/search`
+  - 用途: ManagePage（飲食店検索システム）
+  
+- **モックサーバー (ローカル)**: トーナメントゲーム用
+  - エンドポイント: `http://localhost:3001/api`
+  - 用途: TrolleyGame（トーナメント機能）
 
-`src/services/api.ts`で以下の順序で自動的に接続を試みます:
-1. `http://localhost:3001/api` (ローカル優先)
-2. `http://172.20.10.4:3001/api` (LAN経由フォールバック)
+### API接続の仕組み
 
-接続失敗時は自動的に次のURLを試行します(タイムアウト: 5秒)。
+`src/services/api.ts`が両方のAPIを統合管理:
 
-#### セットアップ手順
+```typescript
+// Lambda API用メソッド
+apiService.getLargeAreas()        // エリア取得
+apiService.searchRestaurants()    // レストラン検索
+apiService.fetchFormResponses()   // フォーム回答取得
 
-1. **モックサーバーの起動**
+// モックサーバー用メソッド
+apiService.getOptions()           // トーナメント選択肢取得
+apiService.saveResult()           // トーナメント結果保存
+```
+
+### 開発環境のセットアップ
+
+1. **モックサーバーの起動** (トーナメントゲーム用)
    ```bash
-   # 別のターミナルでモックサーバーを起動
    cd ../mock
    npm start
    ```
-   モックサーバーは以下で起動します:
-   - ローカル: `http://localhost:3001`
-   - LAN経由: `http://172.20.10.4:3001`
 
 2. **開発サーバーの起動**
    ```bash
    npm run dev
    ```
-   アプリケーションは以下でアクセス可能:
    - ローカル: `http://localhost:5173/`
    - LAN経由: `http://172.20.10.4:5173/`
 
-#### URLの変更方法
+### 本番環境
 
-フォールバックURLを変更する場合は、`src/services/api.ts`の`constructor`内を編集:
-```typescript
-if (isDevelopment) {
-  this.baseUrls = [
-    'http://localhost:3001/api',
-    'http://新しいIP:3001/api',  // ここを変更
-  ];
-}
-```
+本番環境ではLambda APIに直接接続します。
 
-### 本番環境（AWS使用）
-
-本番環境ではAWS API Gatewayに接続します。フォールバック機能は無効です。
-
-1. **環境変数ファイルの編集**
+1. **環境変数ファイルの確認**
    ```bash
-   # .env.production の内容を実際のAPI Gatewayエンドポイントに設定
-   VITE_API_BASE_URL=https://hn9e5kup8i.execute-api.ap-northeast-1.amazonaws.com/prod/
-   VITE_USE_MOCK=false
+   # .env.production
+   VITE_API_BASE_URL=https://1tebott34m.execute-api.ap-northeast-1.amazonaws.com/prod/search
    ```
 
-2. **本番ビルドの実行**
+2. **本番ビルド**
    ```bash
    npm run build
    ```
-   ビルド成果物は `dist/` ディレクトリに生成されます。
 
-3. **ビルド成果物のデプロイ**
-   - AWS S3にアップロード
-   - CloudFrontでCDN配信
-   - または任意の静的ホスティングサービスにデプロイ
-
-### 環境の確認方法
-
-開発者ツールのConsoleで以下を確認:
-```javascript
-// フォールバック機能により、接続成功時にログが表示されます
-// ✅ Connected to: http://localhost:3001/api
-// または
-// ⚠️ Failed to connect to http://localhost:3001/api
-// ✅ Connected to: http://172.20.10.4:3001/api
-```
+3. **デプロイ**
+   - AWS S3 + CloudFront
+   - または任意の静的ホスティングサービス
 
 ## 📦 セットアップ
 
@@ -117,9 +102,9 @@ npm run build
 npm run preview
 ```
 
-## 🎮 ゲーム仕様
+## 🎮 機能詳細
 
-### トーナメント形式
+### 1. トーナメントゲーム (TrolleyGame)
 
 8つのレストランがトーナメント形式で対戦:
 
@@ -132,52 +117,91 @@ npm run preview
 
 合計7試合でランキングを決定します。
 
-### 表示情報
+### 2. レストラン検索・管理 (ManagePage)
 
-各レストランは以下の情報を表示:
-- **name**: レストラン名
-- **genre**: ジャンル（和食、イタリアン、焼肉など）
-- **catch**: キャッチコピー
+AWS Lambda経由で以下の機能を提供:
+
+- **エリア階層選択**: 都道府県 → 市区町村 → 詳細エリア
+- **検索条件**: 予算、参加人数、開催日
+- **Google Forms連携**: スプレッドシートから出欠情報を取得
+- **検索結果**: 店舗情報、写真、アクセス、設備などを表示
 
 ## 📁 プロジェクト構成
 
 ```
 develop/
 ├── src/
-│   ├── common/           # 共通コンポーネント
-│   │   ├── App.tsx       # ルートコンポーネント（ルーティング設定）
-│   │   ├── main.tsx      # エントリーポイント
-│   │   └── config.ts     # 環境設定（※現在未使用）
 │   ├── components/       # Reactコンポーネント
 │   │   ├── home/         # ホーム画面
 │   │   │   └── Home.tsx          # 初期画面・スタート画面
-│   │   ├── game/         # ゲーム関連
+│   │   ├── game/         # トーナメントゲーム
 │   │   │   ├── TrolleyGame.tsx   # メインゲーム画面
 │   │   │   └── Countdown.tsx     # カウントダウン
-│   │   └── result/       # 結果関連
-│   │       └── ResultPage.tsx    # 結果表示画面
+│   │   ├── result/       # 結果表示
+│   │   │   └── ResultPage.tsx    # トーナメント結果表示
+│   │   └── search/       # レストラン検索・管理
+│   │       └── ManagePage.tsx    # 飲食店検索システム
 │   ├── services/         # APIクライアント
-│   │   └── api.ts        # API通信サービス（フォールバック機能含む）
+│   │   └── api.ts        # 統合API通信サービス
 │   ├── styles/           # スタイルシート
-│   │   ├── TrolleyGame.css
-│   │   └── index.css
-│   └── assets/           # 静的アセット（※削除済み）
+│   │   ├── index.css     # 共通スタイル + ManagePage用
+│   │   └── TrolleyGame.css
+│   ├── App.tsx           # ルートコンポーネント（ルーティング設定）
+│   └── main.tsx          # エントリーポイント
 ├── public/               # 公開ディレクトリ
 │   └── images/           # 画像ファイル
-│       └── trolley_1.png
-├── .env.development      # 開発環境変数（※現在未使用・コメントアウト済み）
 ├── .env.production       # 本番環境変数
 └── index.html            # HTMLテンプレート
 ```
 
 ## 🔌 API連携
 
-### エンドポイント
+### Lambda API (ManagePage用)
+
+#### エリア情報取得
+```typescript
+// 大エリア(都道府県)
+POST /search
+Body: { action: 'get_areas', area_type: 'large' }
+
+// 中エリア(市区町村)
+POST /search
+Body: { action: 'get_areas', area_type: 'middle', parent_code: string }
+
+// 小エリア(詳細エリア)
+POST /search
+Body: { action: 'get_areas', area_type: 'small', parent_code: string }
+```
+
+#### Google Forms連携
+```typescript
+POST /search
+Body: { action: 'fetch_form_responses', spreadsheet_url: string }
+Response: { total, attendance_yes, attendance_no }
+```
+
+#### レストラン検索
+```typescript
+POST /search
+Body: {
+  action: 'search',
+  large_area?: string,
+  middle_area?: string,
+  small_area?: string,
+  budget: string,
+  party_capacity: number,
+  event_date?: string,
+  target_count: number
+}
+Response: { shops: Restaurant[], searched_count, saved_to_dynamodb }
+```
+
+### モックサーバー API (TrolleyGame用)
 
 #### レストラン選択肢の取得
 ```typescript
 POST /api/options
-Response: Restaurant[] (8店舗)
+Response: { success: boolean, options: Restaurant[] }
 ```
 
 #### トーナメント結果の保存
@@ -191,28 +215,59 @@ Body: {
   }
   completedAt: string
 }
+Response: { success: boolean, result: SavedResult }
 ```
 
 ### 型定義
 
 ```typescript
+// 統合Restaurant型（Lambda + モックサーバー両対応）
 interface Restaurant {
-  shop_id: string;
+  id: string;
+  shop_id?: string;           // モックサーバー用
   name: string;
   address: string;
   genre: string;
-  budget: number;
-  url: string;
-  walk: number;
-  private_room: boolean;
-  course: boolean;
-  free_drink: boolean;
-  card: boolean;
-  seats: number;
-  catch: string;
-  selection_reason: string;
+  catch?: string;
+  budget?: string | number;   // Lambda: string, モック: number
+  party_capacity?: string;    // Lambda用
+  url?: string;
+  photo_url?: string;         // Lambda用
+  logo_image?: string;        // Lambda用
+  station_name?: string;      // Lambda用
+  access?: string;            // Lambda用
+  private_room?: string | boolean;
+  free_drink?: string | boolean;
+  card?: string | boolean;
+  course?: string | boolean;
+  walk?: number;              // モックサーバー用
+  seats?: number;             // モックサーバー用
+  selection_reason?: string;  // モックサーバー用
 }
 
+// エリア情報（Lambda用）
+interface Area {
+  code: string;
+  name: string;
+}
+
+// フォーム回答（Lambda用）
+interface FormResponse {
+  total: number;
+  attendance_yes: number;
+  attendance_no: number;
+}
+
+// 検索結果（Lambda用）
+interface SearchResult {
+  message: string;
+  deleted_count: number;
+  searched_count: number;
+  saved_to_dynamodb: number;
+  shops: Restaurant[];
+}
+
+// トーナメント試合（モックサーバー用）
 interface TournamentMatch {
   round: '1回戦' | '準決勝' | '3位決定戦' | '決勝';
   matchNumber: number;
@@ -222,6 +277,7 @@ interface TournamentMatch {
   answeredAt: string;
 }
 
+// トーナメント結果（モックサーバー用）
 interface TournamentResult {
   first: Restaurant;
   second: Restaurant;
@@ -247,51 +303,53 @@ interface TournamentResult {
 
 ## 📝 開発時の注意事項
 
-### API接続について
+### API構成の理解
 
-- **自動フォールバック機能**: 開発環境では`localhost:3001` → `172.20.10.4:3001`の順で自動接続
-- **タイムアウト**: 各URLへの接続試行は5秒でタイムアウト
-- **ログ出力**: コンソールに接続状況が表示されます
+- **Lambda API**: ManagePage専用、AWS環境に直接接続
+- **モックサーバー**: TrolleyGame専用、ローカル開発用
+- **api.ts**: 両方のAPIを統合管理する単一サービスクラス
 
-### LAN経由アクセス時
+### 型の互換性
 
-別端末からアクセスする場合:
-1. 開発サーバーは `--host` オプション付きで起動（`npm run dev` で自動）
-2. モックサーバーも `0.0.0.0` でリッスン設定済み
-3. フォールバック機能により、localhostが失敗すると自動的にLAN IPに接続
+`Restaurant`型は両API対応のため、一部プロパティがオプショナルまたはユニオン型:
+```typescript
+budget?: string | number;      // Lambda: string, モック: number
+private_room?: string | boolean; // Lambda: string, モック: boolean
+```
 
-### URLの変更が必要な場合
+### スタイルの管理
 
-`src/services/api.ts`の`constructor`内で直接編集してください。
-`.env.development`ファイルは現在使用されていません（コメントアウト済み）。
+- `index.css`: 共通スタイル + ManagePage専用スタイル
+- `TrolleyGame.css`: トーナメントゲーム専用スタイル
+
+### 環境変数
+
+- `.env.production`: Lambda API URLを定義
+- 開発環境ではハードコードされたURL使用（モックサーバー）
 
 ## 🐛 トラブルシューティング
 
-### 「選択肢の読み込みに失敗しました」が表示される
+### トーナメントゲームで「選択肢の読み込みに失敗しました」
 
 1. モックサーバーが起動しているか確認
    ```bash
    cd ../mock
    npm start
    ```
-2. コンソールで接続ログを確認
-   - `⚠️ Failed to connect to http://localhost:3001/api`
-   - `⚠️ Failed to connect to http://172.20.10.4:3001/api`
-   - 両方失敗している場合はサーバー起動を確認
-3. ネットワーク接続を確認（LAN経由の場合）
-4. ファイアウォール設定を確認
+2. `http://localhost:3001/api/options`にアクセスできるか確認
 
-### フォールバックが動作しない
+### ManagePageでエリア情報が取得できない
 
-`src/services/api.ts`で正しくURLが設定されているか確認:
-```typescript
-if (isDevelopment) {
-  this.baseUrls = [
-    'http://localhost:3001/api',
-    'http://172.20.10.4:3001/api',
-  ];
-}
-```
+1. Lambda APIのURLが正しいか確認（`.env.production`）
+2. ブラウザのコンソールでエラーログを確認
+3. ネットワーク接続を確認
+
+### Google Formsの回答取得で401エラー
+
+スプレッドシートの共有設定を確認:
+1. スプレッドシート右上の「共有」をクリック
+2. 「リンクを知っている全員」を選択
+3. 権限を「閲覧者」に設定
 
 ### ビルドエラー
 
