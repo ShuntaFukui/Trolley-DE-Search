@@ -126,6 +126,21 @@ AWS Lambda経由で以下の機能を提供:
 - **Google Forms連携**: スプレッドシートから出欠情報を取得
 - **検索結果**: 店舗情報、写真、アクセス、設備などを表示
 
+## 🔀 画面遷移フロー
+
+```
+Home (/)
+├─→ ManagePage (/manage) 
+│   ├─→ Home (戻る)
+│   └─→ TrolleyGame (/game)
+└─→ TrolleyGame (/game)
+    └─→ ResultPage (/result)
+```
+
+- **Home**: スタート画面で「ゲームスタート」または「レストラン検索・管理」を選択
+- **ManagePage**: レストラン検索後、ゲーム開始またはホームに戻る
+- **TrolleyGame**: トーナメント完了後、結果ページへ自動遷移
+
 ## 📁 プロジェクト構成
 
 ```

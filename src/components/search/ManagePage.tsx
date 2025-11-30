@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/index.css';
 import { apiService } from '../../services/api';
 import type { Area, Restaurant, SearchResult, FormResponse } from '../../services/api';
 
 const ManagePage: React.FC = () => {
+  const navigate = useNavigate();
 
   // エリア選択の状態
   const [largeAreas, setLargeAreas] = useState<Area[]>([]);
@@ -202,6 +204,36 @@ const ManagePage: React.FC = () => {
 
   return (
     <div className="container">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <button
+          onClick={() => navigate('/')}
+          style={{
+            padding: '10px 20px',
+            background: '#6c757d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          ← ホームに戻る
+        </button>
+        <button
+          onClick={() => navigate('/game')}
+          style={{
+            padding: '10px 20px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          ゲームを開始 →
+        </button>
+      </div>
       <h1>🍴 飲食店検索システム</h1>
       <p className="subtitle">エリア・予算・開催日から最適なお店を検索</p>
 

@@ -40,6 +40,10 @@ export default function Home() {
     });
   };
 
+  const handleGoToManage = () => {
+    navigate('/manage');
+  };
+
   return (
     <div className="trolley-game">
       {isLoading ? (
@@ -68,7 +72,14 @@ export default function Home() {
             onClick={handleStartGame} 
             disabled={allOptions.length === 0}
           >
-            スタート
+            ゲームスタート
+          </button>
+          <button 
+            className="start-button" 
+            onClick={handleGoToManage}
+            style={{ marginTop: '20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+          >
+            レストラン検索・管理
           </button>
         </div>
       )}
