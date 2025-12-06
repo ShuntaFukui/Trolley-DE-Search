@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { TournamentResult } from '../../services/api';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 import '../../styles/TrolleyGame.css';
 
 interface ResultPageState {
@@ -39,7 +41,9 @@ export default function ResultPage() {
   const { finalRanking } = state;
 
   return (
-    <div className="trolley-game">
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header />
+    <div className="trolley-game" style={{ flex: 1 }}>
       <div className="result-screen">
         <div className="result-title">トーナメント終了！</div>
         
@@ -92,5 +96,7 @@ export default function ResultPage() {
         </button>
       </div>
     </div>
+    <Footer />
+  </div>
   );
 }

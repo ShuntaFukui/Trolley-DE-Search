@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/TrolleyGame.css';
 import Countdown from './Countdown';
 import { apiService, type Restaurant, type TournamentMatch, type TournamentResult } from '../../services/api';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 
 type GameState = 'countdown' | 'playing' | 'answering' | 'result';
 type RoundType = '1回戦' | '準決勝' | '3位決定戦' | '決勝';
@@ -270,7 +272,9 @@ export default function TrolleyGame() {
   };
 
   return (
-    <div className="trolley-game">
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header />
+    <div className="trolley-game" style={{ flex: 1 }}>
       {gameState === 'countdown' && (
         <Countdown onComplete={handleCountdownComplete} />
       )}
@@ -324,5 +328,7 @@ export default function TrolleyGame() {
         </div>
       )}
     </div>
+    <Footer />
+  </div>
   );
 }

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/index.css';
 import { apiService } from '../../services/api';
 import type { Area, Restaurant, SearchResult, FormResponse } from '../../services/api';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 
 const ManagePage: React.FC = () => {
   const navigate = useNavigate();
@@ -202,7 +204,37 @@ const ManagePage: React.FC = () => {
     return features;
   };
 
+  // 保存・修正ボタン押下時の処理
+  const handleSaveOrModify = () => {
+    if (!searchResult || searchResult.shops.length === 0) {
+      alert('検索結果がありません');
+      return;
+    }
+
+    // 検索条件を整理
+    const searchConditions = {
+      area: selectedSmallArea 
+        ? smallAreas.find(a => a.code === selectedSmallArea)?.name
+        : selectedMiddleArea
+        ? middleAreas.find(a => a.code === selectedMiddleArea)?.name
+        : largeAreas.find(a => a.code === selectedLargeArea)?.name,
+      budget: budget,
+      partyCapacity: partyCapacity
+    };
+
+    // Confirm画面へ遷移（通信③経由）
+    navigate('/confirm', {
+      state: {
+        restaurants: searchResult.shops,
+        searchConditions
+      }
+    });
+  };
+
   return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header />
+      <div style={{ flex: 1, padding: '20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
     <div className="container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <button
@@ -218,20 +250,6 @@ const ManagePage: React.FC = () => {
           }}
         >
           ← ホームに戻る
-        </button>
-        <button
-          onClick={() => navigate('/game')}
-          style={{
-            padding: '10px 20px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}
-        >
-          ゲームを開始 →
         </button>
       </div>
       <h1>🍴 飲食店検索システム</h1>
@@ -519,9 +537,45 @@ const ManagePage: React.FC = () => {
               条件に合う店舗が見つかりませんでした。
             </p>
           )}
+
+          <div style={{ marginTop: '30px', display: 'flex', gap: '15px' }}>
+            <button
+              onClick={handleSaveOrModify}
+              style={{
+                flex: 1,
+                padding: '15px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: 'pointer'
+              }}
+            >
+              ボタン：保存
+            </button>
+            <button
+              onClick={handleSaveOrModify}
+              style={{
+                flex: 1,
+                padding: '15px',
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: 'pointer'
+              }}
+            >
+              ボタン：修正
+            </button>
+          </div>
         </div>
       )}
     </div>
+    </div>
+    <Footer />
+  </div>
   );
 };
 

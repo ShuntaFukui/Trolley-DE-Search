@@ -2,50 +2,50 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/TrolleyGame.css';
 import { apiService, type Restaurant } from '../../services/api';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [allOptions, setAllOptions] = useState<Restaurant[]>([]);
+  const [currentResults, setCurrentResults] = useState<Restaurant[]>([]);
   const [loadingError, setLoadingError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 初回マウント時に選択肢を取得
+  // 初回マウント時に現在の結果を取得（通信①）
   useEffect(() => {
-    const fetchOptions = async () => {
+    const fetchCurrentResults = async () => {
       try {
         setIsLoading(true);
-        const options = await apiService.getOptions();
-        setAllOptions(options);
+        // TODO: 通信① - 検索条件・結果リスト取得APIの実装
+        // 現在はモックサーバーから取得で代用
+        const results = await apiService.getOptions();
+        setCurrentResults(results);
         setLoadingError(null);
       } catch (error) {
-        console.error('Failed to load options:', error);
-        setLoadingError('選択肢の読み込みに失敗しました');
+        console.error('Failed to load current results:', error);
+        setLoadingError('現在の結果の読み込みに失敗しました');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchOptions();
+    fetchCurrentResults();
   }, []);
 
   const handleStartGame = () => {
-    if (allOptions.length === 0) {
-      setLoadingError('選択肢が読み込まれていません');
-      return;
-    }
-
-    // ゲーム画面に遷移
-    navigate('/game', {
-      state: { restaurants: allOptions },
-    });
+    // ボタン：開始 → Start画面へ遷移（通信②経由でトロッコへ）
+    navigate('/start');
   };
 
   const handleGoToManage = () => {
+    // ボタン：編集 → Manage画面へ遷移
     navigate('/manage');
   };
 
   return (
-    <div className="trolley-game">
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Header />
+      <div className="trolley-game" style={{ flex: 1 }}>
       {isLoading ? (
         <div className="start-screen">
           <div className="game-title">
@@ -63,26 +63,40 @@ export default function Home() {
             <div className="title-sub">TROLLEY de SEARCH</div>
           </div>
           <div className="game-info">
-            <p>トーナメント形式で好みを決定！</p>
-            <p className="question-count">全7試合（1回戦4試合・準決勝2試合・3位決定戦・決勝）</p>
+            <h3 style={{ marginBottom: '15px' }}>現在の結果</h3>
+            {currentResults.length > 0 ? (
+              <div style={{ marginBottom: '20px', maxHeight: '200px', overflowY: 'auto' }}>
+                {currentResults.slice(0, 3).map((restaurant, index) => (
+                  <div key={restaurant.id || index} style={{ marginBottom: '8px', fontSize: '14px' }}>
+                    {index + 1}. {restaurant.name}
+                  </div>
+                ))}
+                {currentResults.length > 3 && (
+                  <div style={{ fontSize: '12px', color: '#999' }}>他 {currentResults.length - 3}件</div>
+                )}
+              </div>
+            ) : (
+              <p style={{ marginBottom: '20px' }}>結果がまだありません</p>
+            )}
             {loadingError && <p className="error-message">{loadingError}</p>}
           </div>
           <button 
             className="start-button" 
-            onClick={handleStartGame} 
-            disabled={allOptions.length === 0}
+            onClick={handleStartGame}
           >
-            ゲームスタート
+            ボタン：開始
           </button>
           <button 
             className="start-button" 
             onClick={handleGoToManage}
             style={{ marginTop: '20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
           >
-            レストラン検索・管理
+            ボタン：編集
           </button>
         </div>
       )}
     </div>
+    <Footer />
+  </div>
   );
 }
