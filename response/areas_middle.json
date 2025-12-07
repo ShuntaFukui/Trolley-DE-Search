@@ -1,0 +1,9 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS"
+  },
+  "body": "{\"areas\": [{\"code\": \"Y005\", \"name\": \"銀座・有楽町・築地\"}, {\"code\": \"Y010\", \"name\": \"新橋・汐留\"}, {\"code\": \"Y015\", \"name\": \"六本木・麻布\"}, {\"code\": \"Y020\", \"name\": \"赤坂・溜池\"}, {\"code\": \"Y025\", \"name\": \"四ツ谷・市ヶ谷\"}, {\"code\": \"Y030\", \"name\": \"新宿\"}, {\"code\": \"Y035\", \"name\": \"渋谷\"}, {\"code\": \"Y040\", \"name\": \"恵比寿・代官山\"}, {\"code\": \"Y045\", \"name\": \"目黒・五反田・大崎\"}, {\"code\": \"Y050\", \"name\": \"品川\"}, {\"code\": \"Y055\", \"name\": \"池袋\"}, {\"code\": \"Y060\", \"name\": \"上野・御徒町\"}, {\"code\": \"Y065\", \"name\": \"秋葉原・神田\"}, {\"code\": \"Y070\", \"name\": \"東京・丸の内\"}, {\"code\": \"Y075\", \"name\": \"浅草\"}, {\"code\": \"Y080\", \"name\": \"北千住・綾瀬\"}, {\"code\": \"Y085\", \"name\": \"錦糸町・両国・亀戸\"}, {\"code\": \"Y090\", \"name\": \"吉祥寺・荻窪\"}, {\"code\": \"Y095\", \"name\": \"立川・八王子・町田\"}, {\"code\": \"Y100\", \"name\": \"自由が丘・三軒茶屋・二子玉川\"}]}"
+}

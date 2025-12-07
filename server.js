@@ -10,7 +10,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3001;
 const DATA_FILE = path.join(__dirname, 'results.json');
-const OPTIONS_FILE = path.join(__dirname, 'options.json');
+const SEARCH_RESPONSE = path.join(__dirname, 'response', 'search.json');
+const SELECT_RESTAURANTS_RESPONSE = path.join(__dirname, 'response', 'select_restaurants.json');
 
 // ミドルウェア
 app.use(cors());
@@ -22,27 +23,6 @@ async function initDataFile() {
     await fs.access(DATA_FILE);
   } catch {
     await fs.writeFile(DATA_FILE, JSON.stringify({ results: [] }, null, 2));
-  }
-}
-
-// 選択肢ファイルの初期化
-async function initOptionsFile() {
-  try {
-    await fs.access(OPTIONS_FILE);
-  } catch {
-    const defaultOptions = {
-      options: [
-        '犬派',
-        '猫派',
-        '朝型',
-        '夜型',
-        '海派',
-        '山派',
-        '暑い夏',
-        '寒い冬',
-      ]
-    };
-    await fs.writeFile(OPTIONS_FILE, JSON.stringify(defaultOptions, null, 2));
   }
 }
 
@@ -61,26 +41,85 @@ async function writeResults(data) {
   await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// 選択肢データの読み込み
-async function readOptions() {
-  try {
-    const data = await fs.readFile(OPTIONS_FILE, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
-    return { options: [] };
-  }
-}
-
 // ヘルスチェック
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// 選択肢の取得（POST）
+// Lambda API互換: search (アクションベースルーティング)
+app.post('/search', async (req, res) => {
+  try {
+    const { action, area_type, parent_code, spreadsheet_url } = req.body;
+    
+    console.log('Search action:', action, { area_type, parent_code, spreadsheet_url });
+    
+    // アクション別の処理
+    if (action === 'fetch_form_responses') {
+      // フォーム回答取得
+      const formResponseData = JSON.parse(await fs.readFile(SEARCH_RESPONSE, 'utf-8'));
+      return res.json(formResponseData);
+    } 
+    else if (action === 'get_areas') {
+      // エリアマスタ取得
+      const areasFile = path.join(__dirname, 'response', `areas_${area_type || 'large'}.json`);
+      try {
+        const areasData = JSON.parse(await fs.readFile(areasFile, 'utf-8'));
+        return res.json(areasData);
+      } catch (error) {
+        // ファイルがない場合はデフォルトレスポンス
+        return res.json({
+          statusCode: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS'
+          },
+          body: JSON.stringify({
+            areas: []
+          })
+        });
+      }
+    } 
+    else {
+      // デフォルト: レストラン検索（現在は使用しない想定だが念のため）
+      const searchData = JSON.parse(await fs.readFile(SEARCH_RESPONSE, 'utf-8'));
+      return res.json(searchData);
+    }
+  } catch (error) {
+    res.status(500).json({ 
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Failed to process search', message: error.message })
+    });
+  }
+});
+
+// Lambda API互換: select-restaurants (レストラン検索)
+app.post('/select-restaurants', async (req, res) => {
+  try {
+    const restaurantsData = JSON.parse(await fs.readFile(SELECT_RESTAURANTS_RESPONSE, 'utf-8'));
+    
+    // リクエストパラメータをログ出力（デバッグ用）
+    console.log('Received search params:', req.body);
+    
+    // そのままJSONレスポンスを返す（Lambda APIのbody部分のみ）
+    res.json(restaurantsData);
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'error',
+      message: error.message
+    });
+  }
+});
+
+// トーナメントゲーム用: 選択肢の取得（select_restaurants.jsonを使用）
 app.post('/api/options', async (req, res) => {
   try {
-    const data = await readOptions();
-    res.json({ success: true, options: data.options });
+    const restaurantsData = JSON.parse(await fs.readFile(SELECT_RESTAURANTS_RESPONSE, 'utf-8'));
+    
+    // selected_shopsからトーナメント用の選択肢を返す
+    const options = restaurantsData.selected_shops || [];
+    
+    res.json({ success: true, options });
   } catch (error) {
     res.status(500).json({ error: 'Failed to get options', message: error.message });
   }
@@ -193,12 +232,13 @@ app.delete('/api/results', async (req, res) => {
 // サーバー起動
 async function startServer() {
   await initDataFile();
-  await initOptionsFile();
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚂 Trolley Mock Server is running on http://localhost:${PORT}`);
     console.log(`🌐 LAN access: http://172.20.10.4:${PORT}`);
     console.log(`📊 API Endpoints:`);
     console.log(`   GET    /health - Health check`);
+    console.log(`   POST   /search - Lambda API: Form responses (mock)`);
+    console.log(`   POST   /select-restaurants - Lambda API: Restaurant search (mock)`);
     console.log(`   POST   /api/options - Get tournament options`);
     console.log(`   GET    /api/results - Get all results`);
     console.log(`   POST   /api/results - Save a new result`);

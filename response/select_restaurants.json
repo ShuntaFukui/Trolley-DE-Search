@@ -1,0 +1,1178 @@
+{
+    "status": "completed",
+    "result_id": "20251207083041058",
+    "message": "AI選定が完了しました",
+    "processing_time": 12,
+    "total_candidates": 23,
+    "selected_count": 8,
+    "participant_count": 6,
+    "selected_shops": [
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_238.jpg",
+            "lng": 139.755487011,
+            "url": "https://www.hotpepper.jp/strJ001274554/?vos=nhppalsa000016",
+            "name": "東京イタリアン 8dori 大門店",
+            "catch": "【UMAMI】イタリアン ZENB×8dori",
+            "budget_average": "ランチ：1000～1999円 ディナー：6000～7999円  ",
+            "budget_code": "B004",
+            "tatami": "なし",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/04/27/P038210427/P038210427_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし",
+            "horigotatsu": "なし",
+            "party_capacity": 50.0,
+            "created_at": "2025-11-28T15:54:09.791290",
+            "raw_data": {
+                "parking": "なし ：近隣のコインパーキングをご利用下さい。",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "あり",
+                "lunch": "あり",
+                "charter": "貸切可 ：（20～50人可）",
+                "party_capacity": 50.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 0.0,
+                "barrier_free": "あり ：車椅子で入店可",
+                "horigotatsu": "なし",
+                "english": "あり",
+                "id": "J001274554",
+                "catch": "【UMAMI】イタリアン ZENB×8dori",
+                "band": "不可",
+                "lat": 35.6570272943,
+                "pet": "可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ランチ：1000～1999円 ディナー：6000～7999円  ",
+                    "code": "B004"
+                },
+                "station_name": "大門",
+                "wifi": "あり",
+                "lng": 139.755487011,
+                "other_memo": "PayPayは2025年8月12日よりランチのみ使用可とさせて頂きます。",
+                "non_smoking": "全面禁煙",
+                "name": "東京イタリアン 8dori 大門店",
+                "name_kana": "トウキョウイタリアンハチドリダイモンテン",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり",
+                "private_room": "なし",
+                "card": "利用可",
+                "child": "お子様連れOK ：お子様可（乳児可、未就学児可、小学生可）、お子様メニューあり、ベビーカー入店可",
+                "shop_detail_memo": "テラス席はワンちゃんも一緒にお食事OK！※雨天の場合不可",
+                "access": "都営大江戸線(B4出口)・浅草線大門駅(A1出口)又は(A2出口)より徒歩1分/山手線浜松町駅より徒歩3分",
+                "show": "なし",
+                "tatami": "なし",
+                "capacity": 36.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001274554/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001274554/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001274554/?vos=nhppalsa000016"
+                },
+                "budget_memo": "テーブルチャージ600円サラダ・スープ付※夜席予約お客様に限り",
+                "genre": {
+                    "name": "イタリアン・フレンチ",
+                    "catch": "ホッとする【UMAMI】に特化したイタリアン",
+                    "code": "G006"
+                },
+                "course": "あり",
+                "wedding": "貸切も可能です。お気軽にお問合せください。",
+                "close": "日、祝日",
+                "midnight": "営業していない",
+                "address": "東京都港区浜松町１-28-13 Daimonexll 1階",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "大門駅(A1/A2/B4)より徒歩1分/浜松町駅より徒歩3分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/36/61/P048823661/P048823661_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/04/27/P038210427/P038210427_69.jpg",
+                "free_food": "なし",
+                "open": "月～金: 11:30～14:00 （料理L.O. 13:30 ドリンクL.O. 13:30）17:30～22:00 （料理L.O. 21:00 ドリンクL.O. 21:30）土: 17:00～22:00 （料理L.O. 21:00 ドリンクL.O. 21:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり",
+            "access": "都営大江戸線(B4出口)・浅草線大門駅(A1出口)又は(A2出口)より徒歩1分/山手線浜松町駅より徒歩3分",
+            "address": "東京都港区浜松町１-28-13 Daimonexll 1階",
+            "genre": "イタリアン・フレンチ",
+            "card": "利用可",
+            "station_name": "大門",
+            "private_room": "なし",
+            "open_time": "月～金: 11:30～14:00 （料理L.O. 13:30 ドリンクL.O. 13:30）17:30～22:00 （料理L.O. 21:00 ドリンクL.O. 21:30）土: 17:00～22:00 （料理L.O. 21:00 ドリンクL.O. 21:00）",
+            "course": "あり",
+            "shop_id": "J001274554",
+            "close_day": "日、祝日",
+            "lat": 35.6570272943,
+            "walk_minutes": 1,
+            "selection_reason": "駅から徒歩1分の好立地！UMAMIイタリアンが楽しめるお店。コース・飲み放題完備でカード決済可。WiFi完備、全面禁煙で快適。6名様での宴会に最適な広々空間です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_238.jpg",
+            "lng": 139.755056804,
+            "url": "https://www.hotpepper.jp/strJ001263657/?vos=nhppalsa000016",
+            "name": "和食日和 おさけと 大門浜松町",
+            "catch": "日本酒あう酒肴 厳選した日本酒を50種",
+            "budget_average": "ランチ1001～1999円/ディナー5001～7999円",
+            "budget_code": "B004",
+            "tatami": "なし",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/13/67/P037341367/P037341367_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし",
+            "horigotatsu": "なし",
+            "party_capacity": 12.0,
+            "created_at": "2025-11-28T15:54:10.211286",
+            "raw_data": {
+                "parking": "なし",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "なし",
+                "lunch": "あり",
+                "charter": "貸切不可",
+                "party_capacity": 12.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 1.0,
+                "barrier_free": "なし",
+                "horigotatsu": "なし",
+                "english": "なし",
+                "id": "J001263657",
+                "catch": "日本酒あう酒肴 厳選した日本酒を50種",
+                "band": "不可",
+                "lat": 35.6561748786,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ランチ1001～1999円/ディナー5001～7999円",
+                    "code": "B004"
+                },
+                "station_name": "浜松町",
+                "wifi": "あり",
+                "lng": 139.755056804,
+                "other_memo": "",
+                "non_smoking": "全面禁煙",
+                "name": "和食日和 おさけと 大門浜松町",
+                "name_kana": "こしつかいせき　わしょくびより　おさけと　だいもんはままつちょう",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり ：飲み放題付プラン有",
+                "private_room": "あり ：完全個室をご用意しております。",
+                "card": "利用可",
+                "child": "お子様連れ不可",
+                "shop_detail_memo": "",
+                "access": "JR浜松町駅 北口より徒歩2分/都営大江戸線,浅草線 大門駅 B5出口より徒歩1分/都営三田線 御成門駅 A2出口より徒歩10分",
+                "show": "なし",
+                "tatami": "なし",
+                "capacity": 46.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001263657/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001263657/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001263657/?vos=nhppalsa000016"
+                },
+                "budget_memo": "【応相談】請求書払い：当社指定条件を満たす場合のみ個別対応",
+                "genre": {
+                    "name": "居酒屋",
+                    "catch": "酒匠厳選の日本酒とくずし割烹居酒屋",
+                    "code": "G001"
+                },
+                "course": "あり",
+                "wedding": "",
+                "close": "土、日、祝日",
+                "midnight": "営業していない",
+                "address": "東京都港区浜松町２-1-6 ADsis大門5階",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "JR浜松町駅 北口より徒歩2分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/44/11/P039334411/P039334411_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/13/67/P037341367/P037341367_69.jpg",
+                "free_food": "なし",
+                "open": "月～金: 11:30～14:00 （料理L.O. 13:30）17:00～22:30 （料理L.O. 21:30 ドリンクL.O. 22:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり ：飲み放題付プラン有",
+            "access": "JR浜松町駅 北口より徒歩2分/都営大江戸線,浅草線 大門駅 B5出口より徒歩1分/都営三田線 御成門駅 A2出口より徒歩10分",
+            "address": "東京都港区浜松町２-1-6 ADsis大門5階",
+            "genre": "居酒屋",
+            "card": "利用可",
+            "station_name": "浜松町",
+            "private_room": "あり ：完全個室をご用意しております。",
+            "open_time": "月～金: 11:30～14:00 （料理L.O. 13:30）17:00～22:30 （料理L.O. 21:30 ドリンクL.O. 22:00）",
+            "course": "あり",
+            "shop_id": "J001263657",
+            "close_day": "土、日、祝日",
+            "lat": 35.6561748786,
+            "walk_minutes": 1,
+            "selection_reason": "駅から徒歩1分！完全個室で静かに飲める和食居酒屋。厳選日本酒50種と日本酒に合う酒肴が自慢。コース・飲み放題完備、WiFiあり。カード決済可、全面禁煙で快適です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_238.jpg",
+            "lng": 139.7558181983,
+            "url": "https://www.hotpepper.jp/strJ001278366/?vos=nhppalsa000016",
+            "name": "BUENA VISTA TOKYO ブエナビスタトーキョー",
+            "catch": "ちょい飲みにも最適♪ 駅近のスパニッシュ",
+            "budget_average": "ディナー：￥6,000～￥7,999",
+            "budget_code": "B004",
+            "tatami": "なし",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/20/32/P038152032/P038152032_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし",
+            "horigotatsu": "なし",
+            "party_capacity": 30.0,
+            "created_at": "2025-11-28T15:54:09.591346",
+            "raw_data": {
+                "parking": "なし",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "あり",
+                "lunch": "なし",
+                "sub_genre": {
+                    "name": "各国料理",
+                    "code": "G010"
+                },
+                "charter": "貸切可 ：（20人以下可、20人～50人可）",
+                "party_capacity": 30.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 0.0,
+                "barrier_free": "あり ：車椅子で入店可",
+                "horigotatsu": "なし",
+                "english": "あり",
+                "id": "J001278366",
+                "catch": "ちょい飲みにも最適♪ 駅近のスパニッシュ",
+                "band": "不可",
+                "lat": 35.6544392607,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ディナー：￥6,000～￥7,999",
+                    "code": "B004"
+                },
+                "station_name": "浜松町",
+                "wifi": "あり",
+                "lng": 139.7558181983,
+                "other_memo": "",
+                "non_smoking": "全面禁煙",
+                "name": "BUENA VISTA TOKYO ブエナビスタトーキョー",
+                "name_kana": "ぶえなびすたとーきょー",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり",
+                "private_room": "あり ：店舗奥に、半個室のスペースがございます。 6名様から8名様程度でのご利用が可能です",
+                "card": "利用可",
+                "child": "お子様連れOK",
+                "shop_detail_memo": "",
+                "access": "JR「浜松町駅」南口 金杉橋口のエスカレーターを降りた場所/都営大江戸線・都営浅草線「大門駅」B4出口より徒歩3分",
+                "show": "なし",
+                "tatami": "なし",
+                "capacity": 24.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001278366/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001278366/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001278366/?vos=nhppalsa000016"
+                },
+                "budget_memo": "ディナー：コペルト いただいております",
+                "genre": {
+                    "name": "居酒屋",
+                    "catch": "日本酒×スパニッシュが気軽に味わえるお店",
+                    "code": "G001"
+                },
+                "course": "あり",
+                "wedding": "",
+                "close": "日",
+                "midnight": "営業していない",
+                "address": "東京都港区浜松町２-6-5　ポンテせとうみ２F",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "JR浜松町駅南口 金杉橋口より徒歩1分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/85/40/P047838540/P047838540_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/20/32/P038152032/P038152032_69.jpg",
+                "free_food": "なし",
+                "open": "月～木: 11:30～14:30 （料理L.O. 14:10 ドリンクL.O. 14:10）17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）金、土、祝日: 17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）祝前日: 11:30～14:10 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり",
+            "access": "JR「浜松町駅」南口 金杉橋口のエスカレーターを降りた場所/都営大江戸線・都営浅草線「大門駅」B4出口より徒歩3分",
+            "address": "東京都港区浜松町２-6-5　ポンテせとうみ２F",
+            "genre": "居酒屋",
+            "card": "利用可",
+            "station_name": "浜松町",
+            "private_room": "あり ：店舗奥に、半個室のスペースがございます。 6名様から8名様程度でのご利用が可能です",
+            "open_time": "月～木: 11:30～14:30 （料理L.O. 14:10 ドリンクL.O. 14:10）17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）金、土、祝日: 17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）祝前日: 11:30～14:10 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:30 （料理L.O. 21:30 ドリンクL.O. 23:00）",
+            "course": "あり",
+            "shop_id": "J001278366",
+            "close_day": "日",
+            "lat": 35.6544392607,
+            "walk_minutes": 3,
+            "selection_reason": "駅から徒歩3分の駅近スパニッシュ！6～8名様向けの半個室完備で落ち着いた雰囲気。コース・飲み放題あり、WiFi完備。カード決済可、全面禁煙で安心です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_238.jpg",
+            "lng": 139.7547552969,
+            "url": "https://www.hotpepper.jp/strJ001223438/?vos=nhppalsa000016",
+            "name": "焼肉とみひさ 芝大門店",
+            "catch": "★A5ランクの国産和牛★ シェフ手間ひまかけた絶品",
+            "budget_average": "ランチタイム1000円.／ディナータイム5000円程度",
+            "budget_code": "B004",
+            "tatami": "なし ：お座敷はございませんが、ゆったり座れる広いテーブル席をご用意しております。",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/SYS/cmn/images/common/diary/custom/m30_img_noimage.gif",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし ：アラカルト又はコースでのご提供になります。当店自慢の料理の数々を存分にお楽しみください。",
+            "horigotatsu": "なし ：掘りごたつはございませんが、ゆったり座れる広いテーブル席をご用意しております。",
+            "party_capacity": 50.0,
+            "created_at": "2025-11-28T15:54:10.271331",
+            "raw_data": {
+                "parking": "なし ：500円まで当店が現金にて負担致します。お近くのコインパーキングにお停め下さい。",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "なし",
+                "lunch": "あり",
+                "charter": "貸切可 ：貸切可能人数25名～50名/宴会最大人数着席時35名・立席50名/詳細はお気軽に電話でお問い合わせくださいませ",
+                "party_capacity": 50.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 0.0,
+                "barrier_free": "あり ：車椅子での入店可。スタッフがお手伝い致します。その他お問い合わせください。",
+                "horigotatsu": "なし ：掘りごたつはございませんが、ゆったり座れる広いテーブル席をご用意しております。",
+                "english": "なし",
+                "id": "J001223438",
+                "catch": "★A5ランクの国産和牛★ シェフ手間ひまかけた絶品",
+                "band": "不可",
+                "lat": 35.6597444694,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ランチタイム1000円.／ディナータイム5000円程度",
+                    "code": "B004"
+                },
+                "station_name": "大門",
+                "wifi": "あり",
+                "lng": 139.7547552969,
+                "other_memo": "人数に合わせてご案内いたします。不明点等、お気軽に店舗へご相談ください。",
+                "non_smoking": "全面禁煙",
+                "name": "焼肉とみひさ 芝大門店",
+                "name_kana": "やきにくとみひさ　しばだいもんてん",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり ：お得な飲み放題付き宴会コースを4500円(税抜)～ご用意しております！お席や人数等お気軽にご相談ください。",
+                "private_room": "なし ：個室のご用意はございませんが、人数に合わせてアレンジなど可能でございます！ぜひご相談ください。",
+                "card": "利用可",
+                "child": "お子様連れ歓迎",
+                "shop_detail_memo": "浜松町の美味しい炭火焼肉、黒毛和牛お肉とホルモンを楽しめる焼肉屋。ユッケ刺しや肉寿司もあり",
+                "access": "地下鉄都営大江戸線・都営浅草線　大門駅　徒歩4分/JR浜松町駅北口　徒歩6分/JR新橋8分",
+                "show": "なし",
+                "tatami": "なし ：お座敷はございませんが、ゆったり座れる広いテーブル席をご用意しております。",
+                "capacity": 30.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001223438/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001223438/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001223438/?vos=nhppalsa000016"
+                },
+                "budget_memo": "",
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "A5ランク国産黒毛和牛を堪能できる★焼肉店",
+                    "code": "G008"
+                },
+                "course": "あり",
+                "wedding": "人数や予算などご相談承ります！お気軽にお問い合わせください。",
+                "close": "不定休※※土日、祝日はランチのみの営業となっております。浜松町駅徒歩5分の炭火焼肉「とみひさ」。焼肉と肉寿司、日本酒",
+                "midnight": "営業している",
+                "address": "東京都港区芝大門１-3-5　ゲイブルビル 1Ｆ",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "地下鉄大門駅徒歩4分/JR浜松町駅徒歩6分/JR新橋8分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/58/19/P034685819/P034685819_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/SYS/cmn/images/common/diary/custom/m30_img_noimage.gif",
+                "free_food": "なし ：アラカルト又はコースでのご提供になります。当店自慢の料理の数々を存分にお楽しみください。",
+                "open": "月～金、祝前日: 11:30～15:00 （料理L.O. 14:30）17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:15）土、日、祝日: 17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:15）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり ：お得な飲み放題付き宴会コースを4500円(税抜)～ご用意しております！お席や人数等お気軽にご相談ください。",
+            "access": "地下鉄都営大江戸線・都営浅草線　大門駅　徒歩4分/JR浜松町駅北口　徒歩6分/JR新橋8分",
+            "address": "東京都港区芝大門１-3-5　ゲイブルビル 1Ｆ",
+            "genre": "焼肉・ホルモン",
+            "card": "利用可",
+            "station_name": "大門",
+            "private_room": "なし ：個室のご用意はございませんが、人数に合わせてアレンジなど可能でございます！ぜひご相談ください。",
+            "open_time": "月～金、祝前日: 11:30～15:00 （料理L.O. 14:30）17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:15）土、日、祝日: 17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:15）",
+            "course": "あり",
+            "shop_id": "J001223438",
+            "close_day": "不定休※※土日、祝日はランチのみの営業となっております。浜松町駅徒歩5分の炭火焼肉「とみひさ」。焼肉と肉寿司、日本酒",
+            "lat": 35.6597444694,
+            "walk_minutes": 4,
+            "selection_reason": "駅から徒歩4分！A5ランク国産和牛が味わえる本格焼肉店。飲み放題付きコース4500円～とコスパ抜群。WiFi完備、カード決済可。全面禁煙で快適に楽しめます。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_238.jpg",
+            "lng": 139.7608810776,
+            "url": "https://www.hotpepper.jp/strJ001259400/?vos=nhppalsa000016",
+            "name": "うみまち酒場 さかなさま 浜松町店",
+            "catch": "おひとり様もご利用大歓迎 新鮮な海鮮は言うことなし",
+            "budget_average": "平均ご予算は5500円～です。",
+            "budget_code": "B004",
+            "tatami": "なし",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/23/49/P036662349/P036662349_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし",
+            "horigotatsu": "なし",
+            "party_capacity": 110.0,
+            "created_at": "2025-11-28T15:54:10.331353",
+            "raw_data": {
+                "parking": "あり ：ビル地下に駐車場有。駐車場サービス券は2000円以上のお食事の方対象です。",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "なし",
+                "lunch": "あり",
+                "charter": "貸切可 ：一部エリアの半貸切は対応可",
+                "party_capacity": 110.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 0.0,
+                "barrier_free": "あり",
+                "horigotatsu": "なし",
+                "english": "なし",
+                "id": "J001259400",
+                "catch": "おひとり様もご利用大歓迎 新鮮な海鮮は言うことなし",
+                "band": "不可",
+                "lat": 35.6550634931,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "平均ご予算は5500円～です。",
+                    "code": "B004"
+                },
+                "station_name": "竹芝",
+                "wifi": "あり",
+                "lng": 139.7608810776,
+                "other_memo": "毎日元気に営業中！！浜松町「劇団四季劇場」アナ雪公演前後にいかがですか？",
+                "non_smoking": "全面禁煙",
+                "name": "うみまち酒場 さかなさま 浜松町店",
+                "name_kana": "うみまちさかば　さかなさま　はままつちょうてん",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり ：宴会コースでのご利用となります。",
+                "private_room": "あり ：3席あります（確実にはお電話にて）",
+                "card": "利用可",
+                "child": "お子様連れOK ：事前にお伝えください",
+                "shop_detail_memo": "17時以降は「お冷・お茶」のみオーダーは不可となります。",
+                "access": "羽田空港の玄関口！！JR浜松町駅北口より 徒歩3分/大門駅 B2出口 徒歩5分/竹芝駅 徒歩2分！!",
+                "show": "なし",
+                "tatami": "なし",
+                "capacity": 110.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001259400/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001259400/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001259400/?vos=nhppalsa000016"
+                },
+                "budget_memo": "17時以降は「605円」(税込）お通し代を頂戴",
+                "genre": {
+                    "name": "居酒屋",
+                    "catch": "「さかな・日本酒」とあそぶ和食居酒屋。",
+                    "code": "G001"
+                },
+                "course": "あり",
+                "wedding": "結婚式の二次会など大歓迎でございます！月によっては2～3件ほどご予約あります！",
+                "close": "日、祝日",
+                "midnight": "営業していない",
+                "address": "東京都港区海岸１－７－１　東京ポートシティ竹芝２F",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "浜松町駅北口より徒歩5分/竹芝駅 直結",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/23/57/P036662357/P036662357_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/23/49/P036662349/P036662349_69.jpg",
+                "free_food": "なし",
+                "open": "月～金: 11:00～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 21:30 ドリンクL.O. 22:00）土: 11:30～14:30 （料理L.O. 14:00 ドリンクL.O. 14:30）17:00～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり ：宴会コースでのご利用となります。",
+            "access": "羽田空港の玄関口！！JR浜松町駅北口より 徒歩3分/大門駅 B2出口 徒歩5分/竹芝駅 徒歩2分！!",
+            "address": "東京都港区海岸１－７－１　東京ポートシティ竹芝２F",
+            "genre": "居酒屋",
+            "card": "利用可",
+            "station_name": "竹芝",
+            "private_room": "あり ：3席あります（確実にはお電話にて）",
+            "open_time": "月～金: 11:00～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～22:30 （料理L.O. 21:30 ドリンクL.O. 22:00）土: 11:30～14:30 （料理L.O. 14:00 ドリンクL.O. 14:30）17:00～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）",
+            "course": "あり",
+            "shop_id": "J001259400",
+            "close_day": "日、祝日",
+            "lat": 35.6550634931,
+            "walk_minutes": 2,
+            "selection_reason": "駅から徒歩2分！新鮮な海鮮が自慢の居酒屋で個室3席完備。コース・飲み放題あり、WiFi完備でカード決済可。全面禁煙、最大110名収容可能な広々空間です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_238.jpg",
+            "lng": 139.7601132762,
+            "url": "https://www.hotpepper.jp/strJ001233685/?vos=nhppalsa000016",
+            "name": "BESIDE SEASIDE ビサイドシーサイド",
+            "catch": "★Special X’mas Plan ★心を込めたサプライズ",
+            "budget_average": "ランチ平均2000円/通常平均5000円/宴会平均5000円",
+            "budget_code": "B004",
+            "tatami": "なし ：お座敷席のご用意はありませんが、おしゃれなテーブル席を多数ご用意しております★",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/26/67/P034972667/P034972667_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "なし ：食べ放題プランはご用意しておりませんが、ボリューム満点のコースを多数ご用意しております☆  ",
+            "horigotatsu": "なし ：掘りごたつのご用意はありませんが、おしゃれなテーブル席を多数ご用意しております★",
+            "party_capacity": 200.0,
+            "created_at": "2025-11-28T15:54:09.512329",
+            "raw_data": {
+                "parking": "なし ：近隣の駐車場をご利用ください。※お酒を飲まれる際はお車でのお越しはご遠慮ください。",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "あり",
+                "lunch": "あり",
+                "sub_genre": {
+                    "name": "イタリアン・フレンチ",
+                    "code": "G006"
+                },
+                "charter": "貸切可 ：ウエディングや、二次会など各種パーティー可能◎～77名様までＯＫ★レイアウト等ご相談ください！！",
+                "party_capacity": 200.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 1.0,
+                "barrier_free": "なし ：バリアフリーの設備はございませんが、お手伝いが必要な方はお気軽にスタッフにお声掛けください☆",
+                "horigotatsu": "なし ：掘りごたつのご用意はありませんが、おしゃれなテーブル席を多数ご用意しております★",
+                "english": "あり",
+                "id": "J001233685",
+                "catch": "★Special X’mas Plan ★心を込めたサプライズ",
+                "band": "不可",
+                "lat": 35.650370111,
+                "pet": "可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ランチ平均2000円/通常平均5000円/宴会平均5000円",
+                    "code": "B004"
+                },
+                "station_name": "日の出",
+                "wifi": "あり",
+                "lng": 139.7601132762,
+                "other_memo": "マイク利用可。プロジェクター・スクリーンあり。",
+                "non_smoking": "全面禁煙",
+                "name": "BESIDE SEASIDE ビサイドシーサイド",
+                "name_kana": "びさいどしーさいどはままつちょう",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり ：飲み放題は、コースご注文時にお付けすることができます。",
+                "private_room": "あり ：半個室のご用意がございます。詳細はお問い合わせください。",
+                "card": "利用可",
+                "child": "お子様連れOK ：広々とした店内となっており、ご家族でも気にせずゆったりお食事可能です！  ",
+                "shop_detail_memo": "お食事利用のご予約のみとさせて頂いております。混み合った際はお席90分制とさせて頂きます。",
+                "access": "ゆりかもめ日の出駅出口より徒歩約4分/ＪＲ浜松町駅ＪＲ南口より徒歩約11分/ゆりかもめ 竹芝駅 徒歩9分 ",
+                "show": "なし",
+                "tatami": "なし ：お座敷席のご用意はありませんが、おしゃれなテーブル席を多数ご用意しております★",
+                "capacity": 200.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001233685/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001233685/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001233685/?vos=nhppalsa000016"
+                },
+                "budget_memo": "ご不明な点はお気軽にお問合せ下さい！",
+                "genre": {
+                    "name": "ダイニングバー・バル",
+                    "catch": "東京湾を臨む上質スパニッシュダイニング♪",
+                    "code": "G002"
+                },
+                "course": "あり",
+                "wedding": "ウェディング・二次会可能です♪ご予算や人数など、何でもお気軽にご相談ください♪",
+                "close": "年中無休",
+                "midnight": "営業していない",
+                "address": "東京都港区海岸２-7-103 Hi-NODE 1F ",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "ゆりかもめ日の出駅出口より徒歩約4分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/45/21/P034734521/P034734521_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/26/67/P034972667/P034972667_69.jpg",
+                "free_food": "なし ：食べ放題プランはご用意しておりませんが、ボリューム満点のコースを多数ご用意しております☆  ",
+                "open": "月～金: 11:30～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）土: 11:00～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）日、祝日: 11:00～21:00 （料理L.O. 20:00 ドリンクL.O. 20:00）祝前日: 11:30～22:00 （料理L.O. 21:00 ドリンクL.O. 21:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり ：飲み放題は、コースご注文時にお付けすることができます。",
+            "access": "ゆりかもめ日の出駅出口より徒歩約4分/ＪＲ浜松町駅ＪＲ南口より徒歩約11分/ゆりかもめ 竹芝駅 徒歩9分 ",
+            "address": "東京都港区海岸２-7-103 Hi-NODE 1F ",
+            "genre": "ダイニングバー・バル",
+            "card": "利用可",
+            "station_name": "日の出",
+            "private_room": "あり ：半個室のご用意がございます。詳細はお問い合わせください。",
+            "open_time": "月～金: 11:30～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）土: 11:00～22:00 （料理L.O. 20:30 ドリンクL.O. 21:00）日、祝日: 11:00～21:00 （料理L.O. 20:00 ドリンクL.O. 20:00）祝前日: 11:30～22:00 （料理L.O. 21:00 ドリンクL.O. 21:00）",
+            "course": "あり",
+            "shop_id": "J001233685",
+            "close_day": "年中無休",
+            "lat": 35.650370111,
+            "walk_minutes": 4,
+            "selection_reason": "駅から徒歩4分！おしゃれなダイニングバーで半個室あり。ボリューム満点のコース・飲み放題完備。WiFi完備、カード決済可。全面禁煙、最大200名収容の広々空間です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_238.jpg",
+            "lng": 139.7548849164,
+            "url": "https://www.hotpepper.jp/strJ001139067/?vos=nhppalsa000016",
+            "name": "黒毛和牛 焼肉 うし雅",
+            "catch": "極上\"A5\"ランク【常陸牛】 30名様の貸切も歓迎◎",
+            "budget_average": "ランチ1500円",
+            "budget_code": "B004",
+            "tatami": "なし",
+            "wifi": "あり",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/84/12/P042168412/P042168412_69.jpg",
+            "non_smoking": "全面禁煙",
+            "free_food": "あり",
+            "horigotatsu": "あり",
+            "party_capacity": 35.0,
+            "created_at": "2025-11-28T15:54:10.591248",
+            "raw_data": {
+                "parking": "なし ：近隣にコインパーキングあり",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "なし",
+                "lunch": "あり",
+                "charter": "貸切不可 ：20人～50人可。※貸切のご希望などお気軽にお問い合わせください",
+                "party_capacity": 35.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 1.0,
+                "barrier_free": "なし",
+                "horigotatsu": "あり",
+                "english": "なし",
+                "id": "J001139067",
+                "catch": "極上\"A5\"ランク【常陸牛】 30名様の貸切も歓迎◎",
+                "band": "不可",
+                "lat": 35.6551255474,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "ランチ1500円",
+                    "code": "B004"
+                },
+                "station_name": "浜松町",
+                "wifi": "あり",
+                "lng": 139.7548849164,
+                "other_memo": "座敷あり、掘りごたつあり",
+                "non_smoking": "全面禁煙",
+                "name": "黒毛和牛 焼肉 うし雅",
+                "name_kana": "やきにく　うしまさ",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり",
+                "private_room": "なし",
+                "card": "利用可",
+                "child": "お子様連れOK",
+                "shop_detail_memo": "",
+                "access": "ＪＲ 浜松町駅 北口 徒歩2分、都営大江戸線 大門駅 B4番出口 徒歩1分、都営浅草線 大門駅 B4番出口 徒歩1分 ",
+                "show": "なし",
+                "tatami": "なし",
+                "capacity": 34.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001139067/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001139067/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001139067/?vos=nhppalsa000016"
+                },
+                "budget_memo": "",
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "うし雅/浜松町/大門/焼肉/宴会/接待/貸切",
+                    "code": "G008"
+                },
+                "course": "あり",
+                "wedding": "貸切も承っております。",
+                "close": "日、祝日",
+                "midnight": "営業していない",
+                "address": "東京都港区浜松町２－２－５",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "浜松町駅 北口 徒歩2分 ､大門駅 B4番出口 徒歩1分 ",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/73/28/P042677328/P042677328_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/84/12/P042168412/P042168412_69.jpg",
+                "free_food": "あり",
+                "open": "月～金: 11:30～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）土: 17:00～22:00 （料理L.O. 21:30 ドリンクL.O. 21:30）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり",
+            "access": "ＪＲ 浜松町駅 北口 徒歩2分、都営大江戸線 大門駅 B4番出口 徒歩1分、都営浅草線 大門駅 B4番出口 徒歩1分 ",
+            "address": "東京都港区浜松町２－２－５",
+            "genre": "焼肉・ホルモン",
+            "card": "利用可",
+            "station_name": "浜松町",
+            "private_room": "なし",
+            "open_time": "月～金: 11:30～14:30 （料理L.O. 14:00 ドリンクL.O. 14:00）17:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）土: 17:00～22:00 （料理L.O. 21:30 ドリンクL.O. 21:30）",
+            "course": "あり",
+            "shop_id": "J001139067",
+            "close_day": "日、祝日",
+            "lat": 35.6551255474,
+            "walk_minutes": 1,
+            "selection_reason": "駅から徒歩1分！極上A5ランク常陸牛が味わえる焼肉店。食べ放題・飲み放題・掘りごたつ席完備の充実設備。WiFiあり、カード決済可。全面禁煙で快適です。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        },
+        {
+            "photo_url": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_238.jpg",
+            "lng": 139.7567482751,
+            "url": "https://www.hotpepper.jp/strJ001009208/?vos=nhppalsa000016",
+            "name": "肉萬 浜松町店",
+            "catch": "宴会コース多数あり 焼肉堪能コース",
+            "budget_code": "B004",
+            "tatami": "なし ：座敷のご用意はございません",
+            "wifi": "なし",
+            "karaoke": "なし",
+            "logo_image": "https://imgfp.hotp.jp/IMGH/51/18/P015995118/P015995118_69.jpg",
+            "non_smoking": "禁煙席なし",
+            "free_food": "なし ：食べ放題はございません",
+            "horigotatsu": "あり ：掘りごたつ：４人×３",
+            "party_capacity": 40.0,
+            "created_at": "2025-11-28T15:54:10.371424",
+            "raw_data": {
+                "parking": "なし ：お近くのコインパーキングをご利用ください。お酒を飲まれる際はお車でのお越しはご遠慮ください。",
+                "large_area": {
+                    "name": "東京",
+                    "code": "Z011"
+                },
+                "tv": "あり",
+                "lunch": "なし",
+                "charter": "貸切可 ：応相談",
+                "party_capacity": 40.0,
+                "small_area": {
+                    "name": "浜松町",
+                    "code": "X085"
+                },
+                "ktai_coupon": 1.0,
+                "barrier_free": "なし ：当店にはご用意がございません",
+                "horigotatsu": "あり ：掘りごたつ：４人×３",
+                "english": "あり",
+                "id": "J001009208",
+                "catch": "宴会コース多数あり 焼肉堪能コース",
+                "band": "不可",
+                "lat": 35.6574722782,
+                "pet": "不可",
+                "budget": {
+                    "name": "5001～7000円",
+                    "average": "",
+                    "code": "B004"
+                },
+                "station_name": "浜松町",
+                "wifi": "なし",
+                "lng": 139.7567482751,
+                "other_memo": "",
+                "non_smoking": "禁煙席なし",
+                "name": "肉萬 浜松町店",
+                "name_kana": "にくまん　はままつちょうてん",
+                "service_area": {
+                    "name": "東京",
+                    "code": "SA11"
+                },
+                "free_drink": "あり ：【飲み放題】付コースをご用意してます",
+                "private_room": "あり ：個室：６人×１　半個室：４人×２",
+                "card": "利用可",
+                "child": "お子様連れOK ：お子様連れ歓迎！　ご家族でのご来店お待ちしております。",
+                "shop_detail_memo": "※ご不明点等、お気軽に店舗へご相談ください。",
+                "access": "JR線浜松町駅北口徒歩２分　都営大江戸線大門駅A2番口徒歩２分　　",
+                "show": "なし",
+                "tatami": "なし ：座敷のご用意はございません",
+                "capacity": 40.0,
+                "coupon_urls": {
+                    "sp": "https://www.hotpepper.jp/strJ001009208/scoupon/?vos=nhppalsa000016",
+                    "pc": "https://www.hotpepper.jp/strJ001009208/map/?vos=nhppalsa000016"
+                },
+                "karaoke": "なし",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001009208/?vos=nhppalsa000016"
+                },
+                "budget_memo": "お通し代300円",
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "赤身焼肉ホルモン【A５黒毛和牛一頭買い】",
+                    "code": "G008"
+                },
+                "course": "あり",
+                "wedding": "要相談",
+                "close": "なし",
+                "midnight": "営業していない",
+                "address": "東京都港区浜松町１－２３－６",
+                "middle_area": {
+                    "name": "品川･目黒･田町･浜松町･五反田",
+                    "code": "Y025"
+                },
+                "mobile_access": "JR線浜松町駅北口 大江戸線大門駅A2番口 各徒歩2分",
+                "large_service_area": {
+                    "name": "関東",
+                    "code": "SS10"
+                },
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/86/85/P026008685/P026008685_58_s.jpg"
+                    }
+                },
+                "logo_image": "https://imgfp.hotp.jp/IMGH/51/18/P015995118/P015995118_69.jpg",
+                "free_food": "なし ：食べ放題はございません",
+                "open": "月～金、祝日、祝前日: 17:00～23:30 （料理L.O. 22:45 ドリンクL.O. 23:00）土、日: 16:00～23:30 （料理L.O. 22:45 ドリンクL.O. 23:00）"
+            },
+            "search_params": {
+                "party_capacity": 4.0,
+                "large_area": null,
+                "middle_area": null,
+                "small_area": "X085",
+                "budget": "B004",
+                "event_date": "2025-12-05"
+            },
+            "free_drink": "あり ：【飲み放題】付コースをご用意してます",
+            "access": "JR線浜松町駅北口徒歩２分　都営大江戸線大門駅A2番口徒歩２分　　",
+            "address": "東京都港区浜松町１－２３－６",
+            "genre": "焼肉・ホルモン",
+            "card": "利用可",
+            "station_name": "浜松町",
+            "private_room": "あり ：個室：６人×１　半個室：４人×２",
+            "open_time": "月～金、祝日、祝前日: 17:00～23:30 （料理L.O. 22:45 ドリンクL.O. 23:00）土、日: 16:00～23:30 （料理L.O. 22:45 ドリンクL.O. 23:00）",
+            "course": "あり",
+            "shop_id": "J001009208",
+            "close_day": "なし",
+            "lat": 35.6574722782,
+            "walk_minutes": 2,
+            "selection_reason": "駅から徒歩2分！6名様個室・掘りごたつ席完備の焼肉店。飲み放題付きコースで宴会に最適。カード決済可。落ち着いた雰囲気で焼肉を堪能できます。",
+            "recommended_people": [
+                {
+                    "name": "test4",
+                    "comment": ""
+                },
+                {
+                    "name": "test5",
+                    "comment": ""
+                },
+                {
+                    "name": "test7",
+                    "comment": ""
+                }
+            ]
+        }
+    ]
+}

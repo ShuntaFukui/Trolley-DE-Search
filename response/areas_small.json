@@ -1,0 +1,9 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS"
+  },
+  "body": "{\"areas\": [{\"code\": \"X005\", \"name\": \"池袋東口\"}, {\"code\": \"X010\", \"name\": \"池袋西口\"}, {\"code\": \"X015\", \"name\": \"池袋北口\"}]}"
+}
