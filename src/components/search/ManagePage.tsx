@@ -20,7 +20,7 @@ const ManagePage: React.FC = () => {
 
   // 検索条件の状態
   const [budget, setBudget] = useState('');
-  const [partyCapacity, setPartyCapacity] = useState(10);
+  const [partyCapacity, setPartyCapacity] = useState<number | ''>(''); // 初期状態は空欄
   const [eventDate, setEventDate] = useState('');
   const [targetCount, setTargetCount] = useState(10);
 
@@ -28,12 +28,12 @@ const ManagePage: React.FC = () => {
   const [spreadsheetUrl, setSpreadsheetUrl] = useState('');
   const [formResponse, setFormResponse] = useState<FormResponse | null>(null);
   const [isFetchingForm, setIsFetchingForm] = useState(false);
-  const [isPartyCapacityDisabled, setIsPartyCapacityDisabled] = useState(false);
 
   // 検索結果の状態
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isStartingGame, setIsStartingGame] = useState(false); // ゲーム開始中の状態
 
   // 大エリア取得
   useEffect(() => {
@@ -120,7 +120,6 @@ const ManagePage: React.FC = () => {
 
       setFormResponse(data);
       setPartyCapacity(data.attendance_yes);
-      setIsPartyCapacityDisabled(true);
 
       alert(`✅ 回答を取得しました!\n参加: ${data.attendance_yes}名\n不参加: ${data.attendance_no}名\n\n参加人数が自動設定されました。`);
     } catch (error: any) {
@@ -143,7 +142,6 @@ const ManagePage: React.FC = () => {
     setSpreadsheetUrl(value);
 
     if (!value.trim()) {
-      setIsPartyCapacityDisabled(false);
       setFormResponse(null);
     }
   };
@@ -204,55 +202,82 @@ const ManagePage: React.FC = () => {
     return features;
   };
 
-  // 保存・修正ボタン押下時の処理
-  const handleSaveOrModify = () => {
-    if (!searchResult || searchResult.shops.length === 0) {
+  // ゲーム開始ボタン押下時の処理
+  const handleStartGame = async () => {
+    const shops = searchResult?.shops || searchResult?.selected_shops || [];
+    if (!searchResult || shops.length === 0) {
       alert('検索結果がありません');
       return;
     }
 
-    // 検索条件を整理
-    const searchConditions = {
-      area: selectedSmallArea 
-        ? smallAreas.find(a => a.code === selectedSmallArea)?.name
-        : selectedMiddleArea
-        ? middleAreas.find(a => a.code === selectedMiddleArea)?.name
-        : largeAreas.find(a => a.code === selectedLargeArea)?.name,
-      budget: budget,
-      partyCapacity: partyCapacity
-    };
+    setIsStartingGame(true); // ローディング開始
 
-    // Confirm画面へ遷移（通信③経由）
-    navigate('/confirm', {
-      state: {
-        restaurants: searchResult.shops,
-        searchConditions
+    try {
+      console.log('select-restaurants API呼び出し開始...');
+      
+      // select-restaurants APIを呼び出してAI選定を実行
+      const selectedResult = await apiService.selectRestaurants();
+      
+      console.log('select-restaurants API レスポンス:', selectedResult);
+      
+      if (!selectedResult.selected_shops || selectedResult.selected_shops.length === 0) {
+        alert('店舗の選定に失敗しました');
+        return;
       }
-    });
+
+      // manage > game へ遷移（AI選定された店舗を渡す）
+      navigate('/game', {
+        state: {
+          restaurants: selectedResult.selected_shops
+        }
+      });
+    } catch (error) {
+      console.error('select-restaurants API エラー:', error);
+      alert('店舗選定中にエラーが発生しました: ' + (error as Error).message);
+    } finally {
+      setIsStartingGame(false); // ローディング終了
+    }
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <div style={{ flex: 1, padding: '20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-    <div className="container">
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column',
+      overflow: 'hidden'
+    }}>
+      <Header pageTitle="検索" />
+      <div style={{ 
+        flex: 1,
+        padding: '20px',
+        background: 'linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%)',
+        overflowY: 'auto',
+        overflowX: 'hidden'
+      }}>
+        <div className="container" style={{ 
+          maxHeight: 'none',
+          marginBottom: '20px'
+        }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <button
           onClick={() => navigate('/')}
           style={{
             padding: '10px 20px',
-            background: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)',
+            color: '#0f3460',
+            border: '2px solid #ffffff',
+            borderRadius: '20px',
             cursor: 'pointer',
-            fontSize: '14px'
+            fontSize: '14px',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 10px rgba(255, 215, 0, 0.3)',
+            transition: 'all 0.3s'
           }}
         >
           ← ホームに戻る
         </button>
       </div>
-      <h1>🍴 飲食店検索システム</h1>
+      <h1>🍴 店舗検索</h1>
       <p className="subtitle">エリア・予算・開催日から最適なお店を検索</p>
 
       {/* Google Form連携セクション */}
@@ -325,7 +350,7 @@ const ManagePage: React.FC = () => {
                 onChange={handleMiddleAreaChange}
                 disabled={!selectedLargeArea}
               >
-                <option value="">市区町村を選択してください</option>
+                <option value="">広域エリアを選択してください</option>
                 {middleAreas.map((area) => (
                   <option key={area.code} value={area.code}>
                     {area.name}
@@ -348,7 +373,7 @@ const ManagePage: React.FC = () => {
                 ))}
               </select>
               <p className="helper-text">
-                ※ 詳細エリアは任意です(選択しない場合は市区町村全体で検索)
+                ※ 詳細エリアは任意です(選択しない場合は広域エリア全体で検索)
               </p>
             </div>
           </div>
@@ -392,21 +417,21 @@ const ManagePage: React.FC = () => {
             id="partyCapacity"
             min="1"
             value={partyCapacity}
-            onChange={(e) => setPartyCapacity(parseInt(e.target.value))}
-            disabled={isPartyCapacityDisabled}
+            onChange={(e) => setPartyCapacity(e.target.value ? parseInt(e.target.value) : '')}
+            placeholder="人数を入力してください"
             required
           />
           <p
             className="helper-text"
             style={{
-              color: isPartyCapacityDisabled ? '#667eea' : '#666',
-              fontWeight: isPartyCapacityDisabled ? '600' : 'normal',
+              color: formResponse ? '#667eea' : '#666',
+              fontWeight: formResponse ? '600' : 'normal',
             }}
           >
             ※{' '}
-            {isPartyCapacityDisabled
-              ? 'フォーム回答から自動設定されました(変更する場合はURLを削除してください)'
-              : '宴会可能人数で検索します(フォーム回答を取得すると自動設定されます)'}
+            {formResponse
+              ? 'フォーム回答から自動設定されました（必要に応じて変更できます）'
+              : '宴会可能人数で検索します（フォーム回答を取得すると自動設定されます）'}
           </p>
         </div>
 
@@ -465,13 +490,13 @@ const ManagePage: React.FC = () => {
       {searchResult && (
         <div className="result success">
           <h3>✅ 検索完了!</h3>
-          <p>削除件数: {searchResult.deleted_count || 0}件</p>
-          <p>検索件数: {searchResult.searched_count || 0}件</p>
-          <p>保存件数: {searchResult.saved_to_dynamodb || 0}件</p>
+          <p>{searchResult.message}</p>
+          <p>検索店舗数: {searchResult.searched_count || 0}件</p>
+          <p>DynamoDB保存: {searchResult.saved_to_dynamodb || 0}件</p>
 
-          {searchResult.shops && searchResult.shops.length > 0 ? (
+          {(searchResult.shops || searchResult.selected_shops) && (searchResult.shops?.length || searchResult.selected_shops?.length || 0) > 0 ? (
             <div className="shop-list">
-              {searchResult.shops.map((shop, index) => {
+              {(searchResult.shops || searchResult.selected_shops || []).map((shop, index) => {
                 const features = getFeatures(shop);
                 return (
                   <div key={shop.id} className="shop-item">
@@ -505,7 +530,7 @@ const ManagePage: React.FC = () => {
                       <div className="shop-info">🚶 {shop.access}</div>
                     )}
                     <div className="shop-info">🍽️ {shop.genre || 'N/A'}</div>
-                    <div className="shop-info">💰 {shop.budget || 'N/A'}</div>
+                    <div className="shop-info">💰 {shop.budget_average || shop.budget || 'N/A'}</div>
                     <div className="shop-info">
                       👥 {shop.party_capacity || 'N/A'}人
                     </div>
@@ -537,45 +562,15 @@ const ManagePage: React.FC = () => {
               条件に合う店舗が見つかりませんでした。
             </p>
           )}
-
-          <div style={{ marginTop: '30px', display: 'flex', gap: '15px' }}>
-            <button
-              onClick={handleSaveOrModify}
-              style={{
-                flex: 1,
-                padding: '15px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '16px',
-                cursor: 'pointer'
-              }}
-            >
-              ボタン：保存
-            </button>
-            <button
-              onClick={handleSaveOrModify}
-              style={{
-                flex: 1,
-                padding: '15px',
-                background: '#6c757d',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '16px',
-                cursor: 'pointer'
-              }}
-            >
-              ボタン：修正
-            </button>
-          </div>
         </div>
       )}
+        </div>
+      </div>
+      <Footer 
+        onStartGame={handleStartGame}
+        canStartGame={!!(searchResult && ((searchResult.shops && searchResult.shops.length > 0) || (searchResult.selected_shops && searchResult.selected_shops.length > 0)) && !isStartingGame)}
+      />
     </div>
-    </div>
-    <Footer />
-  </div>
   );
 };
 

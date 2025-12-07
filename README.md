@@ -121,7 +121,7 @@ npm run preview
 
 AWS Lambda経由で以下の機能を提供:
 
-- **エリア階層選択**: 都道府県 → 市区町村 → 詳細エリア
+- **エリア階層選択**: 都道府県 → 広域エリア → 詳細エリア
 - **検索条件**: 予算、参加人数、開催日
 - **Google Forms連携**: スプレッドシートから出欠情報を取得
 - **検索結果**: 店舗情報、写真、アクセス、設備などを表示
@@ -179,7 +179,7 @@ develop/
 POST /search
 Body: { action: 'get_areas', area_type: 'large' }
 
-// 中エリア(市区町村)
+// 中エリア(広域エリア)
 POST /search
 Body: { action: 'get_areas', area_type: 'middle', parent_code: string }
 

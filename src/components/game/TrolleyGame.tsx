@@ -234,33 +234,29 @@ export default function TrolleyGame() {
   };
 
   const saveGameResult = async (
-    initialOptions: Restaurant[],
-    tournamentMatches: TournamentMatch[],
+    _initialOptions: Restaurant[],
+    _tournamentMatches: TournamentMatch[],
     ranking: TournamentResult
   ) => {
+    // restaurant-info APIを呼び出して詳細情報を取得
     try {
-      const result = await apiService.saveResult({
-        tournament: {
-          initialOptions,
-          matches: tournamentMatches,
-          finalRanking: ranking,
-        },
-        completedAt: new Date().toISOString(),
-      });
-      console.log('✅ Game result saved:', result);
+      console.log('📡 Fetching restaurant info...');
+      const restaurantInfo = await apiService.getRestaurantInfo();
+      console.log('✅ Restaurant info fetched:', restaurantInfo);
       
-      // 結果ページに遷移
+      // 結果ページに遷移（詳細情報を渡す）
       navigate('/result', {
         state: {
           finalRanking: ranking,
+          restaurantInfo: restaurantInfo,
           isSaving: false,
         },
         replace: true,
       });
-    } catch (error) {
-      console.error('❌ Failed to save game result:', error);
+    } catch (infoError) {
+      console.error('⚠️ Failed to fetch restaurant info:', infoError);
       
-      // エラーがあっても結果ページに遷移
+      // レストラン情報取得失敗でも結果ページに遷移
       navigate('/result', {
         state: {
           finalRanking: ranking,
@@ -272,63 +268,61 @@ export default function TrolleyGame() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-    <div className="trolley-game" style={{ flex: 1 }}>
-      {gameState === 'countdown' && (
-        <Countdown onComplete={handleCountdownComplete} />
-      )}
+    <div className="page-container">
+      <Header pageTitle="トロッコ" />
+      <div className="trolley-game page-content-flex">
+        {gameState === 'countdown' && (
+          <Countdown onComplete={handleCountdownComplete} />
+        )}
 
-      {(gameState === 'playing' || gameState === 'answering') && currentMatch && (
-        <div 
-          className={`game-screen ${isAnimating ? `animating-${animationDirection}` : ''}`}
-        >
-          {/* 次の背景レイヤー - 決勝では表示しない */}
-          {currentMatch.round !== '決勝' && <div className="background-next"></div>}
-          
-          <div className="game-header">
-            <div className="tournament-info">
-              <div className="round-name">{currentMatch.round}</div>
-              <div className="match-info">
-                {currentMatch.round === '1回戦' && `第${currentMatch.matchNumber}試合`}
-                {currentMatch.round === '準決勝' && `第${currentMatch.matchNumber}試合`}
+        {(gameState === 'playing' || gameState === 'answering') && currentMatch && (
+          <div 
+            className={`game-screen ${isAnimating ? `animating-${animationDirection}` : ''}`}
+          >
+            {/* 次の背景レイヤー - 決勝では表示しない */}
+            {currentMatch.round !== '決勝' && <div className="background-next"></div>}
+            
+            <div className="game-header">
+              <div className="tournament-info">
+                <div className="round-name">{currentMatch.round}</div>
+                <div className="match-info">
+                  {currentMatch.round === '1回戦' && `第${currentMatch.matchNumber}試合`}
+                  {currentMatch.round === '準決勝' && `第${currentMatch.matchNumber}試合`}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* トロッコの表示 */}
-          <div className="trolley-container">
-            <img 
-              src="/images/trolley_1.png" 
-              alt="トロッコ" 
-              className="trolley-image"
-            />
-          </div>
+            {/* トロッコの表示 */}
+            <div className="trolley-container">
+              <img 
+                src="/images/trolley_1.png" 
+                alt="トロッコ" 
+                className="trolley-image"
+              />
+            </div>
 
-          <div className="answer-buttons">
-            {currentMatch.options.map((option, index) => (
-              <button
-                key={option.shop_id}
-                className={`answer-btn ${
-                  gameState === 'answering' && index === selectedAnswer
-                    ? 'selected'
-                    : ''
-                }`}
-                onClick={() => handleAnswer(index)}
-                disabled={gameState === 'answering'}
-              >
-                <div className="restaurant-info">
-                  <div className="restaurant-name">{option.name}</div>
-                  <div className="restaurant-genre">{option.genre}</div>
-                  <div className="restaurant-catch">{option.catch}</div>
-                </div>
-              </button>
-            ))}
+            <div className="answer-buttons">
+              {currentMatch.options.map((option, index) => (
+                <button
+                  key={option.shop_id}
+                  className={`answer-btn ${
+                    gameState === 'answering' && index === selectedAnswer
+                      ? 'selected'
+                      : ''
+                  }`}
+                  onClick={() => handleAnswer(index)}
+                  disabled={gameState === 'answering'}
+                >
+                  <div className="restaurant-info">
+                    <div className="restaurant-name">{option.name}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
   );
 }

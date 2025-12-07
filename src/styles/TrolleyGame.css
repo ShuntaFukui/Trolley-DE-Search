@@ -8,17 +8,16 @@
    ゲーム全体のコンテナ
    ======================================== */
 .trolley-game {
-  width: 100vw; /* ビューポート幅100% */
-  min-height: 100vh; /* 最小高さ100vh、コンテンツに応じて拡張 */
+  width: 100vw;
   display: flex;
-  align-items: center; /* 縦方向中央揃え */
-  justify-content: center; /* 横方向中央揃え */
-  background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%); /* 暗い背景グラデーション */
-  font-family: 'Arial Black', 'Arial Bold', sans-serif; /* 太字フォント */
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #fdf6eb 0%, #f5e6d3 100%);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
-  padding: 20px; /* スクロール時の余白 */
-  overflow-y: auto; /* 縦スクロール有効化 */
-  overflow-x: hidden; /* 横スクロールは無効 */
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 }
 
@@ -28,14 +27,13 @@
    ======================================== */
 .start-screen {
   text-align: center;
-  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%); /* 青系グラデーション背景 */
+  background: #fdf8f0;
   padding: 60px 50px;
-  border-radius: 30px; /* 角丸 */
-  /* 金色の光るエフェクト - 2重のボックスシャドウで立体感 */
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3), 0 0 100px rgba(255, 215, 0, 0.1);
-  border: 4px solid #ffd700; /* 金色のボーダー */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e8d4b8;
   max-width: 600px;
-  animation: slideDown 0.6s ease-out; /* 登場アニメーション */
+  animation: slideDown 0.6s ease-out;
 }
 
 /* タイトルエリア */
@@ -43,11 +41,11 @@
   margin-bottom: 40px;
 }
 
-/* メインタイトル - 「トロッコアドベンチャー」 */
+/* メインタイトル */
 .title-main {
   font-size: 3em;
   font-weight: bold;
-  color: #ffd700; /* 金色 */
+  color: #4fc3f7;
   /* 金色の光るテキストシャドウ - 3層構造で発光効果 */
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
                0 4px 8px rgba(0, 0, 0, 0.8);
@@ -55,12 +53,12 @@
   margin-bottom: 10px;
 }
 
-/* サブタイトル - 「TROLLEY ADVENTURE」 */
+/* サブタイトル */
 .title-sub {
   font-size: 1.2em;
-  color: #87ceeb; /* スカイブルー */
+  color: #6c757d;
   letter-spacing: 2px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* 影で立体感 */
+  text-shadow: none;
 }
 
 /* ゲーム情報エリア */
@@ -71,9 +69,9 @@
 /* ゲーム説明テキスト */
 .game-info p {
   font-size: 1.3em;
-  color: #ffffff;
+  color: #495057;
   margin: 15px 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: none;
 }
 
 /* 問題数表示 - 「全5問」など */
@@ -104,24 +102,28 @@
 
 /* スタートボタン */
 .start-button {
-  margin-top: 40px;
-  padding: 20px 80px; /* 大きめのパディング */
-  font-size: 1.8em;
+  margin-top: 0;
+  width: 400px;
+  height: 300px;
+  font-size: 20em;
   font-weight: bold;
-  color: #0f3460; /* 濃い青 */
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); /* 金色グラデーション */
-  border: 4px solid #ffffff; /* 白いボーダー */
-  border-radius: 50px; /* 完全な角丸 */
+  color: #ffffff;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  border: none;
+  clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
   cursor: pointer;
-  transition: all 0.3s; /* ホバー時の滑らかな変化 */
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5); /* 金色の影 */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(79, 195, 247, 0.4);
+  text-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* スタートボタンのホバー効果 - 浮き上がる */
+/* スタートボタンのホバー効果 */
 .start-button:hover {
-  transform: translateY(-5px) scale(1.05); /* 上に移動して拡大 */
-  box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7); /* 影も強調 */
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 10px 40px rgba(79, 195, 247, 0.5);
 }
 
 /* スタートボタンの無効化状態 */
@@ -133,7 +135,7 @@
 
 .start-button:disabled:hover {
   transform: none;
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
 }
 
 /* ========================================
@@ -148,15 +150,13 @@
   height: 100vh; /* 画面全体 */
 }
 
-/* カウントダウン数字 - 巨大な数字表示 */
+/* カウントダウン数字 */
 .countdown-number {
-  font-size: 15em; /* 非常に大きいフォントサイズ */
+  font-size: 15em;
   font-weight: bold;
-  color: #ffd700; /* 金色 */
-  /* 二重の発光エフェクト */
-  text-shadow: 0 0 40px rgba(255, 215, 0, 1),
-               0 0 80px rgba(255, 215, 0, 0.6);
-  animation: countdownPulse 1s ease-in-out; /* 脈打つアニメーション */
+  color: #ff6b35;
+  text-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+  animation: countdownPulse 1s ease-in-out;
 }
 
 /* カウントダウンの登場アニメーション - 拡大しながら出現 */
@@ -180,13 +180,13 @@
    実際のアンケート・ゲームプレイ画面
    ======================================== */
 .game-screen {
-  width: 100vw; /* ビューポート幅100% */
-  height: 100vh; /* ビューポート高さ100% */
-  background: #0a0a1a; /* 暗い背景色 */
-  position: relative; /* 子要素の基準 */
-  overflow: hidden; /* はみ出し防止 */
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(180deg, #fdf6eb 0%, #f5e6d3 100%);
+  position: relative;
+  overflow: hidden;
   display: flex;
-  flex-direction: column; /* 縦方向のフレックス配置 */
+  flex-direction: column;
 }
 
 /* ========================================
@@ -672,14 +672,15 @@
 /* 結果画面 */
 .result-screen {
   text-align: center;
-  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
   padding: 60px 50px;
   border-radius: 30px;
-  box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-  border: 4px solid #ffd700;
+  box-shadow: 0 0 50px rgba(79, 195, 247, 0.3);
+  border: 4px solid #4fc3f7;
   max-width: 700px;
   width: 100%;
-  max-height: none; /* 高さ制限を解除 */
+  max-height: 80vh;
+  overflow-y: auto;
   animation: slideDown 0.6s ease-out;
 }
 
@@ -697,9 +698,9 @@
 .result-title {
   font-size: 3em;
   font-weight: bold;
-  color: #ffd700;
+  color: #4fc3f7;
   margin-bottom: 40px;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  text-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
 }
 
 /* トーナメント結果のランキング表示 */
@@ -709,27 +710,34 @@
 }
 
 .rank-item {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(79, 195, 247, 0.1);
   border-radius: 15px;
-  padding: 15px 25px;
+  padding: 20px 25px;
   margin: 15px 0;
+  margin-left: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(79, 195, 247, 0.3);
   transition: all 0.3s;
+  min-height: 120px;
+  gap: 20px;
+  position: relative;
 }
 
 .rank-item:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(79, 195, 247, 0.2);
   transform: translateX(5px);
 }
 
 .rank-label {
   font-size: 1.5em;
   font-weight: bold;
-  color: #ffffff;
-  min-width: 120px;
+  color: #4fc3f7;
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .rank-value {
@@ -743,14 +751,39 @@
 .rank-restaurant {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.rank-restaurant-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.rank-restaurant-info {
+  display: flex;
+  flex-direction: column;
   gap: 5px;
+  flex: 1;
+  min-width: 0;
 }
 
 .rank-restaurant-name {
-  font-size: 1.8em;
+  font-size: 1.1em;
   font-weight: bold;
   color: #ffd700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+  padding: 15px 20px;
+  background: rgba(79, 195, 247, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  flex: 1;
 }
 
 .rank-restaurant-genre {
@@ -758,6 +791,19 @@
   color: #87ceeb;
   font-weight: normal;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.rank-restaurant-access {
+  font-size: 0.8em;
+  color: #4fc3f7;
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  padding: 10px 20px;
+  background: rgba(79, 195, 247, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .rank-restaurant-mini {
@@ -782,13 +828,61 @@
   font-weight: normal;
 }
 
+.rank-restaurant-access-mini {
+  font-size: 0.85em;
+  color: #a0d8f1;
+  margin-top: 3px;
+  line-height: 1.3;
+}
+
+/* 予約ボタン */
+.reservation-button {
+  display: inline-block;
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.reservation-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 195, 247, 0.5);
+}
+
+.reservation-button-mini {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 15px;
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+}
+
+.reservation-button-mini:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.5);
+}
+
 .rank-1 {
   border-color: #ffd700;
   background: rgba(255, 215, 0, 0.15);
 }
 
 .rank-1 .rank-restaurant-name {
-  font-size: 2.2em;
+  font-size: 1.1em;
   color: #ffd700;
   text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
@@ -811,9 +905,17 @@
   color: #cd7f32;
 }
 
+.rank-4 .rank-restaurant-name {
+  color: #555555;
+}
+
 .rank-5 {
   flex-direction: column;
   align-items: flex-start;
+}
+
+.rank-5 .rank-restaurant-name {
+  color: #555555;
 }
 
 .rank-value-list {
@@ -916,7 +1018,7 @@
 
   .start-button {
     padding: 18px 60px;
-    font-size: 1.5em;
+    font-size: 3em;
   }
 
   /* カウントダウンの調整 */
@@ -991,7 +1093,7 @@
 
   .start-button {
     padding: 15px 50px;
-    font-size: 1.3em;
+    font-size: 3em;
   }
 
   .countdown-number {
