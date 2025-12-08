@@ -17,7 +17,7 @@ const Footer: React.FC<FooterProps> = ({ onStartGame, canStartGame = false }) =>
             disabled={!canStartGame}
             className="footer-game-button"
           >
-            🎮 ゲーム開始
+            ゲーム開始
           </button>
         </div>
         <div className="footer-team-name">Team I "Neptune"</div>

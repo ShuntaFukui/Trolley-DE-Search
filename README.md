@@ -130,41 +130,55 @@ AWS Lambda経由で以下の機能を提供:
 
 ```
 Home (/)
-├─→ ManagePage (/manage) 
-│   ├─→ Home (戻る)
-│   └─→ TrolleyGame (/game)
-└─→ TrolleyGame (/game)
-    └─→ ResultPage (/result)
+  ↓ 「探しに行く」ボタン
+ManagePage (/manage)
+  ├─→ Home (「← ホームに戻る」ボタン)
+  └─→ TrolleyGame (/game) (検索後「ゲーム開始」ボタン)
+       └─→ ResultPage (/result)
+            └─→ Home (「もう一度プレイ」ボタン)
 ```
 
-- **Home**: スタート画面で「ゲームスタート」または「レストラン検索・管理」を選択
-- **ManagePage**: レストラン検索後、ゲーム開始またはホームに戻る
+- **Home**: 「探しに行く」ボタンでManagePageへ遷移
+- **ManagePage**: レストラン検索・AI選定後、ゲーム開始またはホームに戻る
 - **TrolleyGame**: トーナメント完了後、結果ページへ自動遷移
+- **ResultPage**: ランキング表示後、ホームに戻る
+
+**注意**: `StartPage`と`ConfirmPage`は実装済みですが、現在ルーティングに登録されておらず使用されていません。
 
 ## 📁 プロジェクト構成
 
 ```
 develop/
 ├── src/
+│   ├── common/           # 共通モジュール
+│   │   ├── App.tsx       # ルートコンポーネント(ルーティング設定)
+│   │   ├── main.tsx      # エントリーポイント
+│   │   └── config.ts     # 環境設定
 │   ├── components/       # Reactコンポーネント
+│   │   ├── common/       # 共通UI部品
+│   │   │   ├── Header.tsx    # ヘッダーコンポーネント
+│   │   │   └── Footer.tsx    # フッターコンポーネント
 │   │   ├── home/         # ホーム画面
 │   │   │   └── Home.tsx          # 初期画面・スタート画面
+│   │   ├── search/       # レストラン検索・管理
+│   │   │   └── ManagePage.tsx    # 飲食店検索システム
 │   │   ├── game/         # トーナメントゲーム
 │   │   │   ├── TrolleyGame.tsx   # メインゲーム画面
 │   │   │   └── Countdown.tsx     # カウントダウン
 │   │   ├── result/       # 結果表示
 │   │   │   └── ResultPage.tsx    # トーナメント結果表示
-│   │   └── search/       # レストラン検索・管理
-│   │       └── ManagePage.tsx    # 飲食店検索システム
+│   │   ├── start/        # スタート画面(未使用)
+│   │   │   └── StartPage.tsx     # トロッコゲーム開始画面
+│   │   └── confirm/      # 確認画面(未使用)
+│   │       └── ConfirmPage.tsx   # 検索結果確認画面
 │   ├── services/         # APIクライアント
 │   │   └── api.ts        # 統合API通信サービス
-│   ├── styles/           # スタイルシート
-│   │   ├── index.css     # 共通スタイル + ManagePage用
-│   │   └── TrolleyGame.css
-│   ├── App.tsx           # ルートコンポーネント（ルーティング設定）
-│   └── main.tsx          # エントリーポイント
+│   └── styles/           # スタイルシート
+│       ├── index.css     # 共通スタイル + ManagePage用
+│       └── TrolleyGame.css       # ゲーム専用スタイル
 ├── public/               # 公開ディレクトリ
-│   └── images/           # 画像ファイル
+│   └── images/           # 画像ファイル(logo.png, trolley_1.png, BackGround.png)
+├── .env.development      # 開発環境変数(現在未使用)
 ├── .env.production       # 本番環境変数
 └── index.html            # HTMLテンプレート
 ```
@@ -305,10 +319,11 @@ interface TournamentResult {
 ## 🛠 技術スタック
 
 - **React 19.2.0** - UIライブラリ
-- **TypeScript 5.6.2** - 型安全な開発
+- **TypeScript ~5.9.3** - 型安全な開発
 - **Vite 7.2.2** - 高速ビルドツール
-- **React Router DOM 7.1.1** - クライアントサイドルーティング
-- **ESLint** - コード品質チェック
+- **React Router DOM ^7.9.6** - クライアントサイドルーティング
+- **React Compiler** - Babel Plugin(最適化)
+- **ESLint 9.39.1** - コード品質チェック
 
 ## 🎨 デザイン
 
@@ -318,11 +333,20 @@ interface TournamentResult {
 
 ## 📝 開発時の注意事項
 
+### 未使用コンポーネント
+
+以下のコンポーネントは実装済みですが、現在`App.tsx`にルーティングが登録されておらず使用されていません：
+- `StartPage.tsx` (`/start`) - トロッコゲーム開始画面
+- `ConfirmPage.tsx` (`/confirm`) - 検索結果確認画面
+
+これらは将来的な機能拡張用に残されています。
+
 ### API構成の理解
 
-- **Lambda API**: ManagePage専用、AWS環境に直接接続
-- **モックサーバー**: TrolleyGame専用、ローカル開発用
+- **Lambda API**: ManagePage専用、AWS環境に直接接続(エリア取得、検索、AI選定)
+- **モックサーバー**: TrolleyGame専用、ローカル開発用(トーナメント選択肢・結果保存)
 - **api.ts**: 両方のAPIを統合管理する単一サービスクラス
+- 開発環境では自動フォールバック機能(localhost失敗時に172.20.10.4を試行)
 
 ### 型の互換性
 
@@ -339,8 +363,9 @@ private_room?: string | boolean; // Lambda: string, モック: boolean
 
 ### 環境変数
 
-- `.env.production`: Lambda API URLを定義
-- 開発環境ではハードコードされたURL使用（モックサーバー）
+- `.env.production`: Lambda API URLを定義(本番環境で使用)
+- `.env.development`: 現在コメントアウト(未使用)
+- 開発環境では`api.ts`内でURL直接管理(localhost → 172.20.10.4のフォールバック機能付き)
 
 ## 🐛 トラブルシューティング
 

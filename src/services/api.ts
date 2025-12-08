@@ -32,6 +32,7 @@ export interface Restaurant {
   seats?: number; // トーナメントゲーム用
   selection_reason?: string; // トーナメントゲーム用
   raw_data?: any; // select-restaurants用
+  recommended_people?: Array<{ name: string; comment: string }>; // select-restaurants用
 }
 
 // エリア情報の型定義

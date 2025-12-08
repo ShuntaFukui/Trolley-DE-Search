@@ -249,8 +249,10 @@ const ManagePage: React.FC = () => {
       <Header pageTitle="検索" />
       <div style={{ 
         flex: 1,
-        padding: '20px',
-        background: 'linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 100%)',
+        padding: '10px',
+        paddingTop: 'calc(60px + 20px)',
+        paddingBottom: 'calc(60px + 20px)',
+        background: 'linear-gradient(180deg, #bea493 0%, #bea493 100%)',
         overflowY: 'auto',
         overflowX: 'hidden'
       }}>
@@ -263,7 +265,7 @@ const ManagePage: React.FC = () => {
           onClick={() => navigate('/')}
           style={{
             padding: '10px 20px',
-            background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)',
+            background: 'linear-gradient(135deg, #BEA493 0%, #bea493 100%)',
             color: '#0f3460',
             border: '2px solid #ffffff',
             borderRadius: '20px',
@@ -314,7 +316,7 @@ const ManagePage: React.FC = () => {
               </div>
               <div className="stat-item">
                 <div className="stat-number">{formResponse.total}</div>
-                <div className="stat-label">合計回答数</div>
+                <div className="stat-label">回答数</div>
               </div>
             </div>
           </div>

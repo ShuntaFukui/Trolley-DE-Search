@@ -23,6 +23,10 @@ export default function TrolleyGame() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
 
+  // 吹き出しの表示状態
+  const [showTooltipLeft, setShowTooltipLeft] = useState(false);
+  const [showTooltipRight, setShowTooltipRight] = useState(false);
+
   // 選択肢
   const [allOptions, setAllOptions] = useState<Restaurant[]>([]);
 
@@ -48,6 +52,28 @@ export default function TrolleyGame() {
     }
     setAllOptions(restaurants);
   }, [location, navigate]);
+
+  // テスト用: ランダムなコメントを生成（10~20文字）
+  const getRandomComment = () => {
+    const comments = [
+      'ここ美味しいよ!',
+      '雰囲気が最高です',
+      'おすすめの店です',
+      'コスパが良いです',
+      'また行きたい店',
+      '接客が素晴らしい',
+      '味が絶品でした',
+      '落ち着ける空間',
+      'デートにぴったり',
+      '料理が本格的です',
+      '居心地が良い店',
+      'ボリューム満点!',
+      '新鮮な食材です',
+      'リピート確定!',
+      'みんなで楽しめる'
+    ];
+    return comments[Math.floor(Math.random() * comments.length)];
+  };
 
   // Fisher-Yates シャッフル
   const shuffleArray = <T,>(array: T[]): T[] => {
@@ -282,13 +308,51 @@ export default function TrolleyGame() {
             {/* 次の背景レイヤー - 決勝では表示しない */}
             {currentMatch.round !== '決勝' && <div className="background-next"></div>}
             
+            {/* 吹き出し（画面中央に固定表示） */}
+            {showTooltipLeft && !isAnimating && (
+              <div className="avatar-tooltip">
+                {currentMatch.options[0]?.recommended_people?.[0]?.comment || getRandomComment()}
+              </div>
+            )}
+            {showTooltipRight && !isAnimating && (
+              <div className="avatar-tooltip">
+                {currentMatch.options[1]?.recommended_people?.[0]?.comment || getRandomComment()}
+              </div>
+            )}
+            
+            {/* 左側のアバター */}
+            <div 
+              className={`avatar avatar-left ${isAnimating ? 'avatar-fade-out' : ''}`}
+              onClick={() => setShowTooltipLeft(!showTooltipLeft)}
+            >
+              <img 
+                src="/images/avatar.png" 
+                alt="Avatar" 
+                className="avatar-image"
+              />
+              <div className="avatar-name">
+                {currentMatch.options[0]?.recommended_people?.[0]?.name || 'User'}
+              </div>
+            </div>
+
+            {/* 右側のアバター */}
+            <div 
+              className={`avatar avatar-right ${isAnimating ? 'avatar-fade-out' : ''}`}
+              onClick={() => setShowTooltipRight(!showTooltipRight)}
+            >
+              <img 
+                src="/images/avatar.png" 
+                alt="Avatar" 
+                className="avatar-image"
+              />
+              <div className="avatar-name">
+                {currentMatch.options[1]?.recommended_people?.[0]?.name || 'User'}
+              </div>
+            </div>
+            
             <div className="game-header">
               <div className="tournament-info">
-                <div className="round-name">{currentMatch.round}</div>
-                <div className="match-info">
-                  {currentMatch.round === '1回戦' && `第${currentMatch.matchNumber}試合`}
-                  {currentMatch.round === '準決勝' && `第${currentMatch.matchNumber}試合`}
-                </div>
+                <div className="round-name">どっちに行く?</div>
               </div>
             </div>
 
@@ -313,6 +377,11 @@ export default function TrolleyGame() {
                   onClick={() => handleAnswer(index)}
                   disabled={gameState === 'answering'}
                 >
+                  {option.photo_url && (
+                    <div className="restaurant-photo">
+                      <img src={option.photo_url} alt={option.name} />
+                    </div>
+                  )}
                   <div className="restaurant-info">
                     <div className="restaurant-name">{option.name}</div>
                   </div>
