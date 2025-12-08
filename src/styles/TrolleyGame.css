@@ -120,10 +120,25 @@
   box-shadow: 0 8px 30px rgba(79, 195, 247, 0.4);
   text-shadow: none;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
   max-width: 800px;
   max-height: 600px;
+  padding: 40px;
+}
+
+.start-button-logo {
+  width: 0.8em;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.start-button-text {
+  font-size: 0.5em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* スタートボタンのホバー効果 */
@@ -1144,8 +1159,17 @@
   }
 
   .start-button {
-    padding: 18px 60px;
+    padding: 30px;
     font-size: 3em;
+    gap: 15px;
+  }
+
+  .start-button-logo {
+    width: 55%;
+  }
+
+  .start-button-text {
+    font-size: 0.5em;
   }
 
   /* カウントダウンの調整 */
@@ -1252,8 +1276,17 @@
   }
 
   .start-button {
-    padding: 15px 50px;
+    padding: 20px;
     font-size: 2.5em;
+    gap: 10px;
+  }
+
+  .start-button-logo {
+    width: 50%;
+  }
+
+  .start-button-text {
+    font-size: 0.5em;
   }
 
   .countdown-number {

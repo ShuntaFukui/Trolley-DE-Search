@@ -20,7 +20,12 @@ export default function Home() {
             className="start-button" 
             onClick={handleStart}
           >
-            探しに行く
+            <img 
+              src="/images/logo.png" 
+              alt="Logo" 
+              className="start-button-logo"
+            />
+            <span className="start-button-text">探しに行く</span>
           </button>
         </div>
       </div>
