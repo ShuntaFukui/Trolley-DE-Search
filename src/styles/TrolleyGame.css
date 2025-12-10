@@ -31,7 +31,7 @@
   padding: 60px 50px;
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e8d4b8;
+  border: 2px solid #b7e1f5;
   max-width: 600px;
   animation: slideDown 0.6s ease-out;
   display: flex;
@@ -175,8 +175,8 @@
 .countdown-number {
   font-size: 15em;
   font-weight: bold;
-  color: #ff6b35;
-  text-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
+  color: #4fc3f7;
+  text-shadow: 0 4px 20px #0f3460;
   animation: countdownPulse 1s ease-in-out;
 }
 
@@ -203,7 +203,7 @@
 .game-screen {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(180deg, #fdf6eb 0%, #f5e6d3 100%);
+  background: #000000;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -445,7 +445,7 @@
   align-items: center; /* 縦方向中央揃え */
   justify-content: center; /* 横方向中央揃え */
   padding: 20px 40px;
-  margin-top: 40px; /* app-headerの高さ分を確保 */
+  margin-top: 80px; /* app-headerの高さ分を確保 */
   position: relative;
   z-index: 10; /* 背景より前面 */
   /* 上部から透明になるグラデーション背景 */
@@ -859,7 +859,6 @@
   border-radius: 15px;
   padding: 20px 25px;
   margin: 15px 0;
-  margin-left: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -868,11 +867,6 @@
   min-height: 120px;
   gap: 20px;
   position: relative;
-}
-
-.rank-item:hover {
-  background: rgba(79, 195, 247, 0.2);
-  transform: translateX(5px);
 }
 
 .rank-label {
@@ -898,6 +892,8 @@
   flex-direction: column;
   gap: 10px;
   flex: 1;
+  width: 100%;
+  max-width: 100%;
 }
 
 .rank-restaurant-top {
@@ -948,6 +944,24 @@
   border: 1px solid rgba(79, 195, 247, 0.2);
   overflow-wrap: break-word;
   word-wrap: break-word;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  max-height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-restaurant-access:hover {
+  background: rgba(79, 195, 247, 0.15);
+  border-color: rgba(79, 195, 247, 0.4);
+}
+
+.rank-restaurant-access.expanded {
+  max-height: 200px;
+  text-align: left;
 }
 
 .rank-restaurant-mini {
@@ -982,7 +996,7 @@
 /* 予約ボタン */
 .reservation-button {
   display: block;
-  padding: 12px 25px;
+  padding: 6px 25px;
   background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
   color: #ffffff;
   text-decoration: none;
@@ -1019,14 +1033,14 @@
 }
 
 .rank-1 {
-  border-color: #BEA493;
-  background: rgba(190, 164, 147, 0.15);
+  border-color: #FFD700;
+  background: rgba(255, 215, 0, 0.15);
 }
 
 .rank-1 .rank-restaurant-name {
   font-size: 1.1em;
-  color: #BEA493;
-  text-shadow: 0 0 15px rgba(190, 164, 147, 0.8);
+  color: #FFD700;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
 
 .rank-2 {
@@ -1115,18 +1129,18 @@
   padding: 20px 60px;
   font-size: 1.6em;
   font-weight: bold;
-  color: #BEA493;
-  background: linear-gradient(135deg, #BEA493 0%, #BEA493 100%);
-  border: 4px solid #ffffff;
+  color: #ffffff;
+  background: #4fc3f7;
+  border: 4px solid #87ceeb;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 4px 10px #0f3460;
 }
 
 .retry-button:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(255, 215, 0, 0.7);
+  box-shadow: 0 6px 10px #0f3460;
 }
 
 /* ========================================

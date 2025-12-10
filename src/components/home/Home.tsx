@@ -15,7 +15,7 @@ export default function Home() {
     <div className="page-container">
       <Header pageTitle="ホーム" />
       <div className="trolley-game page-content-flex">
-        <div className="start-screen">
+        {/* <div className="start-screen"> */}
           <button 
             className="start-button" 
             onClick={handleStart}
@@ -27,7 +27,7 @@ export default function Home() {
             />
             <span className="start-button-text">探しに行く</span>
           </button>
-        </div>
+        {/* </div> */}
       </div>
       <Footer />
     </div>

@@ -122,15 +122,35 @@ npm run preview
 AWS Lambda経由で以下の機能を提供:
 
 - **エリア階層選択**: 都道府県 → 広域エリア → 詳細エリア
-- **検索条件**: 予算、参加人数、開催日
+- **検索条件**: 
+  - 予算（セレクトボックス）
+  - 参加人数（数値入力、Google Form連携時の注意表示機能付き）
+  - 開催日（任意）
+  - 取得件数（スライダー: 5〜50件、「狭く」〜「広く」表示）
 - **Google Forms連携**: スプレッドシートから出欠情報を取得
+  - 参加人数自動設定機能
+  - 変更時の警告表示（取得値と異なる場合、赤色で注意喚起）
 - **検索結果**: 店舗情報、写真、アクセス、設備などを表示
+
+### 3. 結果表示 (ResultPage)
+
+トーナメント結果の表示機能:
+
+- **ランキング表示**: 1位〜5位のレストラン情報
+  - 1位: 金色(#FFD700)の特別デザイン
+  - 2位: 銀色
+  - 3位: 銅色
+  - 4位・5位: グレー
+- **店舗情報の表示**:
+  - 店舗名
+  - アクセス情報（タップで展開・折りたたみ可能）
+  - 予約ボタン（外部リンク）
 
 ## 🔀 画面遷移フロー
 
 ```
 Home (/)
-  ↓ 「探しに行く」ボタン
+  ↓ 「探しに行く」ボタン（ロゴ付きボタン）
 ManagePage (/manage)
   ├─→ Home (「← ホームに戻る」ボタン)
   └─→ TrolleyGame (/game) (検索後「ゲーム開始」ボタン)
@@ -138,10 +158,19 @@ ManagePage (/manage)
             └─→ Home (「もう一度プレイ」ボタン)
 ```
 
-- **Home**: 「探しに行く」ボタンでManagePageへ遷移
-- **ManagePage**: レストラン検索・AI選定後、ゲーム開始またはホームに戻る
-- **TrolleyGame**: トーナメント完了後、結果ページへ自動遷移
-- **ResultPage**: ランキング表示後、ホームに戻る
+- **Home**: 
+  - 中央に大きなロゴ付き「探しに行く」ボタン
+  - ManagePageへ遷移
+- **ManagePage**: 
+  - レストラン検索・AI選定後、ゲーム開始またはホームに戻る
+  - フッターにゲーム開始ボタン表示（検索結果がある場合のみ有効）
+- **TrolleyGame**: 
+  - トーナメント完了後、結果ページへ自動遷移
+  - アバターとトロッコアニメーション表示
+- **ResultPage**: 
+  - ランキング表示（1位は金色）
+  - アクセス情報はタップで展開
+  - ホームに戻るボタン
 
 **注意**: `StartPage`と`ConfirmPage`は実装済みですが、現在ルーティングに登録されておらず使用されていません。
 
@@ -177,7 +206,11 @@ develop/
 │       ├── index.css     # 共通スタイル + ManagePage用
 │       └── TrolleyGame.css       # ゲーム専用スタイル
 ├── public/               # 公開ディレクトリ
-│   └── images/           # 画像ファイル(logo.png, trolley_1.png, BackGround.png)
+│   └── images/           # 画像ファイル
+│       ├── logo.png             # ロゴ画像
+│       ├── avatar.png           # アバター画像
+│       ├── BackGround.png       # ゲーム背景画像
+│       └── trolley_1.png        # トロッコ画像
 ├── .env.development      # 開発環境変数(現在未使用)
 ├── .env.production       # 本番環境変数
 └── index.html            # HTMLテンプレート
@@ -322,7 +355,7 @@ interface TournamentResult {
 - **TypeScript ~5.9.3** - 型安全な開発
 - **Vite 7.2.2** - 高速ビルドツール
 - **React Router DOM ^7.9.6** - クライアントサイドルーティング
-- **React Compiler** - Babel Plugin(最適化)
+- **React Compiler** - Babel Plugin (babel-plugin-react-compiler ^19.1.0-rc.3)
 - **ESLint 9.39.1** - コード品質チェック
 
 ## 🎨 デザイン
@@ -331,15 +364,43 @@ interface TournamentResult {
 - レスポンシブデザイン対応（PC・タブレット・スマホ）
 - アニメーション付きトーナメント進行
 
+### UI/UX機能
+
+- **ヘッダー**: 
+  - 高さ80px、ロゴとタイトル表示
+  - 全ページ共通デザイン
+- **フッター**: 
+  - ManagePageではゲーム開始ボタン表示（チーム名なし）
+  - その他のページではチーム名「Team I "Neptune"」のみ表示
+  - 高さ調整済み（適切なパディングとmin-height設定）
+- **アバター機能（ゲーム画面のみ）**: 
+  - ゲーム画面両端に表示
+  - タップで吹き出し（コメント）表示
+  - ボタンと同期したフェードイン/アウトアニメーション
+- **背景アニメーション（ゲーム画面のみ）**: 
+  - デュアルレイヤーシステム（現在背景と次背景）
+  - 選択時の奥行き感のある遷移エフェクト
+  - ゲーム画面の背景色: 黒(#000000)
+- **レスポンシブ画像**: 
+  - レストラン写真: アスペクト比4:3で統一
+  - デバイスサイズに応じた自動調整
+
 ## 📝 開発時の注意事項
 
-### 未使用コンポーネント
+### コンポーネント構成
 
-以下のコンポーネントは実装済みですが、現在`App.tsx`にルーティングが登録されておらず使用されていません：
-- `StartPage.tsx` (`/start`) - トロッコゲーム開始画面
-- `ConfirmPage.tsx` (`/confirm`) - 検索結果確認画面
+実際に使用されているコンポーネント:
+- `Home.tsx` - ホーム画面（ロゴ付き「探しに行く」ボタン）
+- `ManagePage.tsx` - レストラン検索・管理画面
+- `TrolleyGame.tsx` - トーナメントゲーム画面
+- `ResultPage.tsx` - 結果表示画面
+- `Header.tsx` - 共通ヘッダー
+- `Footer.tsx` - 共通フッター（ManagePage専用とその他用の2パターン）
+- `Countdown.tsx` - カウントダウン表示
 
-これらは将来的な機能拡張用に残されています。
+未使用コンポーネント（将来的な機能拡張用）:
+- `StartPage.tsx` - トロッコゲーム開始画面
+- `ConfirmPage.tsx` - 検索結果確認画面
 
 ### API構成の理解
 
@@ -358,14 +419,35 @@ private_room?: string | boolean; // Lambda: string, モック: boolean
 
 ### スタイルの管理
 
-- `index.css`: 共通スタイル + ManagePage専用スタイル
-- `TrolleyGame.css`: トーナメントゲーム専用スタイル
+- **index.css**: 共通スタイル + ManagePage専用スタイル
+  - ヘッダー: padding 20px、logo height 80px、title font-size 22px
+  - フッター: ManagePage用(app-footer)とその他ページ用(footer-empty)の2種類
+  - 共通レイアウト、ボタン、フォーム要素
+  
+- **TrolleyGame.css**: トーナメントゲーム専用スタイル（約1400行）
+  - ゲーム画面: 黒背景(#000000)
+  - アバター: フェードイン/アウトアニメーション、吹き出し表示
+  - 背景アニメーション: デュアルレイヤーシステム、左右選択時の遷移エフェクト
+  - 結果画面: 
+    - 1位: 金色(#FFD700)
+    - 2位: 銀色(#c0c0c0)
+    - 3位: 銅色(#cd7f32)
+    - 4位・5位: グレー(#555555)
+    - アクセス情報: タップで展開/折りたたみ機能
+  - レスポンシブデザイン: 768px、480px、横向きモードのメディアクエリ
 
 ### 環境変数
 
-- `.env.production`: Lambda API URLを定義(本番環境で使用)
-- `.env.development`: 現在コメントアウト(未使用)
-- 開発環境では`api.ts`内でURL直接管理(localhost → 172.20.10.4のフォールバック機能付き)
+- `.env.production`: Lambda API URLを定義（本番環境で使用）
+  ```bash
+  VITE_API_BASE_URL=https://1tebott34m.execute-api.ap-northeast-1.amazonaws.com/prod/search
+  ```
+- `.env.development`: 現在未使用（コメントアウト）
+- 開発環境のAPI接続:
+  - Lambda API: `.env.production`の設定を使用
+  - モックサーバー: `api.ts`内で直接URL管理
+    - Primary: `http://localhost:3001/api`
+    - Fallback: `http://172.20.10.4:3001/api`（自動フォールバック機能付き）
 
 ## 🐛 トラブルシューティング
 

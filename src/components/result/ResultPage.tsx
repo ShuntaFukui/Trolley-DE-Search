@@ -14,6 +14,7 @@ export default function ResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
+  const [expandedAccess, setExpandedAccess] = useState<Set<string>>(new Set());
 
   const state = location.state as ResultPageState | null;
 
@@ -38,6 +39,18 @@ export default function ResultPage() {
     navigate('/', { replace: true });
   };
 
+  const toggleAccess = (id: string) => {
+    setExpandedAccess(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
   const { finalRanking } = state;
 
   return (
@@ -49,7 +62,6 @@ export default function ResultPage() {
           
           <div className="ranking">
             <div className="rank-item rank-1">
-              <span className="rank-label">🥇</span>
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.first.name}</div>
@@ -65,12 +77,16 @@ export default function ResultPage() {
                   )}
                 </div>
                 {finalRanking.first.access && (
-                  <div className="rank-restaurant-access">📍 {finalRanking.first.access}</div>
+                  <div 
+                    className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''}`}
+                    onClick={() => toggleAccess('first')}
+                  >
+                    {expandedAccess.has('first') ? `📍 ${finalRanking.first.access}` : '📍'}
+                  </div>
                 )}
               </div>
             </div>
             <div className="rank-item rank-2">
-              <span className="rank-label">🥈</span>
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.second.name}</div>
@@ -86,12 +102,16 @@ export default function ResultPage() {
                   )}
                 </div>
                 {finalRanking.second.access && (
-                  <div className="rank-restaurant-access">📍 {finalRanking.second.access}</div>
+                  <div 
+                    className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''}`}
+                    onClick={() => toggleAccess('second')}
+                  >
+                    {expandedAccess.has('second') ? `📍 ${finalRanking.second.access}` : '📍'}
+                  </div>
                 )}
               </div>
             </div>
             <div className="rank-item rank-3">
-              <span className="rank-label">🥉</span>
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.third.name}</div>
@@ -107,7 +127,12 @@ export default function ResultPage() {
                   )}
                 </div>
                 {finalRanking.third.access && (
-                  <div className="rank-restaurant-access">📍 {finalRanking.third.access}</div>
+                  <div 
+                    className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''}`}
+                    onClick={() => toggleAccess('third')}
+                  >
+                    {expandedAccess.has('third') ? `📍 ${finalRanking.third.access}` : '📍'}
+                  </div>
                 )}
               </div>
             </div>
@@ -127,7 +152,12 @@ export default function ResultPage() {
                   )}
                 </div>
                 {finalRanking.fourth.access && (
-                  <div className="rank-restaurant-access">📍 {finalRanking.fourth.access}</div>
+                  <div 
+                    className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''}`}
+                    onClick={() => toggleAccess('fourth')}
+                  >
+                    {expandedAccess.has('fourth') ? `📍 ${finalRanking.fourth.access}` : '📍'}
+                  </div>
                 )}
               </div>
             </div>
@@ -148,7 +178,12 @@ export default function ResultPage() {
                     )}
                   </div>
                   {restaurant.access && (
-                    <div className="rank-restaurant-access">📍 {restaurant.access}</div>
+                    <div 
+                      className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''}`}
+                      onClick={() => toggleAccess(`fifth-${restaurant.shop_id}`)}
+                    >
+                      {expandedAccess.has(`fifth-${restaurant.shop_id}`) ? `📍 ${restaurant.access}` : '📍'}
+                    </div>
                   )}
                 </div>
               </div>

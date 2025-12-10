@@ -13,7 +13,7 @@ const ManagePage: React.FC = () => {
   const [largeAreas, setLargeAreas] = useState<Area[]>([]);
   const [middleAreas, setMiddleAreas] = useState<Area[]>([]);
   const [smallAreas, setSmallAreas] = useState<Area[]>([]);
-  
+
   const [selectedLargeArea, setSelectedLargeArea] = useState('');
   const [selectedMiddleArea, setSelectedMiddleArea] = useState('');
   const [selectedSmallArea, setSelectedSmallArea] = useState('');
@@ -38,7 +38,7 @@ const ManagePage: React.FC = () => {
   // 大エリア取得
   useEffect(() => {
     loadLargeAreas();
-    
+
     // 今日の日付を最小値として設定
     const today = new Date().toISOString().split('T')[0];
     const eventDateInput = document.getElementById('eventDate') as HTMLInputElement;
@@ -214,12 +214,12 @@ const ManagePage: React.FC = () => {
 
     try {
       console.log('select-restaurants API呼び出し開始...');
-      
+
       // select-restaurants APIを呼び出してAI選定を実行
       const selectedResult = await apiService.selectRestaurants();
-      
+
       console.log('select-restaurants API レスポンス:', selectedResult);
-      
+
       if (!selectedResult.selected_shops || selectedResult.selected_shops.length === 0) {
         alert('店舗の選定に失敗しました');
         return;
@@ -240,14 +240,14 @@ const ManagePage: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      height: '100vh', 
-      display: 'flex', 
+    <div style={{
+      height: '100vh',
+      display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden'
     }}>
       <Header pageTitle="検索" />
-      <div style={{ 
+      <div style={{
         flex: 1,
         padding: '10px',
         paddingTop: 'calc(60px + 20px)',
@@ -256,319 +256,270 @@ const ManagePage: React.FC = () => {
         overflowY: 'auto',
         overflowX: 'hidden'
       }}>
-        <div className="container" style={{ 
+        <div className="container" style={{
           maxHeight: 'none',
           marginBottom: '20px'
         }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <button
-          onClick={() => navigate('/')}
-          style={{
-            padding: '10px 20px',
-            background: 'linear-gradient(135deg, #BEA493 0%, #bea493 100%)',
-            color: '#0f3460',
-            border: '2px solid #ffffff',
-            borderRadius: '20px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold',
-            boxShadow: '0 4px 10px rgba(255, 215, 0, 0.3)',
-            transition: 'all 0.3s'
-          }}
-        >
-          ← ホームに戻る
-        </button>
-      </div>
-      <h1>🍴 店舗検索</h1>
-      <p className="subtitle">エリア・予算・開催日から最適なお店を検索</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <button
+              onClick={() => navigate('/')}
+              style={{
+                padding: '10px 20px',
+                background: '#4fc3f7',
+                color: '#ffffff',
+                border: '2px solid #87ceeb',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 5px #0f3460',
+                transition: 'all 0.3s'
+              }}
+            >
+              ホームに戻る
+            </button>
+          </div>
+          <h1>🍴店舗検索</h1>
+          <p className="subtitle">エリア・予算・開催日から最適なお店を検索</p>
 
-      {/* Google Form連携セクション */}
-      <div className="form-integration">
-        <div className="form-integration-title">📋 Google Form 回答連携</div>
-        <div className="url-input-group">
-          <input
-            type="text"
-            id="spreadsheetUrl"
-            placeholder="スプレッドシートのURLを貼り付けてください"
-            value={spreadsheetUrl}
-            onChange={handleSpreadsheetUrlChange}
-          />
-        </div>
-        <button
-          type="button"
-          className="fetch-btn"
-          onClick={handleFetchForm}
-          disabled={isFetchingForm}
-        >
-          {isFetchingForm ? '取得中...' : '📥 回答を取得'}
-        </button>
+          {/* Google Form連携セクション */}
+          <div className="form-integration">
+            <div className="form-integration-title">📋 Google Form 回答連携</div>
+            <div className="url-input-group">
+              <input
+                type="text"
+                id="spreadsheetUrl"
+                placeholder="スプレッドシートのURLを貼り付けてください"
+                value={spreadsheetUrl}
+                onChange={handleSpreadsheetUrlChange}
+              />
+            </div>
+            <button
+              type="button"
+              className="fetch-btn"
+              onClick={handleFetchForm}
+              disabled={isFetchingForm}
+            >
+              {isFetchingForm ? '取得中...' : '回答を取得'}
+            </button>
 
-        {formResponse && (
-          <div className="attendance-info active">
-            <div className="attendance-stats">
-              <div className="stat-item">
-                <div className="stat-number">{formResponse.attendance_yes}</div>
-                <div className="stat-label">参加</div>
+            {formResponse && (
+              <div className="attendance-info active">
+                <div className="attendance-stats">
+                  <div className="stat-item">
+                    <div className="stat-number">{formResponse.attendance_yes}</div>
+                    <div className="stat-label">参加</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">{formResponse.attendance_no}</div>
+                    <div className="stat-label">不参加</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">{formResponse.total}</div>
+                    <div className="stat-label">回答数</div>
+                  </div>
+                </div>
               </div>
-              <div className="stat-item">
-                <div className="stat-number">{formResponse.attendance_no}</div>
-                <div className="stat-label">不参加</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-number">{formResponse.total}</div>
-                <div className="stat-label">回答数</div>
+            )}
+          </div>
+
+          <form onSubmit={handleSearch}>
+            {/* エリア選択 */}
+            <div className="form-group">
+              <label>
+                エリア選択<span className="required">*</span>
+              </label>
+              <div className="area-hierarchy">
+                <div className="area-selection">
+                  <select
+                    id="largeArea"
+                    value={selectedLargeArea}
+                    onChange={handleLargeAreaChange}
+                    required
+                  >
+                    <option value="">都道府県を選択してください</option>
+                    {largeAreas.map((area) => (
+                      <option key={area.code} value={area.code}>
+                        {area.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="area-selection">
+                  <select
+                    id="middleArea"
+                    value={selectedMiddleArea}
+                    onChange={handleMiddleAreaChange}
+                    disabled={!selectedLargeArea}
+                  >
+                    <option value="">広域エリアを選択してください</option>
+                    {middleAreas.map((area) => (
+                      <option key={area.code} value={area.code}>
+                        {area.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="area-selection">
+                  <select
+                    id="smallArea"
+                    value={selectedSmallArea}
+                    onChange={(e) => setSelectedSmallArea(e.target.value)}
+                    disabled={!selectedMiddleArea || smallAreas.length === 0}
+                  >
+                    <option value="">詳細エリアを選択してください</option>
+                    {smallAreas.map((area) => (
+                      <option key={area.code} value={area.code}>
+                        {area.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="helper-text">
+                    ※ 詳細エリアの入力は任意です
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
 
-      <form onSubmit={handleSearch}>
-        {/* エリア選択 */}
-        <div className="form-group">
-          <label>
-            エリア選択<span className="required">*</span>
-          </label>
-          <div className="area-hierarchy">
-            <div className="area-selection">
+            {/* 予算 */}
+            <div className="form-group">
+              <label htmlFor="budget">
+                予算<span className="required">*</span>
+              </label>
               <select
-                id="largeArea"
-                value={selectedLargeArea}
-                onChange={handleLargeAreaChange}
+                id="budget"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
                 required
               >
-                <option value="">都道府県を選択してください</option>
-                {largeAreas.map((area) => (
-                  <option key={area.code} value={area.code}>
-                    {area.name}
-                  </option>
-                ))}
+                <option value="">予算を選択してください</option>
+                <option value="B009">~500円</option>
+                <option value="B010">501~1000円</option>
+                <option value="B011">1001~1500円</option>
+                <option value="B001">1501~2000円</option>
+                <option value="B002">2001~3000円</option>
+                <option value="B003">3001~4000円</option>
+                <option value="B008">4001~5000円</option>
+                <option value="B004">5001~7000円</option>
+                <option value="B005">7001~10000円</option>
+                <option value="B006">10001~15000円</option>
+                <option value="B012">15001~20000円</option>
+                <option value="B013">20001~30000円</option>
+                <option value="B014">30001円~</option>
               </select>
             </div>
-            <div className="area-selection">
-              <select
-                id="middleArea"
-                value={selectedMiddleArea}
-                onChange={handleMiddleAreaChange}
-                disabled={!selectedLargeArea}
+
+            {/* 参加人数 */}
+            <div className="form-group">
+              <label htmlFor="partyCapacity">
+                参加人数<span className="required">*</span>
+              </label>
+              <input
+                type="number"
+                id="partyCapacity"
+                min="1"
+                value={partyCapacity}
+                onChange={(e) => setPartyCapacity(e.target.value ? parseInt(e.target.value) : '')}
+                placeholder="人数を入力してください"
+                required
+              />
+              <p
+                className="helper-text"
+                style={{
+                  color: formResponse && partyCapacity !== formResponse.attendance_yes ? '#ff6b6b' : formResponse ? '#ffffff' : '#0f3460',
+                  fontWeight: formResponse ? '600' : 'normal',
+                }}
               >
-                <option value="">広域エリアを選択してください</option>
-                {middleAreas.map((area) => (
-                  <option key={area.code} value={area.code}>
-                    {area.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="area-selection">
-              <select
-                id="smallArea"
-                value={selectedSmallArea}
-                onChange={(e) => setSelectedSmallArea(e.target.value)}
-                disabled={!selectedMiddleArea || smallAreas.length === 0}
-              >
-                <option value="">詳細エリアを選択してください</option>
-                {smallAreas.map((area) => (
-                  <option key={area.code} value={area.code}>
-                    {area.name}
-                  </option>
-                ))}
-              </select>
-              <p className="helper-text">
-                ※ 詳細エリアは任意です(選択しない場合は広域エリア全体で検索)
+                {formResponse
+                  ? partyCapacity !== formResponse.attendance_yes
+                    ? `※ Google Formの参加人数(${formResponse.attendance_yes}名)と異なります。`
+                    : ''
+                  : '※ フォーム回答を取得すると自動設定されます'}
               </p>
             </div>
-          </div>
-        </div>
 
-        {/* 予算 */}
-        <div className="form-group">
-          <label htmlFor="budget">
-            予算<span className="required">*</span>
-          </label>
-          <select
-            id="budget"
-            value={budget}
-            onChange={(e) => setBudget(e.target.value)}
-            required
-          >
-            <option value="">予算を選択してください</option>
-            <option value="B009">~500円</option>
-            <option value="B010">501~1000円</option>
-            <option value="B011">1001~1500円</option>
-            <option value="B001">1501~2000円</option>
-            <option value="B002">2001~3000円</option>
-            <option value="B003">3001~4000円</option>
-            <option value="B008">4001~5000円</option>
-            <option value="B004">5001~7000円</option>
-            <option value="B005">7001~10000円</option>
-            <option value="B006">10001~15000円</option>
-            <option value="B012">15001~20000円</option>
-            <option value="B013">20001~30000円</option>
-            <option value="B014">30001円~</option>
-          </select>
-        </div>
-
-        {/* 参加人数 */}
-        <div className="form-group">
-          <label htmlFor="partyCapacity">
-            参加人数<span className="required">*</span>
-          </label>
-          <input
-            type="number"
-            id="partyCapacity"
-            min="1"
-            value={partyCapacity}
-            onChange={(e) => setPartyCapacity(e.target.value ? parseInt(e.target.value) : '')}
-            placeholder="人数を入力してください"
-            required
-          />
-          <p
-            className="helper-text"
-            style={{
-              color: formResponse ? '#667eea' : '#666',
-              fontWeight: formResponse ? '600' : 'normal',
-            }}
-          >
-            ※{' '}
-            {formResponse
-              ? 'フォーム回答から自動設定されました（必要に応じて変更できます）'
-              : '宴会可能人数で検索します（フォーム回答を取得すると自動設定されます）'}
-          </p>
-        </div>
-
-        {/* 開催日 */}
-        <div className="form-group">
-          <label htmlFor="eventDate">開催日(任意)</label>
-          <input
-            type="date"
-            id="eventDate"
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
-          />
-          <p className="helper-text">
-            ※ 指定した日に営業している店舗のみ検索します(定休日を考慮)
-          </p>
-        </div>
-
-        {/* 取得件数 */}
-        <div className="form-group">
-          <label htmlFor="targetCount">取得件数</label>
-          <select
-            id="targetCount"
-            value={targetCount}
-            onChange={(e) => setTargetCount(parseInt(e.target.value))}
-          >
-            <option value={5}>5件</option>
-            <option value={10}>10件</option>
-            <option value={20}>20件</option>
-            <option value={30}>30件</option>
-            <option value={50}>50件</option>
-          </select>
-        </div>
-
-        <button type="submit" disabled={isSearching}>
-          🔍 検索する
-        </button>
-      </form>
-
-      {isSearching && (
-        <div className="loading active">
-          <div className="spinner"></div>
-          <p style={{ marginTop: '10px', color: '#667eea' }}>検索中...</p>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className="result error">
-          <h3>❌ エラー</h3>
-          <p>{errorMessage}</p>
-          <p style={{ marginTop: '10px', fontSize: '12px' }}>
-            詳細はブラウザのコンソール(F12)を確認してください。
-          </p>
-        </div>
-      )}
-
-      {searchResult && (
-        <div className="result success">
-          <h3>✅ 検索完了!</h3>
-          <p>{searchResult.message}</p>
-          <p>検索店舗数: {searchResult.searched_count || 0}件</p>
-          <p>DynamoDB保存: {searchResult.saved_to_dynamodb || 0}件</p>
-
-          {(searchResult.shops || searchResult.selected_shops) && (searchResult.shops?.length || searchResult.selected_shops?.length || 0) > 0 ? (
-            <div className="shop-list">
-              {(searchResult.shops || searchResult.selected_shops || []).map((shop, index) => {
-                const features = getFeatures(shop);
-                return (
-                  <div key={shop.id} className="shop-item">
-                    <div className="shop-name">
-                      {index + 1}. {shop.name || 'N/A'}
-                    </div>
-                    {shop.catch && <div className="shop-catch">💬 {shop.catch}</div>}
-                    {(shop.photo_url || shop.logo_image) && (
-                      <div className="photo-gallery">
-                        {shop.photo_url && (
-                          <img
-                            src={shop.photo_url}
-                            alt="店舗写真"
-                            className="shop-photo"
-                          />
-                        )}
-                        {shop.logo_image && (
-                          <img
-                            src={shop.logo_image}
-                            alt="ロゴ"
-                            className="shop-photo"
-                          />
-                        )}
-                      </div>
-                    )}
-                    <div className="shop-info">📍 {shop.address || 'N/A'}</div>
-                    {shop.station_name && (
-                      <div className="shop-info">🚉 {shop.station_name}</div>
-                    )}
-                    {shop.access && (
-                      <div className="shop-info">🚶 {shop.access}</div>
-                    )}
-                    <div className="shop-info">🍽️ {shop.genre || 'N/A'}</div>
-                    <div className="shop-info">💰 {shop.budget_average || shop.budget || 'N/A'}</div>
-                    <div className="shop-info">
-                      👥 {shop.party_capacity || 'N/A'}人
-                    </div>
-                    {features.length > 0 && (
-                      <div className="shop-features">
-                        {features.map((feature) => (
-                          <span key={feature} className="feature-badge">
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    {shop.url && (
-                      <a
-                        href={shop.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shop-link"
-                      >
-                        詳細を見る →
-                      </a>
-                    )}
-                  </div>
-                );
-              })}
+            {/* 開催日 */}
+            <div className="form-group">
+              <label htmlFor="eventDate">開催日(任意)</label>
+              <input
+                type="date"
+                id="eventDate"
+                value={eventDate}
+                onChange={(e) => setEventDate(e.target.value)}
+              />
+              <p className="helper-text">
+                ※ 指定した日に営業している店舗のみ検索します
+              </p>
             </div>
-          ) : (
-            <p style={{ marginTop: '15px' }}>
-              条件に合う店舗が見つかりませんでした。
-            </p>
+
+            {/* 取得件数 */}
+            <div className="form-group">
+              <label htmlFor="targetCount">取得件数</label>
+              <input
+                type="range"
+                id="targetCount"
+                min="10"
+                max="50"
+                step="10"
+                value={targetCount}
+                onChange={(e) => setTargetCount(parseInt(e.target.value))}
+                style={{
+                  width: '100%',
+                  padding: '8px',
+                  cursor: 'pointer'
+                }}
+              />
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '0.9em',
+                color: '#0f3460',
+              }}>
+                <span>狭く</span>
+                <span>広く</span>
+              </div>
+            </div>
+
+            <button type="submit" disabled={isSearching}>
+              検索する
+            </button>
+          </form>
+
+          {isSearching && (
+            <div className="loading active">
+              <div className="spinner"></div>
+              <p style={{ marginTop: '10px', color: '#667eea' }}>検索中...</p>
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="result error">
+              <h3>❌ エラー</h3>
+              <p>{errorMessage}</p>
+              <p style={{ marginTop: '10px', fontSize: '12px' }}>
+                詳細はブラウザのコンソール(F12)を確認してください。
+              </p>
+            </div>
+          )}
+
+          {searchResult && (
+            <div className="result success">
+              <h3>✅ 検索完了!</h3>
+
+              {
+                (!searchResult.shops && !searchResult.selected_shops) || ((searchResult.shops?.length || 0) === 0 && (searchResult.selected_shops?.length || 0) === 0) ? (
+                  <p style={{ marginTop: '15px' }}>
+                    条件に合う店舗が見つかりませんでした。
+                  </p>
+                ) :  <p style={{ marginTop: '15px' }}>
+                    ゲームを始めましょう！
+                  </p>
+              }
+            </div>
           )}
         </div>
-      )}
-        </div>
       </div>
-      <Footer 
+      <Footer
         onStartGame={handleStartGame}
         canStartGame={!!(searchResult && ((searchResult.shops && searchResult.shops.length > 0) || (searchResult.selected_shops && searchResult.selected_shops.length > 0)) && !isStartingGame)}
       />

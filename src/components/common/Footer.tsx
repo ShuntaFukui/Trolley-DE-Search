@@ -20,7 +20,6 @@ const Footer: React.FC<FooterProps> = ({ onStartGame, canStartGame = false }) =>
             ゲーム開始
           </button>
         </div>
-        <div className="footer-team-name">Team I "Neptune"</div>
       </footer>
     );
   }
