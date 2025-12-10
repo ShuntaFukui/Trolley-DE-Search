@@ -21,44 +21,38 @@ const ConfirmPage: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="confirm-page-container">
       <Header />
-      <div style={{ flex: 1, padding: '20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+      <div className="confirm-page-content">
     <div className="container">
       <h1>🔍 検索結果の確認</h1>
       <p className="subtitle">現在の検索結果をやりなおしますか？</p>
 
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
+      <div className="confirm-section">
         <h3>検索条件</h3>
-        <div style={{ background: '#f8f9fa', padding: '15px', borderRadius: '8px', marginTop: '10px' }}>
+        <div className="confirm-conditions">
           <p><strong>エリア:</strong> {searchConditions?.area || 'N/A'}</p>
           <p><strong>予算:</strong> {searchConditions?.budget || 'N/A'}</p>
           <p><strong>参加人数:</strong> {searchConditions?.partyCapacity || 'N/A'}人</p>
         </div>
       </div>
 
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
+      <div className="confirm-section">
         <h3>検索結果（{restaurants.length}件）</h3>
         {restaurants.length > 0 ? (
-          <div style={{ maxHeight: '400px', overflowY: 'auto', marginTop: '15px' }}>
+          <div className="confirm-restaurant-list">
             {restaurants.map((restaurant: Restaurant, index: number) => (
               <div
                 key={restaurant.id || index}
-                style={{
-                  background: 'white',
-                  padding: '15px',
-                  marginBottom: '10px',
-                  borderRadius: '8px',
-                  borderLeft: '4px solid #667eea'
-                }}
+                className="confirm-restaurant-item"
               >
-                <div style={{ fontWeight: 600, color: '#333', marginBottom: '5px' }}>
+                <div className="confirm-restaurant-name">
                   {index + 1}. {restaurant.name || 'N/A'}
                 </div>
-                <div style={{ fontSize: '13px', color: '#666' }}>
+                <div className="confirm-restaurant-detail">
                   📍 {restaurant.address || 'N/A'}
                 </div>
-                <div style={{ fontSize: '13px', color: '#666' }}>
+                <div className="confirm-restaurant-detail">
                   🍽️ {restaurant.genre || 'N/A'}
                 </div>
               </div>
@@ -69,34 +63,16 @@ const ConfirmPage: React.FC = () => {
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: '20px', marginTop: '40px' }}>
+      <div className="confirm-button-group">
         <button
           onClick={handleBack}
-          style={{
-            flex: 1,
-            padding: '15px',
-            background: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            cursor: 'pointer'
-          }}
+          className="confirm-back-button"
         >
           ← やりなおす
         </button>
         <button
           onClick={handleConfirm}
-          style={{
-            flex: 1,
-            padding: '15px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '16px',
-            cursor: 'pointer'
-          }}
+          className="confirm-submit-button"
         >
           この条件で決定 →
         </button>

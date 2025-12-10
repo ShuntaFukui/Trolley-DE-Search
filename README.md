@@ -419,10 +419,15 @@ private_room?: string | boolean; // Lambda: string, モック: boolean
 
 ### スタイルの管理
 
-- **index.css**: 共通スタイル + ManagePage専用スタイル
+**原則: インラインスタイルは使用せず、すべてCSSファイルで管理**
+
+- **index.css**: 共通スタイル + ManagePage、StartPage、ConfirmPage用スタイル
   - ヘッダー: padding 20px、logo height 80px、title font-size 22px
   - フッター: ManagePage用(app-footer)とその他ページ用(footer-empty)の2種類
   - 共通レイアウト、ボタン、フォーム要素
+  - ManagePage専用クラス: `.manage-page-container`, `.manage-page-content`, `.manage-slider-container`等
+  - StartPage専用クラス: `.start-page-container`, `.start-page-content`
+  - ConfirmPage専用クラス: `.confirm-page-container`, `.confirm-page-content`, `.confirm-restaurant-item`等
   
 - **TrolleyGame.css**: トーナメントゲーム専用スタイル（約1400行）
   - ゲーム画面: 黒背景(#000000)
@@ -435,6 +440,15 @@ private_room?: string | boolean; // Lambda: string, モック: boolean
     - 4位・5位: グレー(#555555)
     - アクセス情報: タップで展開/折りたたみ機能
   - レスポンシブデザイン: 768px、480px、横向きモードのメディアクエリ
+
+**例外**: 動的に変化するスタイル（条件分岐による色変更等）のみインラインスタイルを許可
+```typescript
+// ManagePage.tsx の参加人数警告表示
+style={{
+  color: formResponse && partyCapacity !== formResponse.attendance_yes ? '#ff6b6b' : formResponse ? '#ffffff' : '#0f3460',
+  fontWeight: formResponse ? '600' : 'normal',
+}}
+```
 
 ### 環境変数
 

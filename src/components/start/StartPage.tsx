@@ -58,9 +58,9 @@ const StartPage: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="start-page-container">
       <Header />
-    <div className="trolley-game" style={{ flex: 1 }}>
+    <div className="trolley-game start-page-content">
       <div className="start-screen">
         <div className="game-title">
           <div className="title-main">ボタン：開始</div>
@@ -85,7 +85,7 @@ const StartPage: React.FC = () => {
               <p className="question-count">
                 全7試合（1回戦4試合・準決勝2試合・3位決定戦・決勝）
               </p>
-              <p style={{ marginTop: '15px' }}>
+              <p className="start-restaurant-count">
                 対象レストラン: {restaurants.length}件
               </p>
             </div>

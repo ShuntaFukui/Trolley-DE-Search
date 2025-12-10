@@ -240,41 +240,14 @@ const ManagePage: React.FC = () => {
   };
 
   return (
-    <div style={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden'
-    }}>
+    <div className="manage-page-container">
       <Header pageTitle="検索" />
-      <div style={{
-        flex: 1,
-        padding: '10px',
-        paddingTop: 'calc(60px + 20px)',
-        paddingBottom: 'calc(60px + 20px)',
-        background: 'linear-gradient(180deg, #bea493 0%, #bea493 100%)',
-        overflowY: 'auto',
-        overflowX: 'hidden'
-      }}>
-        <div className="container" style={{
-          maxHeight: 'none',
-          marginBottom: '20px'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div className="manage-page-content">
+        <div className="container manage-container">
+          <div className="manage-header">
             <button
               onClick={() => navigate('/')}
-              style={{
-                padding: '10px 20px',
-                background: '#4fc3f7',
-                color: '#ffffff',
-                border: '2px solid #87ceeb',
-                borderRadius: '20px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                boxShadow: '0 2px 5px #0f3460',
-                transition: 'all 0.3s'
-              }}
+              className="manage-back-button"
             >
               ホームに戻る
             </button>
@@ -463,18 +436,9 @@ const ManagePage: React.FC = () => {
                 step="10"
                 value={targetCount}
                 onChange={(e) => setTargetCount(parseInt(e.target.value))}
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  cursor: 'pointer'
-                }}
+                className="manage-slider-container"
               />
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '0.9em',
-                color: '#0f3460',
-              }}>
+              <div className="manage-slider-labels">
                 <span>狭く</span>
                 <span>広く</span>
               </div>
@@ -488,7 +452,7 @@ const ManagePage: React.FC = () => {
           {isSearching && (
             <div className="loading active">
               <div className="spinner"></div>
-              <p style={{ marginTop: '10px', color: '#667eea' }}>検索中...</p>
+              <p className="manage-loading-text">検索中...</p>
             </div>
           )}
 
@@ -496,7 +460,7 @@ const ManagePage: React.FC = () => {
             <div className="result error">
               <h3>❌ エラー</h3>
               <p>{errorMessage}</p>
-              <p style={{ marginTop: '10px', fontSize: '12px' }}>
+              <p className="manage-error-details">
                 詳細はブラウザのコンソール(F12)を確認してください。
               </p>
             </div>
@@ -508,10 +472,10 @@ const ManagePage: React.FC = () => {
 
               {
                 (!searchResult.shops && !searchResult.selected_shops) || ((searchResult.shops?.length || 0) === 0 && (searchResult.selected_shops?.length || 0) === 0) ? (
-                  <p style={{ marginTop: '15px' }}>
+                  <p className="manage-result-text">
                     条件に合う店舗が見つかりませんでした。
                   </p>
-                ) :  <p style={{ marginTop: '15px' }}>
+                ) :  <p className="manage-result-text">
                     ゲームを始めましょう！
                   </p>
               }
