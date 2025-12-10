@@ -22,89 +22,8 @@
 }
 
 /* ========================================
-   スタート画面
-   ゲーム開始前の初期画面
+   スタートボタン (Home画面用)
    ======================================== */
-.start-screen {
-  text-align: center;
-  background: #fdf8f0;
-  padding: 60px 50px;
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 2px solid #b7e1f5;
-  max-width: 600px;
-  animation: slideDown 0.6s ease-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* タイトルエリア */
-.game-title {
-  margin-bottom: 40px;
-}
-
-/* メインタイトル */
-.title-main {
-  font-size: 3em;
-  font-weight: bold;
-  color: #4fc3f7;
-  /* 金色の光るテキストシャドウ - 3層構造で発光効果 */
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
-               0 4px 8px rgba(0, 0, 0, 0.8);
-  letter-spacing: 3px; /* 文字間隔 */
-  margin-bottom: 10px;
-}
-
-/* サブタイトル */
-.title-sub {
-  font-size: 1.2em;
-  color: #6c757d;
-  letter-spacing: 2px;
-  text-shadow: none;
-}
-
-/* ゲーム情報エリア */
-.game-info {
-  margin: 30px 0;
-}
-
-/* ゲーム説明テキスト */
-.game-info p {
-  font-size: 1.3em;
-  color: #495057;
-  margin: 15px 0;
-  text-shadow: none;
-}
-
-/* 問題数表示 - 「全5問」など */
-.question-count {
-  font-size: 1.8em !important;
-  color: #BEA493 !important; /* 金色で強調 */
-  font-weight: bold;
-  margin-top: 20px !important;
-}
-
-/* ローディングメッセージ */
-.loading-message {
-  font-size: 1.5em !important;
-  color: #87ceeb !important;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* エラーメッセージ */
-.error-message {
-  font-size: 1.2em !important;
-  color: #ff6b6b !important;
-  margin-top: 15px !important;
-  padding: 10px;
-  background: rgba(255, 107, 107, 0.1);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 107, 107, 0.3);
-}
-
-/* スタートボタン */
 .start-button {
   margin-top: 0;
   width: 80vw;
@@ -448,20 +367,6 @@
   margin-top: 80px; /* app-headerの高さ分を確保 */
   position: relative;
   z-index: 10; /* 背景より前面 */
-  /* 上部から透明になるグラデーション背景 */
-  /* background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%); */
-}
-
-/* 問題番号表示 - 「第1問 / 全5問」など */
-.question-number {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #BEA493; /* 金色 */
-  /* 三重の発光テキストシャドウ */
-  text-shadow: 
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 215, 0, 0.5),
-    0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* トーナメント情報表示 */
@@ -475,12 +380,6 @@
   color: #f5e6d3;
   text-shadow: none;
   margin-bottom: 5px;
-}
-
-.match-info {
-  font-size: 1.5em;
-  color: #87ceeb;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* ========================================
@@ -755,11 +654,6 @@
   cursor: not-allowed; /* カーソルを禁止マークに */
 }
 
-/* ボタン内のテキスト */
-.answer-text {
-  display: block;
-}
-
 /* レストラン写真の表示 */
 .restaurant-photo {
   width: 100%;
@@ -792,21 +686,6 @@
   line-height: 1.3;
   word-break: break-word;
   overflow-wrap: break-word;
-}
-
-.restaurant-genre {
-  font-size: 0.7em;
-  color: #BEA493;
-  font-weight: normal;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.restaurant-catch {
-  font-size: 0.65em;
-  color: #87ceeb;
-  font-weight: normal;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  line-height: 1.3;
 }
 
 /* ========================================
@@ -869,23 +748,6 @@
   position: relative;
 }
 
-.rank-label {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #4fc3f7;
-  position: absolute;
-  left: -60px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.rank-value {
-  font-size: 1.6em;
-  font-weight: bold;
-  color: #BEA493;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
-}
-
 /* レストラン情報の表示(結果ページ) */
 .rank-restaurant {
   display: flex;
@@ -903,14 +765,6 @@
   gap: 10px;
 }
 
-.rank-restaurant-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-  min-width: 0;
-}
-
 .rank-restaurant-name {
   font-size: 1.1em;
   font-weight: bold;
@@ -924,13 +778,6 @@
   background: rgba(79, 195, 247, 0.08);
   border-radius: 10px;
   border: 1px solid rgba(79, 195, 247, 0.2);
-}
-
-.rank-restaurant-genre {
-  font-size: 1.2em;
-  color: #87ceeb;
-  font-weight: normal;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .rank-restaurant-access {
@@ -964,35 +811,6 @@
   text-align: left;
 }
 
-.rank-restaurant-mini {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  background: rgba(190, 164, 147, 0.2);
-  padding: 8px 15px;
-  border-radius: 10px;
-  border: 1px solid rgba(190, 164, 147, 0.3);
-}
-
-.rank-restaurant-name-mini {
-  font-size: 1.2em;
-  color: #BEA493;
-  font-weight: bold;
-}
-
-.rank-restaurant-genre-mini {
-  font-size: 0.9em;
-  color: #87ceeb;
-  font-weight: normal;
-}
-
-.rank-restaurant-access-mini {
-  font-size: 0.85em;
-  color: #a0d8f1;
-  margin-top: 3px;
-  line-height: 1.3;
-}
-
 /* 予約ボタン */
 .reservation-button {
   display: block;
@@ -1011,25 +829,6 @@
 .reservation-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(79, 195, 247, 0.5);
-}
-
-.reservation-button-mini {
-  display: inline-block;
-  margin-top: 5px;
-  padding: 5px 15px;
-  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 15px;
-  font-size: 0.9em;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
-}
-
-.reservation-button-mini:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.5);
 }
 
 .rank-1 {
@@ -1074,23 +873,6 @@
   color: #555555;
 }
 
-.rank-value-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.rank-value-item {
-  background: rgba(190, 164, 147, 0.2);
-  padding: 8px 15px;
-  border-radius: 10px;
-  font-size: 1.2em;
-  color: #BEA493;
-  border: 1px solid rgba(190, 164, 147, 0.3);
-}
-
 .saving-message {
   color: #87ceeb;
   font-size: 1.2em;
@@ -1101,27 +883,6 @@
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
-}
-
-.result-message {
-  margin: 30px 0;
-  font-size: 2.5em;
-  font-weight: bold;
-}
-
-.result-message .perfect {
-  color: #BEA493;
-  text-shadow: 0 0 20px rgba(190, 164, 147, 1);
-  animation: perfectPulse 1s ease-in-out infinite;
-}
-
-@keyframes perfectPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
 }
 
 .retry-button {

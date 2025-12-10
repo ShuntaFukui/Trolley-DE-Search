@@ -194,12 +194,8 @@ develop/
 │   │   ├── game/         # トーナメントゲーム
 │   │   │   ├── TrolleyGame.tsx   # メインゲーム画面
 │   │   │   └── Countdown.tsx     # カウントダウン
-│   │   ├── result/       # 結果表示
-│   │   │   └── ResultPage.tsx    # トーナメント結果表示
-│   │   ├── start/        # スタート画面(未使用)
-│   │   │   └── StartPage.tsx     # トロッコゲーム開始画面
-│   │   └── confirm/      # 確認画面(未使用)
-│   │       └── ConfirmPage.tsx   # 検索結果確認画面
+│   │   └── result/       # 結果表示
+│   │       └── ResultPage.tsx    # トーナメント結果表示
 │   ├── services/         # APIクライアント
 │   │   └── api.ts        # 統合API通信サービス
 │   └── styles/           # スタイルシート
@@ -398,10 +394,6 @@ interface TournamentResult {
 - `Footer.tsx` - 共通フッター（ManagePage専用とその他用の2パターン）
 - `Countdown.tsx` - カウントダウン表示
 
-未使用コンポーネント（将来的な機能拡張用）:
-- `StartPage.tsx` - トロッコゲーム開始画面
-- `ConfirmPage.tsx` - 検索結果確認画面
-
 ### API構成の理解
 
 - **Lambda API**: ManagePage専用、AWS環境に直接接続(エリア取得、検索、AI選定)
@@ -421,13 +413,11 @@ private_room?: string | boolean; // Lambda: string, モック: boolean
 
 **原則: インラインスタイルは使用せず、すべてCSSファイルで管理**
 
-- **index.css**: 共通スタイル + ManagePage、StartPage、ConfirmPage用スタイル
+- **index.css**: 共通スタイル + ManagePage用スタイル
   - ヘッダー: padding 20px、logo height 80px、title font-size 22px
   - フッター: ManagePage用(app-footer)とその他ページ用(footer-empty)の2種類
   - 共通レイアウト、ボタン、フォーム要素
   - ManagePage専用クラス: `.manage-page-container`, `.manage-page-content`, `.manage-slider-container`等
-  - StartPage専用クラス: `.start-page-container`, `.start-page-content`
-  - ConfirmPage専用クラス: `.confirm-page-container`, `.confirm-page-content`, `.confirm-restaurant-item`等
   
 - **TrolleyGame.css**: トーナメントゲーム専用スタイル（約1400行）
   - ゲーム画面: 黒背景(#000000)
