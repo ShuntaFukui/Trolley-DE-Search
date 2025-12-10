@@ -58,14 +58,14 @@ export default function ResultPage() {
       <Header pageTitle="結果" />
       <div className="trolley-game page-content-flex">
         <div className="result-screen">
-          <div className="result-title">トーナメント終了！</div>
+          <div className="result-title">サーチ完了！</div>
           
           <div className="ranking">
             <div className="rank-item rank-1">
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.first.name}</div>
-                  {finalRanking.first.url && (
+                  {finalRanking.first.url && finalRanking.first.url.trim() !== '' && (
                     <a 
                       href={finalRanking.first.url} 
                       target="_blank" 
@@ -76,7 +76,7 @@ export default function ResultPage() {
                     </a>
                   )}
                 </div>
-                {finalRanking.first.access && (
+                {finalRanking.first.access && finalRanking.first.access.trim() !== '' && (
                   <div 
                     className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''}`}
                     onClick={() => toggleAccess('first')}
@@ -90,7 +90,7 @@ export default function ResultPage() {
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.second.name}</div>
-                  {finalRanking.second.url && (
+                  {finalRanking.second.url && finalRanking.second.url.trim() !== '' && (
                     <a 
                       href={finalRanking.second.url} 
                       target="_blank" 
@@ -101,7 +101,7 @@ export default function ResultPage() {
                     </a>
                   )}
                 </div>
-                {finalRanking.second.access && (
+                {finalRanking.second.access && finalRanking.second.access.trim() !== '' && (
                   <div 
                     className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''}`}
                     onClick={() => toggleAccess('second')}
@@ -115,7 +115,7 @@ export default function ResultPage() {
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.third.name}</div>
-                  {finalRanking.third.url && (
+                  {finalRanking.third.url && finalRanking.third.url.trim() !== '' && (
                     <a 
                       href={finalRanking.third.url} 
                       target="_blank" 
@@ -126,7 +126,7 @@ export default function ResultPage() {
                     </a>
                   )}
                 </div>
-                {finalRanking.third.access && (
+                {finalRanking.third.access && finalRanking.third.access.trim() !== '' && (
                   <div 
                     className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''}`}
                     onClick={() => toggleAccess('third')}
@@ -140,7 +140,7 @@ export default function ResultPage() {
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
                   <div className="rank-restaurant-name">{finalRanking.fourth.name}</div>
-                  {finalRanking.fourth.url && (
+                  {finalRanking.fourth.url && finalRanking.fourth.url.trim() !== '' && (
                     <a 
                       href={finalRanking.fourth.url} 
                       target="_blank" 
@@ -151,7 +151,7 @@ export default function ResultPage() {
                     </a>
                   )}
                 </div>
-                {finalRanking.fourth.access && (
+                {finalRanking.fourth.access && finalRanking.fourth.access.trim() !== '' && (
                   <div 
                     className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''}`}
                     onClick={() => toggleAccess('fourth')}
@@ -166,7 +166,7 @@ export default function ResultPage() {
                 <div className="rank-restaurant">
                   <div className="rank-restaurant-top">
                     <div className="rank-restaurant-name">{restaurant.name}</div>
-                    {restaurant.url && (
+                    {restaurant.url && restaurant.url.trim() !== '' && (
                       <a 
                         href={restaurant.url} 
                         target="_blank" 
@@ -177,7 +177,7 @@ export default function ResultPage() {
                       </a>
                     )}
                   </div>
-                  {restaurant.access && (
+                  {restaurant.access && restaurant.access.trim() !== '' && (
                     <div 
                       className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''}`}
                       onClick={() => toggleAccess(`fifth-${restaurant.shop_id}`)}

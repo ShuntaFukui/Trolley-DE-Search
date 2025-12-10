@@ -162,27 +162,12 @@
   right: 0;
   bottom: 0;
   background-image: url('/images/BackGround.png'); /* 同じ背景画像 */
+  background-size: cover; /* PC/スマホ共通でcoverに統一 */
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0; /* 初期状態は透明 */
   z-index: 0;
   pointer-events: none; /* クリックイベントを貫通 */
-}
-
-/* PC用: coverで画面全体をカバー */
-@media (min-width: 769px) {
-  .game-screen .background-next {
-    background-size: cover;
-    transform: scale(1);
-  }
-}
-
-/* スマホ用: containで元の画像サイズを保持 */
-@media (max-width: 768px) {
-  .game-screen .background-next {
-    background-size: contain;
-    transform: scale(0.3);
-  }
 }
 
 /* ========================================
@@ -321,10 +306,10 @@
    左右共通で使用される
    ======================================== */
 
-/* スマホ用: containで拡大しながら出現 */
+/* スマホ用: coverで拡大しながら出現 */
 @keyframes appearFromBehind {
   0% {
-    transform: scale(0.5); /* 30%サイズ(遠く)から開始 */
+    transform: scale(0.5); /* 50%サイズ(遠く)から開始 */
     opacity: 0; /* 透明 */
     filter: blur(10px); /* 最初は強くぼかす */
   }
@@ -332,7 +317,7 @@
     filter: blur(6px); /* 徐々にぼかしを弱める */
   }
   100% {
-    transform: scale(1.66); /* containで画面全体をカバーする拡大率 */
+    transform: scale(1); /* 第1レイヤーと同じscale(1)に統一 */
     opacity: 1; /* 完全に表示 */
     filter: blur(0px); /* ぼかしなし(鮮明) */
   }
@@ -341,7 +326,7 @@
 /* PC用: coverで奥から出現 */
 @keyframes appearFromBehindPC {
   0% {
-    transform: scale(0.5); /* 30%サイズ(遠く)から開始 */
+    transform: scale(0.5); /* 50%サイズ(遠く)から開始 */
     opacity: 0; /* 透明 */
     filter: blur(10px); /* 最初は強くぼかす */
   }
@@ -349,7 +334,7 @@
     filter: blur(6px); /* 徐々にぼかしを弱める */
   }
   100% {
-    transform: scale(1); /* containで画面全体をカバーする拡大率 */
+    transform: scale(1); /* 第1レイヤーと同じscale(1)に統一 */
     opacity: 1; /* 完全に表示 */
     filter: blur(0px); /* ぼかしなし(鮮明) */
   }
@@ -501,29 +486,31 @@
    画面下部中央に配置されるプレイヤーの視点トロッコ
    ======================================== */
 
-/* トロッココンテナ - 画面下部から上部50%まで */
+/* トロッココンテナ - Footerの上に配置 */
 .trolley-container {
-  position: absolute;
+  position: fixed; /* absolute から fixed に変更 */
   margin: 0;
   padding: 0;
-  bottom: 0; /* 画面下端 */
+  bottom: 0; /* Footerと完全に接するように0に設定 */
   left: 0; /* 左端から */
   right: 0; /* 右端まで */
   width: 100%; /* 横幅100% */
-  height: 50vh; /* 画面高さの50% */
-  z-index: 5; /* 背景より前、UIより後ろ */
+  height: calc(100vh - 120px); /* Header(120px)を除いた高さ、Footerは重ねる */
+  z-index: 5; /* 背景より前、Footerより後ろ */
   pointer-events: none; /* クリックイベント無効 */
   display: flex;
-  align-items: flex-end; /* 下端揃え */
+  align-items: flex-end; /* 画像の下端を基準に配置 */
   justify-content: center; /* 中央揃え */
+  padding-bottom: 30px; /* Footerのpadding分だけ画像を上げる */
 }
 
-/* トロッコ画像 - コンテナの上端(=画面中央)に配置 */
+/* トロッコ画像 - コンテナの下端に配置 */
 .trolley-image {
   margin: 0;
   padding: 0;
-  position: relative; /* absolute から relative に変更 */
-  height: 50vh; 
+  position: relative;
+  height: auto; /* 高さを自動調整 */
+  max-height: 100%; /* コンテナの高さを超えないように */
   width: auto; /* アスペクト比維持 */
   max-width: 100%; /* 画面幅を超えないように */
   object-fit: contain; /* アスペクト比を保ちながら収める */

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/index.css';
 import { apiService } from '../../services/api';
-import type { Area, Restaurant, SearchResult, FormResponse } from '../../services/api';
+import type { Area, SearchResult, FormResponse } from '../../services/api';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 
@@ -185,21 +185,6 @@ const ManagePage: React.FC = () => {
     } finally {
       setIsSearching(false);
     }
-  };
-
-  // 特徴バッジの生成
-  const getFeatures = (shop: Restaurant): string[] => {
-    const features: string[] = [];
-    if (shop.private_room) features.push('個室');
-    if (shop.free_drink) features.push('飲み放題');
-    if (shop.free_food) features.push('食べ放題');
-    if (shop.horigotatsu) features.push('掘りごたつ');
-    if (shop.tatami) features.push('座敷');
-    if (shop.karaoke) features.push('カラオケ');
-    if (shop.card) features.push('カード可');
-    if (shop.course) features.push('コース');
-    if (shop.non_smoking) features.push('禁煙席');
-    return features;
   };
 
   // ゲーム開始ボタン押下時の処理
@@ -482,6 +467,25 @@ const ManagePage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* ゲーム開始ローディングオーバーレイ */}
+        {isStartingGame && (
+          <div className="game-loading-overlay">
+            <div className="game-loading-content">
+              <div className="game-loading-trolley">
+                <img src="/images/trolley.png" alt="トロッコ" className="game-loading-trolley-image" />
+              </div>
+              <div className="game-loading-text">
+                <div className="game-loading-title">店舗を選定中</div>
+                <div className="game-loading-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <Footer
         onStartGame={handleStartGame}
