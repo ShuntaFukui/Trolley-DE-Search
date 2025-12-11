@@ -527,7 +527,6 @@ describe('プロジェクト全体のトーナメントアルゴリズム検証'
     });
 
     it('各ラウンドで正しいラベルの推奨者が使用される', () => {
-      const simulator = new TournamentSimulator(testRestaurants);
       const matches = [
         { round: '1回戦', expectedIndex: 0 },
         { round: '準決勝', expectedIndex: 1 },

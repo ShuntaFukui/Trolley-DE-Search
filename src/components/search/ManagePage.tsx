@@ -233,14 +233,74 @@ const ManagePage: React.FC = () => {
         return;
       }
 
+      // recommended_peopleに初期ラベリングを追加（0, 1, 2のインデックス順）
+      const addLabelsToRecommendedPeople = (restaurant: any) => {
+        const recommendedPeople = restaurant.recommended_people || [];
+        return {
+          ...restaurant,
+          recommended_people: recommendedPeople.map((person: any, index: number) => ({
+            ...person,
+            label: index
+          }))
+        };
+      };
+
+      // 全レストランのrecommended_peopleを収集し、重複しないようにラベルを再割り当て
+      const optimizeLabelsAcrossRestaurants = (restaurants: any[]) => {
+        const labelAssignments: Map<number, Set<string>> = new Map([
+          [0, new Set()],
+          [1, new Set()],
+          [2, new Set()]
+        ]);
+
+        return restaurants.map(restaurant => {
+          const people = restaurant.recommended_people || [];
+          if (people.length === 0) return restaurant;
+
+          const optimizedPeople = people.map((person: any) => {
+            const name = person.name;
+            let assignedLabel = person.label;
+            
+            if (labelAssignments.get(assignedLabel)?.has(name)) {
+              for (let label = 0; label <= 2; label++) {
+                if (!labelAssignments.get(label)?.has(name)) {
+                  assignedLabel = label;
+                  break;
+                }
+              }
+            }
+            
+            labelAssignments.get(assignedLabel)?.add(name);
+            
+            return {
+              ...person,
+              label: assignedLabel
+            };
+          });
+
+          return {
+            ...restaurant,
+            recommended_people: optimizedPeople
+          };
+        });
+      };
+
+      // 初期ラベリング
+      const labeledRestaurants = selectedResult.selected_shops.map(addLabelsToRecommendedPeople);
+      
+      // ラベル重複を解消
+      const optimizedRestaurants = optimizeLabelsAcrossRestaurants(labeledRestaurants);
+      
+      console.log('ラベリング最適化完了:', optimizedRestaurants);
+
       // ローディング中に画像を事前読み込み
-      await preloadImages(selectedResult.selected_shops);
+      await preloadImages(optimizedRestaurants);
       console.log('すべての画像の事前読み込み完了');
 
-      // manage > game へ遷移（AI選定された店舗を渡す）
+      // manage > game へ遷移（ラベリング済みの店舗を渡す）
       navigate('/game', {
         state: {
-          restaurants: selectedResult.selected_shops
+          restaurants: optimizedRestaurants
         }
       });
     } catch (error) {

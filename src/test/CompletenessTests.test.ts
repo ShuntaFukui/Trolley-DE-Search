@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 /**
  * 追加の網羅性テスト - エラーハンドリングと境界値
  */
 
 // テスト対象の関数を再定義
-interface Restaurant {
+interface RestaurantTest {
   id?: string;
   shop_id?: string;
   name: string;
