@@ -379,7 +379,7 @@ input:disabled {
 
 .fetch-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 3px 10px #0f3460;
+  box-shadow: 0 2px 5px #0f3460;
 }
 
 .fetch-btn:disabled {
@@ -533,10 +533,10 @@ input:disabled {
 }
 
 .footer-game-button:enabled {
-  background: linear-gradient(135deg, #a8dcf4 0%, #b7e1f5 100%);
+  background: #535bf2;
   color: #ffffff;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+  box-shadow: 0 2px 5px #0f3460;
 }
 
 .footer-game-button:disabled {

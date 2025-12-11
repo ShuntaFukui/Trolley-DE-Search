@@ -187,6 +187,29 @@ const ManagePage: React.FC = () => {
     }
   };
 
+  // 画像を事前読み込みする関数
+  const preloadImages = (shops: any[]) => {
+    console.log('画像の事前読み込み開始...', shops.length, '枚');
+    const imagePromises = shops
+      .filter(shop => shop.photo_url)
+      .map(shop => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            console.log('画像読み込み完了:', shop.name);
+            resolve(img);
+          };
+          img.onerror = () => {
+            console.warn('画像読み込み失敗:', shop.name, shop.photo_url);
+            resolve(null); // エラーでも続行
+          };
+          img.src = shop.photo_url;
+        });
+      });
+    
+    return Promise.all(imagePromises);
+  };
+
   // ゲーム開始ボタン押下時の処理
   const handleStartGame = async () => {
     const shops = searchResult?.shops || searchResult?.selected_shops || [];
@@ -209,6 +232,10 @@ const ManagePage: React.FC = () => {
         alert('店舗の選定に失敗しました');
         return;
       }
+
+      // ローディング中に画像を事前読み込み
+      await preloadImages(selectedResult.selected_shops);
+      console.log('すべての画像の事前読み込み完了');
 
       // manage > game へ遷移（AI選定された店舗を渡す）
       navigate('/game', {
@@ -429,7 +456,7 @@ const ManagePage: React.FC = () => {
               </div>
             </div> */}
 
-            <button type="submit" disabled={isSearching}>
+            <button type="submit" className="fetch-btn" disabled={isSearching}>
               検索する
             </button>
           </form>

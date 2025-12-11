@@ -15,7 +15,7 @@ export default function ResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
-  const [expandedAccess, setExpandedAccess] = useState<Set<string>>(new Set());
+  // const [expandedAccess, setExpandedAccess] = useState<Set<string>>(new Set());
 
   const state = location.state as ResultPageState | null;
 
@@ -40,7 +40,7 @@ export default function ResultPage() {
     navigate('/', { replace: true });
   };
 
-  const toggleAccess = (id: string) => {
+  /* const toggleAccess = (id: string) => {
     setExpandedAccess(prev => {
       const newSet = new Set(prev);
       if (newSet.has(id)) {
@@ -50,7 +50,7 @@ export default function ResultPage() {
       }
       return newSet;
     });
-  };
+  }; */
 
   const { finalRanking, restaurantInfo } = state;
 
@@ -90,32 +90,33 @@ export default function ResultPage() {
       <Header pageTitle="結果" />
       <div className="trolley-game page-content-flex">
         <div className="result-screen">
-          <div className="result-title">サーチ完了！</div>
+          {/* <div className="result-title">サーチ完了！</div> */}
           
           <div className="ranking">
             <div className="rank-item rank-1">
+              <div className="rank-number">1</div>
               <div className="rank-restaurant">
-                <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{enrichedRanking.first.name}</div>
-                  {enrichedRanking.first.url && enrichedRanking.first.url.trim() !== '' ? (
-                    <a 
-                      href={enrichedRanking.first.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="reservation-button"
-                    >
-                      予約
-                    </a>
-                  ) : (
-                    <button 
-                      className="reservation-button reservation-button-disabled"
-                      disabled
-                    >
-                      予約
-                    </button>
-                  )}
-                </div>
-                <div 
+                <div className="rank-restaurant-name">{enrichedRanking.first.name}</div>
+              </div>
+              <div className="rank-button-access">
+                {enrichedRanking.first.url && enrichedRanking.first.url.trim() !== '' ? (
+                  <a 
+                    href={enrichedRanking.first.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="reservation-button"
+                  >
+                    予約
+                  </a>
+                ) : (
+                  <button 
+                    className="reservation-button reservation-button-disabled"
+                    disabled
+                  >
+                    予約
+                  </button>
+                )}
+                {/* <div 
                   className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''} ${!enrichedRanking.first.access || enrichedRanking.first.access.trim() === '' ? 'access-disabled' : ''}`}
                   onClick={() => {
                     if (enrichedRanking.first.access && enrichedRanking.first.access.trim() !== '') {
@@ -127,32 +128,33 @@ export default function ResultPage() {
                     ? (expandedAccess.has('first') ? `📍 ${enrichedRanking.first.access}` : '📍')
                     : '🚫 アクセス情報なし'
                   }
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="rank-item rank-2">
+              <div className="rank-number">2</div>
               <div className="rank-restaurant">
-                <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{enrichedRanking.second.name}</div>
-                  {enrichedRanking.second.url && enrichedRanking.second.url.trim() !== '' ? (
-                    <a 
-                      href={enrichedRanking.second.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="reservation-button"
-                    >
-                      予約
-                    </a>
-                  ) : (
-                    <button 
-                      className="reservation-button reservation-button-disabled"
-                      disabled
-                    >
-                      予約
-                    </button>
-                  )}
-                </div>
-                <div 
+                <div className="rank-restaurant-name">{enrichedRanking.second.name}</div>
+              </div>
+              <div className="rank-button-access">
+                {enrichedRanking.second.url && enrichedRanking.second.url.trim() !== '' ? (
+                  <a 
+                    href={enrichedRanking.second.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="reservation-button"
+                  >
+                    予約
+                  </a>
+                ) : (
+                  <button 
+                    className="reservation-button reservation-button-disabled"
+                    disabled
+                  >
+                    予約
+                  </button>
+                )}
+                {/* <div 
                   className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''} ${!enrichedRanking.second.access || enrichedRanking.second.access.trim() === '' ? 'access-disabled' : ''}`}
                   onClick={() => {
                     if (enrichedRanking.second.access && enrichedRanking.second.access.trim() !== '') {
@@ -164,32 +166,33 @@ export default function ResultPage() {
                     ? (expandedAccess.has('second') ? `📍 ${enrichedRanking.second.access}` : '📍')
                     : '🚫 アクセス情報なし'
                   }
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="rank-item rank-3">
+              <div className="rank-number">3</div>
               <div className="rank-restaurant">
-                <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{enrichedRanking.third.name}</div>
-                  {enrichedRanking.third.url && enrichedRanking.third.url.trim() !== '' ? (
-                    <a 
-                      href={enrichedRanking.third.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="reservation-button"
-                    >
-                      予約
-                    </a>
-                  ) : (
-                    <button 
-                      className="reservation-button reservation-button-disabled"
-                      disabled
-                    >
-                      予約
-                    </button>
-                  )}
-                </div>
-                <div 
+                <div className="rank-restaurant-name">{enrichedRanking.third.name}</div>
+              </div>
+              <div className="rank-button-access">
+                {enrichedRanking.third.url && enrichedRanking.third.url.trim() !== '' ? (
+                  <a 
+                    href={enrichedRanking.third.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="reservation-button"
+                  >
+                    予約
+                  </a>
+                ) : (
+                  <button 
+                    className="reservation-button reservation-button-disabled"
+                    disabled
+                  >
+                    予約
+                  </button>
+                )}
+                {/* <div 
                   className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''} ${!enrichedRanking.third.access || enrichedRanking.third.access.trim() === '' ? 'access-disabled' : ''}`}
                   onClick={() => {
                     if (enrichedRanking.third.access && enrichedRanking.third.access.trim() !== '') {
@@ -201,7 +204,7 @@ export default function ResultPage() {
                     ? (expandedAccess.has('third') ? `📍 ${enrichedRanking.third.access}` : '📍')
                     : '🚫 アクセス情報なし'
                   }
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="rank-item rank-4">
@@ -226,7 +229,7 @@ export default function ResultPage() {
                     </button>
                   )}
                 </div>
-                <div 
+                {/* <div 
                   className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''} ${!enrichedRanking.fourth.access || enrichedRanking.fourth.access.trim() === '' ? 'access-disabled' : ''}`}
                   onClick={() => {
                     if (enrichedRanking.fourth.access && enrichedRanking.fourth.access.trim() !== '') {
@@ -238,7 +241,7 @@ export default function ResultPage() {
                     ? (expandedAccess.has('fourth') ? `📍 ${enrichedRanking.fourth.access}` : '📍')
                     : '🚫 アクセス情報なし'
                   }
-                </div>
+                </div> */}
               </div>
             </div>
             {enrichedRanking.fifth.map((restaurant) => (
@@ -264,7 +267,7 @@ export default function ResultPage() {
                       </button>
                     )}
                   </div>
-                  <div 
+                  {/* <div 
                     className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''} ${!restaurant.access || restaurant.access.trim() === '' ? 'access-disabled' : ''}`}
                     onClick={() => {
                       if (restaurant.access && restaurant.access.trim() !== '') {
@@ -276,7 +279,7 @@ export default function ResultPage() {
                       ? (expandedAccess.has(`fifth-${restaurant.shop_id}`) ? `📍 ${restaurant.access}` : '📍')
                       : '🚫 アクセス情報なし'
                     }
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
