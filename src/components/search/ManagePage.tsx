@@ -233,21 +233,10 @@ const ManagePage: React.FC = () => {
         return;
       }
 
-      // recommended_peopleに初期ラベリングを追加（0, 1, 2のインデックス順）
-      const addLabelsToRecommendedPeople = (restaurant: any) => {
-        const recommendedPeople = restaurant.recommended_people || [];
-        return {
-          ...restaurant,
-          recommended_people: recommendedPeople.map((person: any, index: number) => ({
-            ...person,
-            label: index
-          }))
-        };
-      };
-
-      // 全レストランのrecommended_peopleを収集し、重複しないようにラベルを再割り当て
-      const optimizeLabelsAcrossRestaurants = (restaurants: any[]) => {
-        const labelAssignments: Map<number, Set<string>> = new Map([
+      // 全レストランのrecommended_peopleを重複しないように配列順序を最適化
+      const optimizeRecommendedPeople = (restaurants: any[]) => {
+        // 各ラベル位置(インデックス0, 1, 2)に割り当てられた名前を追跡
+        const positionAssignments: Map<number, Set<string>> = new Map([
           [0, new Set()],
           [1, new Set()],
           [2, new Set()]
@@ -257,39 +246,73 @@ const ManagePage: React.FC = () => {
           const people = restaurant.recommended_people || [];
           if (people.length === 0) return restaurant;
 
-          const optimizedPeople = people.map((person: any) => {
+          // 各人物を適切な位置(0, 1, 2)に配置する配列
+          const optimizedPeople = new Array(3);
+          const unassignedPeople: any[] = [];
+
+          // 各人物について、重複しない位置を探す
+          people.forEach((person: any, originalIndex: number) => {
             const name = person.name;
-            let assignedLabel = person.label;
-            
-            if (labelAssignments.get(assignedLabel)?.has(name)) {
-              for (let label = 0; label <= 2; label++) {
-                if (!labelAssignments.get(label)?.has(name)) {
-                  assignedLabel = label;
+            let assignedPosition = -1;
+
+            // まず元の位置を試す
+            if (!positionAssignments.get(originalIndex)?.has(name)) {
+              assignedPosition = originalIndex;
+            } else {
+              // 元の位置が使えない場合、0, 1, 2の順で空いている位置を探す
+              for (let pos = 0; pos <= 2; pos++) {
+                if (!positionAssignments.get(pos)?.has(name)) {
+                  assignedPosition = pos;
                   break;
                 }
               }
             }
-            
-            labelAssignments.get(assignedLabel)?.add(name);
-            
-            return {
-              ...person,
-              label: assignedLabel
-            };
+
+            if (assignedPosition !== -1) {
+              // 位置を割り当て
+              positionAssignments.get(assignedPosition)?.add(name);
+              optimizedPeople[assignedPosition] = {
+                ...person,
+                label: assignedPosition
+              };
+            } else {
+              // どの位置にも割り当てられない場合（3ラベルすべてに既に存在）
+              unassignedPeople.push(person);
+            }
           });
+
+          // 未割り当ての人物を空いている位置に配置
+          unassignedPeople.forEach(person => {
+            for (let pos = 0; pos <= 2; pos++) {
+              if (!optimizedPeople[pos]) {
+                optimizedPeople[pos] = {
+                  ...person,
+                  label: pos
+                };
+                break;
+              }
+            }
+          });
+
+          // 空の位置を元のデータで埋める（フォールバック）
+          for (let pos = 0; pos <= 2; pos++) {
+            if (!optimizedPeople[pos] && people[pos]) {
+              optimizedPeople[pos] = {
+                ...people[pos],
+                label: pos
+              };
+            }
+          }
 
           return {
             ...restaurant,
-            recommended_people: optimizedPeople
+            recommended_people: optimizedPeople.filter(p => p !== undefined)
           };
         });
       };
 
-      // 初期ラベリング
-      const labeledRestaurants = selectedResult.selected_shops.map(addLabelsToRecommendedPeople);
-      
-      // ラベル重複を解消
-      const optimizedRestaurants = optimizeLabelsAcrossRestaurants(labeledRestaurants);
+      // ラベル重複を解消（配列順序を最適化）
+      const optimizedRestaurants = optimizeRecommendedPeople(selectedResult.selected_shops);
       
       console.log('ラベリング最適化完了:', optimizedRestaurants);
 
