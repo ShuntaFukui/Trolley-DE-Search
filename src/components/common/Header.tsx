@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({ pageTitle = 'トロッコ de サーチ'
     <header className="app-header">
       <div className="header-content">
         <img 
-          src="/images/logo.png" 
+          src="/images/logo.webp" 
           alt="Logo" 
           className="header-logo"
         />

@@ -473,7 +473,7 @@ const ManagePage: React.FC = () => {
           <div className="game-loading-overlay">
             <div className="game-loading-content">
               <div className="game-loading-trolley">
-                <img src="/images/trolley.png" alt="トロッコ" className="game-loading-trolley-image" />
+                <img src="/images/trolley.webp" alt="トロッコ" className="game-loading-trolley-image" />
               </div>
               <div className="game-loading-text">
                 <div className="game-loading-title">店舗を選定中</div>

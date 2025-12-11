@@ -338,7 +338,7 @@ export default function TrolleyGame() {
                 {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
               </div>
               <img 
-                src="/images/avatar_left.png" 
+                src="/images/avatar_left.webp" 
                 alt="Avatar Left" 
                 className="avatar-image"
               />
@@ -355,7 +355,7 @@ export default function TrolleyGame() {
                 {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
               </div>
               <img 
-                src="/images/avatar_right.png" 
+                src="/images/avatar_right.webp" 
                 alt="Avatar Right" 
                 className="avatar-image"
               />
@@ -373,7 +373,7 @@ export default function TrolleyGame() {
             {/* トロッコの表示 */}
             <div className="trolley-container">
               <img 
-                src="/images/trolley_1.png" 
+                src="/images/trolley_1.webp" 
                 alt="トロッコ" 
                 className="trolley-image"
               />

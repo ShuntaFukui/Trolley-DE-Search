@@ -21,7 +21,7 @@ export default function Home() {
             onClick={handleStart}
           >
             <img 
-              src="/images/logo.png" 
+              src="/images/logo.webp" 
               alt="Logo" 
               className="start-button-logo"
             />
