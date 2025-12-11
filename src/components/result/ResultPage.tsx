@@ -85,6 +85,109 @@ export default function ResultPage() {
     enrichedRanking.fifth = enrichedRanking.fifth.map(enrichRestaurant);
   }
 
+  // recommended_peopleにラベリングを追加する関数
+  const addLabelsToRecommendedPeople = (restaurant: any) => {
+    const recommendedPeople = restaurant.recommended_people || [];
+    return recommendedPeople.map((person: any, index: number) => ({
+      ...person,
+      label: index // 0, 1, 2のラベルを付与
+    }));
+  };
+
+  // 全レストランのrecommended_peopleを収集し、重複しないようにラベルを再割り当て
+  const optimizeLabelsAcrossRestaurants = (restaurants: any[]) => {
+    // 各ラベル(0, 1, 2)に割り当てられた名前を追跡
+    const labelAssignments: Map<number, Set<string>> = new Map([
+      [0, new Set()],
+      [1, new Set()],
+      [2, new Set()]
+    ]);
+
+    return restaurants.map(restaurant => {
+      const people = restaurant.recommended_people || [];
+      if (people.length === 0) return restaurant;
+
+      // このレストランの人々を最適なラベルに割り当て
+      const optimizedPeople = people.map((person: any) => {
+        const name = person.name;
+        
+        // まず元のラベルを試す
+        let assignedLabel = person.label;
+        
+        // 元のラベルで重複がある場合、別のラベルを探す
+        if (labelAssignments.get(assignedLabel)?.has(name)) {
+          // 0, 1, 2の順で空いているラベルを探す
+          for (let label = 0; label <= 2; label++) {
+            if (!labelAssignments.get(label)?.has(name)) {
+              assignedLabel = label;
+              break;
+            }
+          }
+        }
+        
+        // ラベルに名前を記録
+        labelAssignments.get(assignedLabel)?.add(name);
+        
+        return {
+          ...person,
+          label: assignedLabel
+        };
+      });
+
+      return {
+        ...restaurant,
+        recommended_people: optimizedPeople
+      };
+    });
+  };
+
+  // 全レストランに初期ラベリングを適用
+  const initialLabeledRestaurants = [
+    { ...enrichedRanking.first, recommended_people: addLabelsToRecommendedPeople(enrichedRanking.first) },
+    { ...enrichedRanking.second, recommended_people: addLabelsToRecommendedPeople(enrichedRanking.second) },
+    { ...enrichedRanking.third, recommended_people: addLabelsToRecommendedPeople(enrichedRanking.third) },
+    { ...enrichedRanking.fourth, recommended_people: addLabelsToRecommendedPeople(enrichedRanking.fourth) },
+    ...enrichedRanking.fifth.map((r: any) => ({ ...r, recommended_people: addLabelsToRecommendedPeople(r) }))
+  ];
+
+  // ラベルの重複を解消
+  const optimizedRestaurants = optimizeLabelsAcrossRestaurants(initialLabeledRestaurants);
+
+  // 順位データを配列化（最適化されたラベリング済み）
+  const topRanks = [
+    { rank: 1, restaurant: optimizedRestaurants[0], className: 'rank-1' },
+    { rank: 2, restaurant: optimizedRestaurants[1], className: 'rank-2' },
+    { rank: 3, restaurant: optimizedRestaurants[2], className: 'rank-3' },
+    { rank: 4, restaurant: optimizedRestaurants[3], className: 'rank-4' },
+  ];
+
+  // 5位の店舗（最適化済み）
+  const labeledFifthRanks = optimizedRestaurants.slice(4);
+
+  // 予約ボタンのレンダリング関数
+  const renderReservationButton = (url?: string) => {
+    if (url && url.trim() !== '') {
+      return (
+        <a 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="reservation-button"
+        >
+          予約
+        </a>
+      );
+    }
+    return (
+      <button 
+        className="reservation-button reservation-button-disabled"
+        disabled
+      >
+        予約
+      </button>
+    );
+  };
+
   return (
     <div className="page-container">
       <Header pageTitle="結果" />
@@ -93,193 +196,40 @@ export default function ResultPage() {
           {/* <div className="result-title">サーチ完了！</div> */}
           
           <div className="ranking">
-            <div className="rank-item rank-1">
-              <div className="rank-number">1</div>
-              <div className="rank-restaurant">
-                <div className="rank-restaurant-name">{enrichedRanking.first.name}</div>
-              </div>
-              <div className="rank-button-access">
-                {enrichedRanking.first.url && enrichedRanking.first.url.trim() !== '' ? (
-                  <a 
-                    href={enrichedRanking.first.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    予約
-                  </a>
+            {/* 1-4位のループ */}
+            {topRanks.map(({ rank, restaurant, className }) => (
+              <div key={rank} className={`rank-item ${className}`}>
+                {rank <= 3 ? (
+                  // 1-3位: グリッドレイアウト
+                  <>
+                    <div className="rank-number">{rank}</div>
+                    <div className="rank-restaurant">
+                      <div className="rank-restaurant-name">{restaurant.name}</div>
+                    </div>
+                    <div className="rank-button-access">
+                      {renderReservationButton(restaurant.url)}
+                    </div>
+                  </>
                 ) : (
-                  <button 
-                    className="reservation-button reservation-button-disabled"
-                    disabled
-                  >
-                    予約
-                  </button>
+                  // 4位: 従来のレイアウト
+                  <div className="rank-restaurant">
+                    <div className="rank-restaurant-top">
+                      <div className="rank-restaurant-name">{restaurant.name}</div>
+                      {renderReservationButton(restaurant.url)}
+                    </div>
+                  </div>
                 )}
-                {/* <div 
-                  className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''} ${!enrichedRanking.first.access || enrichedRanking.first.access.trim() === '' ? 'access-disabled' : ''}`}
-                  onClick={() => {
-                    if (enrichedRanking.first.access && enrichedRanking.first.access.trim() !== '') {
-                      toggleAccess('first');
-                    }
-                  }}
-                >
-                  {enrichedRanking.first.access && enrichedRanking.first.access.trim() !== '' 
-                    ? (expandedAccess.has('first') ? `📍 ${enrichedRanking.first.access}` : '📍')
-                    : '🚫 アクセス情報なし'
-                  }
-                </div> */}
               </div>
-            </div>
-            <div className="rank-item rank-2">
-              <div className="rank-number">2</div>
-              <div className="rank-restaurant">
-                <div className="rank-restaurant-name">{enrichedRanking.second.name}</div>
-              </div>
-              <div className="rank-button-access">
-                {enrichedRanking.second.url && enrichedRanking.second.url.trim() !== '' ? (
-                  <a 
-                    href={enrichedRanking.second.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    予約
-                  </a>
-                ) : (
-                  <button 
-                    className="reservation-button reservation-button-disabled"
-                    disabled
-                  >
-                    予約
-                  </button>
-                )}
-                {/* <div 
-                  className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''} ${!enrichedRanking.second.access || enrichedRanking.second.access.trim() === '' ? 'access-disabled' : ''}`}
-                  onClick={() => {
-                    if (enrichedRanking.second.access && enrichedRanking.second.access.trim() !== '') {
-                      toggleAccess('second');
-                    }
-                  }}
-                >
-                  {enrichedRanking.second.access && enrichedRanking.second.access.trim() !== '' 
-                    ? (expandedAccess.has('second') ? `📍 ${enrichedRanking.second.access}` : '📍')
-                    : '🚫 アクセス情報なし'
-                  }
-                </div> */}
-              </div>
-            </div>
-            <div className="rank-item rank-3">
-              <div className="rank-number">3</div>
-              <div className="rank-restaurant">
-                <div className="rank-restaurant-name">{enrichedRanking.third.name}</div>
-              </div>
-              <div className="rank-button-access">
-                {enrichedRanking.third.url && enrichedRanking.third.url.trim() !== '' ? (
-                  <a 
-                    href={enrichedRanking.third.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    予約
-                  </a>
-                ) : (
-                  <button 
-                    className="reservation-button reservation-button-disabled"
-                    disabled
-                  >
-                    予約
-                  </button>
-                )}
-                {/* <div 
-                  className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''} ${!enrichedRanking.third.access || enrichedRanking.third.access.trim() === '' ? 'access-disabled' : ''}`}
-                  onClick={() => {
-                    if (enrichedRanking.third.access && enrichedRanking.third.access.trim() !== '') {
-                      toggleAccess('third');
-                    }
-                  }}
-                >
-                  {enrichedRanking.third.access && enrichedRanking.third.access.trim() !== '' 
-                    ? (expandedAccess.has('third') ? `📍 ${enrichedRanking.third.access}` : '📍')
-                    : '🚫 アクセス情報なし'
-                  }
-                </div> */}
-              </div>
-            </div>
-            <div className="rank-item rank-4">
-              <div className="rank-restaurant">
-                <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{enrichedRanking.fourth.name}</div>
-                  {enrichedRanking.fourth.url && enrichedRanking.fourth.url.trim() !== '' ? (
-                    <a 
-                      href={enrichedRanking.fourth.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="reservation-button"
-                    >
-                      予約
-                    </a>
-                  ) : (
-                    <button 
-                      className="reservation-button reservation-button-disabled"
-                      disabled
-                    >
-                      予約
-                    </button>
-                  )}
-                </div>
-                {/* <div 
-                  className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''} ${!enrichedRanking.fourth.access || enrichedRanking.fourth.access.trim() === '' ? 'access-disabled' : ''}`}
-                  onClick={() => {
-                    if (enrichedRanking.fourth.access && enrichedRanking.fourth.access.trim() !== '') {
-                      toggleAccess('fourth');
-                    }
-                  }}
-                >
-                  {enrichedRanking.fourth.access && enrichedRanking.fourth.access.trim() !== '' 
-                    ? (expandedAccess.has('fourth') ? `📍 ${enrichedRanking.fourth.access}` : '📍')
-                    : '🚫 アクセス情報なし'
-                  }
-                </div> */}
-              </div>
-            </div>
-            {enrichedRanking.fifth.map((restaurant) => (
+            ))}
+
+            {/* 5位(複数店舗) */}
+            {labeledFifthRanks.map((restaurant) => (
               <div key={restaurant.shop_id} className="rank-item rank-5">
                 <div className="rank-restaurant">
                   <div className="rank-restaurant-top">
                     <div className="rank-restaurant-name">{restaurant.name}</div>
-                    {restaurant.url && restaurant.url.trim() !== '' ? (
-                      <a 
-                        href={restaurant.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="reservation-button"
-                      >
-                        予約
-                      </a>
-                    ) : (
-                      <button 
-                        className="reservation-button reservation-button-disabled"
-                        disabled
-                      >
-                        予約
-                      </button>
-                    )}
+                    {renderReservationButton(restaurant.url)}
                   </div>
-                  {/* <div 
-                    className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''} ${!restaurant.access || restaurant.access.trim() === '' ? 'access-disabled' : ''}`}
-                    onClick={() => {
-                      if (restaurant.access && restaurant.access.trim() !== '') {
-                        toggleAccess(`fifth-${restaurant.shop_id}`);
-                      }
-                    }}
-                  >
-                    {restaurant.access && restaurant.access.trim() !== '' 
-                      ? (expandedAccess.has(`fifth-${restaurant.shop_id}`) ? `📍 ${restaurant.access}` : '📍')
-                      : '🚫 アクセス情報なし'
-                    }
-                  </div> */}
                 </div>
               </div>
             ))}
