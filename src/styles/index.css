@@ -148,6 +148,32 @@ input {
   transition: border-color 0.3s;
   background: #fdf8f0;
   color: #495057;
+  box-sizing: border-box;
+  text-align: left;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Safari用のdate input特有のスタイル調整 */
+input[type="date"] {
+  min-height: 44px;
+  -webkit-text-fill-color: #495057;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  margin-left: auto;
+  cursor: pointer;
 }
 
 select:focus,
@@ -404,7 +430,7 @@ input:disabled {
 .stat-number {
   font-size: 32px;
   font-weight: bold;
-  color: #BEA493;
+  color: #4fc3f7;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -527,12 +553,19 @@ input:disabled {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .page-content-flex {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 .footer-team-name {
@@ -550,9 +583,15 @@ input:disabled {
 
 .manage-page-container {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .manage-page-content {
@@ -563,6 +602,21 @@ input:disabled {
   background: linear-gradient(180deg, #bea493 0%, #bea493 100%);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* モバイル版: Header/Footer に隠れないよう十分なパディングを確保 */
+@media (max-width: 768px) {
+  .manage-page-content {
+    padding-top: calc(60px + 30px);
+    padding-bottom: calc(60px + 30px);
+  }
+}
+
+@media (max-width: 480px) {
+  .manage-page-content {
+    padding-top: calc(60px + 40px);
+    padding-bottom: calc(60px + 40px);
+  }
 }
 
 .manage-container {

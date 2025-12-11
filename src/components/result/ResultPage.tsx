@@ -1,12 +1,13 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import type { TournamentResult } from '../../services/api';
+import type { TournamentResult, RestaurantInfoResponse } from '../../services/api';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import '../../styles/TrolleyGame.css';
 
 interface ResultPageState {
   finalRanking: TournamentResult;
+  restaurantInfo?: RestaurantInfoResponse;
   isSaving?: boolean;
 }
 
@@ -51,7 +52,38 @@ export default function ResultPage() {
     });
   };
 
-  const { finalRanking } = state;
+  const { finalRanking, restaurantInfo } = state;
+
+  // restaurantInfoがあれば、finalRankingの各レストランの情報を補完
+  const enrichedRanking = { ...finalRanking };
+  
+  if (restaurantInfo?.restaurants) {
+    const infoMap = new Map(
+      restaurantInfo.restaurants.map(info => [info.shop_id, info])
+    );
+
+    // 各順位のレストラン情報を補完
+    const enrichRestaurant = (restaurant: typeof enrichedRanking.first) => {
+      const shopId = restaurant.shop_id || restaurant.id;
+      if (!shopId) return restaurant;
+      
+      const info = infoMap.get(shopId);
+      if (info) {
+        return {
+          ...restaurant,
+          url: info.url || restaurant.url,
+          access: info.access || restaurant.access,
+        };
+      }
+      return restaurant;
+    };
+
+    enrichedRanking.first = enrichRestaurant(enrichedRanking.first);
+    enrichedRanking.second = enrichRestaurant(enrichedRanking.second);
+    enrichedRanking.third = enrichRestaurant(enrichedRanking.third);
+    enrichedRanking.fourth = enrichRestaurant(enrichedRanking.fourth);
+    enrichedRanking.fifth = enrichedRanking.fifth.map(enrichRestaurant);
+  }
 
   return (
     <div className="page-container">
@@ -64,109 +96,157 @@ export default function ResultPage() {
             <div className="rank-item rank-1">
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{finalRanking.first.name}</div>
-                  {finalRanking.first.url && finalRanking.first.url.trim() !== '' && (
+                  <div className="rank-restaurant-name">{enrichedRanking.first.name}</div>
+                  {enrichedRanking.first.url && enrichedRanking.first.url.trim() !== '' ? (
                     <a 
-                      href={finalRanking.first.url} 
+                      href={enrichedRanking.first.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="reservation-button"
                     >
                       予約
                     </a>
+                  ) : (
+                    <button 
+                      className="reservation-button reservation-button-disabled"
+                      disabled
+                    >
+                      予約
+                    </button>
                   )}
                 </div>
-                {finalRanking.first.access && finalRanking.first.access.trim() !== '' && (
-                  <div 
-                    className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''}`}
-                    onClick={() => toggleAccess('first')}
-                  >
-                    {expandedAccess.has('first') ? `📍 ${finalRanking.first.access}` : '📍'}
-                  </div>
-                )}
+                <div 
+                  className={`rank-restaurant-access ${expandedAccess.has('first') ? 'expanded' : ''} ${!enrichedRanking.first.access || enrichedRanking.first.access.trim() === '' ? 'access-disabled' : ''}`}
+                  onClick={() => {
+                    if (enrichedRanking.first.access && enrichedRanking.first.access.trim() !== '') {
+                      toggleAccess('first');
+                    }
+                  }}
+                >
+                  {enrichedRanking.first.access && enrichedRanking.first.access.trim() !== '' 
+                    ? (expandedAccess.has('first') ? `📍 ${enrichedRanking.first.access}` : '📍')
+                    : '🚫 アクセス情報なし'
+                  }
+                </div>
               </div>
             </div>
             <div className="rank-item rank-2">
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{finalRanking.second.name}</div>
-                  {finalRanking.second.url && finalRanking.second.url.trim() !== '' && (
+                  <div className="rank-restaurant-name">{enrichedRanking.second.name}</div>
+                  {enrichedRanking.second.url && enrichedRanking.second.url.trim() !== '' ? (
                     <a 
-                      href={finalRanking.second.url} 
+                      href={enrichedRanking.second.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="reservation-button"
                     >
                       予約
                     </a>
+                  ) : (
+                    <button 
+                      className="reservation-button reservation-button-disabled"
+                      disabled
+                    >
+                      予約
+                    </button>
                   )}
                 </div>
-                {finalRanking.second.access && finalRanking.second.access.trim() !== '' && (
-                  <div 
-                    className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''}`}
-                    onClick={() => toggleAccess('second')}
-                  >
-                    {expandedAccess.has('second') ? `📍 ${finalRanking.second.access}` : '📍'}
-                  </div>
-                )}
+                <div 
+                  className={`rank-restaurant-access ${expandedAccess.has('second') ? 'expanded' : ''} ${!enrichedRanking.second.access || enrichedRanking.second.access.trim() === '' ? 'access-disabled' : ''}`}
+                  onClick={() => {
+                    if (enrichedRanking.second.access && enrichedRanking.second.access.trim() !== '') {
+                      toggleAccess('second');
+                    }
+                  }}
+                >
+                  {enrichedRanking.second.access && enrichedRanking.second.access.trim() !== '' 
+                    ? (expandedAccess.has('second') ? `📍 ${enrichedRanking.second.access}` : '📍')
+                    : '🚫 アクセス情報なし'
+                  }
+                </div>
               </div>
             </div>
             <div className="rank-item rank-3">
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{finalRanking.third.name}</div>
-                  {finalRanking.third.url && finalRanking.third.url.trim() !== '' && (
+                  <div className="rank-restaurant-name">{enrichedRanking.third.name}</div>
+                  {enrichedRanking.third.url && enrichedRanking.third.url.trim() !== '' ? (
                     <a 
-                      href={finalRanking.third.url} 
+                      href={enrichedRanking.third.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="reservation-button"
                     >
                       予約
                     </a>
+                  ) : (
+                    <button 
+                      className="reservation-button reservation-button-disabled"
+                      disabled
+                    >
+                      予約
+                    </button>
                   )}
                 </div>
-                {finalRanking.third.access && finalRanking.third.access.trim() !== '' && (
-                  <div 
-                    className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''}`}
-                    onClick={() => toggleAccess('third')}
-                  >
-                    {expandedAccess.has('third') ? `📍 ${finalRanking.third.access}` : '📍'}
-                  </div>
-                )}
+                <div 
+                  className={`rank-restaurant-access ${expandedAccess.has('third') ? 'expanded' : ''} ${!enrichedRanking.third.access || enrichedRanking.third.access.trim() === '' ? 'access-disabled' : ''}`}
+                  onClick={() => {
+                    if (enrichedRanking.third.access && enrichedRanking.third.access.trim() !== '') {
+                      toggleAccess('third');
+                    }
+                  }}
+                >
+                  {enrichedRanking.third.access && enrichedRanking.third.access.trim() !== '' 
+                    ? (expandedAccess.has('third') ? `📍 ${enrichedRanking.third.access}` : '📍')
+                    : '🚫 アクセス情報なし'
+                  }
+                </div>
               </div>
             </div>
             <div className="rank-item rank-4">
               <div className="rank-restaurant">
                 <div className="rank-restaurant-top">
-                  <div className="rank-restaurant-name">{finalRanking.fourth.name}</div>
-                  {finalRanking.fourth.url && finalRanking.fourth.url.trim() !== '' && (
+                  <div className="rank-restaurant-name">{enrichedRanking.fourth.name}</div>
+                  {enrichedRanking.fourth.url && enrichedRanking.fourth.url.trim() !== '' ? (
                     <a 
-                      href={finalRanking.fourth.url} 
+                      href={enrichedRanking.fourth.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="reservation-button"
                     >
                       予約
                     </a>
+                  ) : (
+                    <button 
+                      className="reservation-button reservation-button-disabled"
+                      disabled
+                    >
+                      予約
+                    </button>
                   )}
                 </div>
-                {finalRanking.fourth.access && finalRanking.fourth.access.trim() !== '' && (
-                  <div 
-                    className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''}`}
-                    onClick={() => toggleAccess('fourth')}
-                  >
-                    {expandedAccess.has('fourth') ? `📍 ${finalRanking.fourth.access}` : '📍'}
-                  </div>
-                )}
+                <div 
+                  className={`rank-restaurant-access ${expandedAccess.has('fourth') ? 'expanded' : ''} ${!enrichedRanking.fourth.access || enrichedRanking.fourth.access.trim() === '' ? 'access-disabled' : ''}`}
+                  onClick={() => {
+                    if (enrichedRanking.fourth.access && enrichedRanking.fourth.access.trim() !== '') {
+                      toggleAccess('fourth');
+                    }
+                  }}
+                >
+                  {enrichedRanking.fourth.access && enrichedRanking.fourth.access.trim() !== '' 
+                    ? (expandedAccess.has('fourth') ? `📍 ${enrichedRanking.fourth.access}` : '📍')
+                    : '🚫 アクセス情報なし'
+                  }
+                </div>
               </div>
             </div>
-            {finalRanking.fifth.map((restaurant) => (
+            {enrichedRanking.fifth.map((restaurant) => (
               <div key={restaurant.shop_id} className="rank-item rank-5">
                 <div className="rank-restaurant">
                   <div className="rank-restaurant-top">
                     <div className="rank-restaurant-name">{restaurant.name}</div>
-                    {restaurant.url && restaurant.url.trim() !== '' && (
+                    {restaurant.url && restaurant.url.trim() !== '' ? (
                       <a 
                         href={restaurant.url} 
                         target="_blank" 
@@ -175,16 +255,28 @@ export default function ResultPage() {
                       >
                         予約
                       </a>
+                    ) : (
+                      <button 
+                        className="reservation-button reservation-button-disabled"
+                        disabled
+                      >
+                        予約
+                      </button>
                     )}
                   </div>
-                  {restaurant.access && restaurant.access.trim() !== '' && (
-                    <div 
-                      className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''}`}
-                      onClick={() => toggleAccess(`fifth-${restaurant.shop_id}`)}
-                    >
-                      {expandedAccess.has(`fifth-${restaurant.shop_id}`) ? `📍 ${restaurant.access}` : '📍'}
-                    </div>
-                  )}
+                  <div 
+                    className={`rank-restaurant-access ${expandedAccess.has(`fifth-${restaurant.shop_id}`) ? 'expanded' : ''} ${!restaurant.access || restaurant.access.trim() === '' ? 'access-disabled' : ''}`}
+                    onClick={() => {
+                      if (restaurant.access && restaurant.access.trim() !== '') {
+                        toggleAccess(`fifth-${restaurant.shop_id}`);
+                      }
+                    }}
+                  >
+                    {restaurant.access && restaurant.access.trim() !== '' 
+                      ? (expandedAccess.has(`fifth-${restaurant.shop_id}`) ? `📍 ${restaurant.access}` : '📍')
+                      : '🚫 アクセス情報なし'
+                    }
+                  </div>
                 </div>
               </div>
             ))}

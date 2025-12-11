@@ -22,7 +22,7 @@ const ManagePage: React.FC = () => {
   const [budget, setBudget] = useState('');
   const [partyCapacity, setPartyCapacity] = useState<number | ''>(''); // 初期状態は空欄
   const [eventDate, setEventDate] = useState('');
-  const [targetCount, setTargetCount] = useState(10);
+  // const [targetCount, setTargetCount] = useState(10);
 
   // Google Form関連の状態
   const [spreadsheetUrl, setSpreadsheetUrl] = useState('');
@@ -158,7 +158,7 @@ const ManagePage: React.FC = () => {
       const params: any = {
         budget,
         party_capacity: partyCapacity,
-        target_count: targetCount,
+        target_count: 30,
       };
 
       if (selectedSmallArea) {
@@ -410,7 +410,7 @@ const ManagePage: React.FC = () => {
               </p>
             </div>
 
-            {/* 取得件数 */}
+            {/* 取得件数
             <div className="form-group">
               <label htmlFor="targetCount">取得件数</label>
               <input
@@ -427,7 +427,7 @@ const ManagePage: React.FC = () => {
                 <span>狭く</span>
                 <span>広く</span>
               </div>
-            </div>
+            </div> */}
 
             <button type="submit" disabled={isSearching}>
               検索する

@@ -22,10 +22,7 @@ export default function TrolleyGame() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
-
-  // 吹き出しの表示状態
-  const [showTooltipLeft, setShowTooltipLeft] = useState(false);
-  const [showTooltipRight, setShowTooltipRight] = useState(false);
+  const [isHoverDisabled, setIsHoverDisabled] = useState(false);
 
   // 選択肢
   const [allOptions, setAllOptions] = useState<Restaurant[]>([]);
@@ -52,6 +49,21 @@ export default function TrolleyGame() {
     }
     setAllOptions(restaurants);
   }, [location, navigate]);
+
+  // ラウンドに応じたrecommended_peopleのインデックスを取得
+  const getRecommendedPersonIndex = (round: RoundType): number => {
+    switch (round) {
+      case '1回戦':
+        return 0; // 1人目
+      case '準決勝':
+        return 1; // 2人目
+      case '3位決定戦':
+      case '決勝':
+        return 2; // 3人目
+      default:
+        return 0;
+    }
+  };
 
   // テスト用: ランダムなコメントを生成（10~20文字）
   const getRandomComment = () => {
@@ -190,6 +202,7 @@ export default function TrolleyGame() {
       if (match.matchNumber < 4) {
         // 次の1回戦
         const nextMatchNum = match.matchNumber + 1;
+        setIsHoverDisabled(true);
         setCurrentMatch({
           round: '1回戦',
           matchNumber: nextMatchNum,
@@ -199,14 +212,17 @@ export default function TrolleyGame() {
           ],
         });
         setGameState('playing');
+        setTimeout(() => setIsHoverDisabled(false), 100);
       } else {
         // 準決勝へ
+        setIsHoverDisabled(true);
         setCurrentMatch({
           round: '準決勝',
           matchNumber: 1,
           options: [newWinners[0], newWinners[1]],
         });
         setGameState('playing');
+        setTimeout(() => setIsHoverDisabled(false), 100);
       }
     } else if (match.round === '準決勝') {
       const newWinners = [...semiFinalWinners, winner];
@@ -216,32 +232,38 @@ export default function TrolleyGame() {
 
       if (match.matchNumber === 1) {
         // 準決勝第2試合
+        setIsHoverDisabled(true);
         setCurrentMatch({
           round: '準決勝',
           matchNumber: 2,
           options: [round1Winners[2], round1Winners[3]],
         });
         setGameState('playing');
+        setTimeout(() => setIsHoverDisabled(false), 100);
       } else {
         // 3位決定戦へ
+        setIsHoverDisabled(true);
         setCurrentMatch({
           round: '3位決定戦',
           matchNumber: 1,
           options: [newLosers[0], newLosers[1]],
         });
         setGameState('playing');
+        setTimeout(() => setIsHoverDisabled(false), 100);
       }
     } else if (match.round === '3位決定戦') {
       setThirdPlaceWinner(winner);
       setThirdPlaceLoser(loser);
 
       // 決勝へ
+      setIsHoverDisabled(true);
       setCurrentMatch({
         round: '決勝',
         matchNumber: 1,
         options: [semiFinalWinners[0], semiFinalWinners[1]],
       });
       setGameState('playing');
+      setTimeout(() => setIsHoverDisabled(false), 100);
     } else if (match.round === '決勝') {
       // 最終順位を確定
       if (thirdPlaceWinner && thirdPlaceLoser) {
@@ -308,45 +330,37 @@ export default function TrolleyGame() {
             {/* 次の背景レイヤー - 決勝では表示しない */}
             {currentMatch.round !== '決勝' && <div className="background-next"></div>}
             
-            {/* 吹き出し（画面中央に固定表示） */}
-            {showTooltipLeft && !isAnimating && (
-              <div className="avatar-tooltip">
-                {currentMatch.options[0]?.recommended_people?.[0]?.comment || getRandomComment()}
-              </div>
-            )}
-            {showTooltipRight && !isAnimating && (
-              <div className="avatar-tooltip">
-                {currentMatch.options[1]?.recommended_people?.[0]?.comment || getRandomComment()}
-              </div>
-            )}
-            
             {/* 左側のアバター */}
             <div 
               className={`avatar avatar-left ${isAnimating ? 'avatar-fade-out' : ''}`}
-              onClick={() => setShowTooltipLeft(!showTooltipLeft)}
             >
+              <div className="avatar-comment">
+                {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
+              </div>
               <img 
-                src="/images/avatar.png" 
-                alt="Avatar" 
+                src="/images/avatar_left.png" 
+                alt="Avatar Left" 
                 className="avatar-image"
               />
               <div className="avatar-name">
-                {currentMatch.options[0]?.recommended_people?.[0]?.name || 'User'}
+                {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.name || 'User'}
               </div>
             </div>
 
             {/* 右側のアバター */}
             <div 
               className={`avatar avatar-right ${isAnimating ? 'avatar-fade-out' : ''}`}
-              onClick={() => setShowTooltipRight(!showTooltipRight)}
             >
+              <div className="avatar-comment">
+                {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
+              </div>
               <img 
-                src="/images/avatar.png" 
-                alt="Avatar" 
+                src="/images/avatar_right.png" 
+                alt="Avatar Right" 
                 className="avatar-image"
               />
               <div className="avatar-name">
-                {currentMatch.options[1]?.recommended_people?.[0]?.name || 'User'}
+                {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.name || 'User'}
               </div>
             </div>
             
@@ -368,12 +382,12 @@ export default function TrolleyGame() {
             <div className="answer-buttons">
               {currentMatch.options.map((option, index) => (
                 <button
-                  key={option.shop_id}
+                  key={`${currentMatch.round}-${currentMatch.matchNumber}-${index}-${option.shop_id}`}
                   className={`answer-btn ${
                     gameState === 'answering' && index === selectedAnswer
                       ? 'selected'
                       : ''
-                  }`}
+                  } ${isHoverDisabled ? 'no-hover' : ''}`}
                   onClick={() => handleAnswer(index)}
                   disabled={gameState === 'answering'}
                 >
