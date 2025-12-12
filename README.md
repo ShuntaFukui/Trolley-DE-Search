@@ -28,87 +28,108 @@ npm start
 GET /health
 ```
 
-### レストラン選択肢の取得
+### search API - エリア取得
 ```
-POST /api/options
+POST /search
 Content-Type: application/json
+
+Request Body:
+{
+  "action": "get_areas",
+  "area_type": "large" | "middle" | "small",
+  "parent_code": "STRING" // area_type が middle または small の場合
+}
+
+Response:
+Lambda互換形式のレスポンス（response/areas_*.json）
+```
+
+### search API - Google Forms連携
+```
+POST /search
+Content-Type: application/json
+
+Request Body:
+{
+  "action": "fetch_form_responses",
+  "spreadsheet_url": "STRING"
+}
+
+Response:
+Lambda互換形式のレスポンス（response/search.json）
+```
+
+### select-restaurants API - AI選定
+```
+POST /select-restaurants
+Content-Type: application/json
+
+Request Body:
+{
+  "large_area": "STRING",
+  "middle_area": "STRING",
+  "small_area": "STRING",
+  "budget": "STRING",
+  "party_capacity": INTEGER,
+  "event_date": "STRING",
+  "target_count": INTEGER
+}
 
 Response:
 {
-  "success": true,
-  "options": [
+  "status": "success",
+  "result_id": "STRING",
+  "selected_shops": [
     {
       "shop_id": "shop002",
       "name": "イタリアンバール ロッソ",
       "address": "東京都中央区八重洲1-2-3",
       "genre": "イタリアン",
-      "budget": 5000,
+      "budget_average": "5000",
       "url": "https://www.hotpepper.jp/shop002",
-      "walk": 5,
-      "private_room": true,
-      "course": true,
-      "free_drink": true,
-      "card": true,
-      "seats": 40,
-      "catch": "本格イタリアン×カジュアル空間",
-      "selection_reason": "Tier1: 好みのジャンル・コース有・駅近5分。Tier2: 個室・カード・飲み放題完備で10名に最適。"
-    },
+      "photo_url": "https://example.com/photo.jpg",
+      "private_room": "あり",
+      "free_drink": "あり",
+      "recommended_people": [
+        {"name": "山田太郎", "comment": "美味しいです！"},
+        {"name": "佐藤花子", "comment": "おすすめです"},
+        {"name": "田中次郎", "comment": "また行きたい"}
+      ]
+    }
     // ... 全8店舗
+  ],
+  "processing_time": 0.123,
+  "total_candidates": 50,
+  "selected_count": 8,
+  "participant_count": 10
+}
+```
+
+### restaurant-info API（レストラン詳細情報）
+注意: このAPIは常にLambda APIに接続されます（モックサーバーでは提供されません）
+```
+POST https://hn9e5kup8i.execute-api.ap-northeast-1.amazonaws.com/prod/restaurant-info
+
+Response:
+{
+  "status": "success",
+  "result_id": "STRING",
+  "restaurant_count": INTEGER,
+  "restaurants": [
+    {
+      "shop_id": "STRING",
+      "url": "STRING",
+      "access": "STRING",
+      "allergy_warnings": [...]
+    }
   ]
 }
 ```
 
-### トーナメント結果の保存（未確定につき要修正）
-```
-POST /api/results
-Content-Type: application/json
-
-Request Body:
-{
-  "userId": "user123",
-  "tournament": {
-    "initialOptions": [/* 8つのレストランオブジェクト */],
-    "matches": [
-      {
-        "round": "1回戦",
-        "matchNumber": 1,
-        "options": [/* レストランオブジェクト2つ */],
-        "winner": {/* レストランオブジェクト */},
-        "loser": {/* レストランオブジェクト */},
-        "answeredAt": "2025-11-27T10:00:00.000Z"
-      },
-      // ... 全7試合
-    ],
-    "finalRanking": {
-      "first": {/* レストランオブジェクト */},
-      "second": {/* レストランオブジェクト */},
-      "third": {/* レストランオブジェクト */},
-      "fourth": {/* レストランオブジェクト */},
-      "fifth": [/* レストランオブジェクト4つ */]
-    }
-  },
-  "completedAt": "2025-11-27T10:00:30.000Z"
-}
-```
-
-### 全結果の取得
-```
-GET /api/results
-```
-
-### 特定の結果の取得
-```
-GET /api/results/:id
-```
-
-### 統計情報の取得
-```
-GET /api/stats
-```
-
-### 全結果の削除（開発用）
-```
-DELETE /api/results
+### 未実装の機能
+以下のエンドポイントは現在実装されていません:
+- `GET /api/results` - 全結果の取得
+- `GET /api/results/:id` - 特定の結果の取得
 ```
 
 ## データ形式
@@ -170,10 +191,14 @@ DELETE /api/results
 ## ファイル構成
 
 - `server.js` - Express サーバー本体
-- `options.json` - レストラン選択肢データ(8店舗)
-- `results.json` - トーナメント結果の保存ファイル(自動生成)
+- `response/` - モックレスポンスデータディレクトリ
+  - `areas_large.json` - 大エリア（都道府県）データ
+  - `areas_middle.json` - 中エリア（広域エリア）データ
+  - `areas_small.json` - 小エリア（詳細エリア）データ
+  - `search.json` - search APIレスポンス（フォーム連携用）
+  - `select_restaurants.json` - select-restaurants APIレスポンス（AI選定8店舗）
+- `results.json` - 結果保存ファイル（現在未使用）
 - `package.json` - Node.js パッケージ設定
-- `.gitignore` - Git除外設定
 
 ## 技術スタック
 
