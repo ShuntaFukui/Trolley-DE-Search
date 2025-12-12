@@ -17,23 +17,27 @@
   - エンドポイント: `https://1tebott34m.execute-api.ap-northeast-1.amazonaws.com/prod/search`
   - 用途: ManagePage（飲食店検索システム）
   
-- **モックサーバー (ローカル)**: トーナメントゲーム用
-  - エンドポイント: `http://localhost:3001/api`
-  - 用途: TrolleyGame（トーナメント機能）
+- **モックサーバー (ローカル)**: 開発環境でのAPI代替用
+  - エンドポイント: `http://localhost:3001`
+  - 用途: search, select-restaurants APIのモック実装
 
 ### API接続の仕組み
 
 `src/services/api.ts`が両方のAPIを統合管理:
 
 ```typescript
-// Lambda API用メソッド
-apiService.getLargeAreas()        // エリア取得
-apiService.searchRestaurants()    // レストラン検索
-apiService.fetchFormResponses()   // フォーム回答取得
+// エリア取得（大/中/小エリア）
+apiService.getLargeAreas()
+apiService.getMiddleAreas(parentCode)
+apiService.getSmallAreas(parentCode)
 
-// モックサーバー用メソッド
-apiService.getOptions()           // トーナメント選択肢取得
-apiService.saveResult()           // トーナメント結果保存
+// レストラン検索・選定
+apiService.searchRestaurants(params)     // 検索API（現在未使用）
+apiService.selectRestaurants()           // AI選定API（ManagePageで使用）
+
+// その他
+apiService.fetchFormResponses(spreadsheetUrl)  // Google Forms連携
+apiService.getRestaurantInfo()                  // レストラン詳細情報取得
 ```
 
 ### 開発環境のセットアップ
@@ -117,6 +121,10 @@ npm run preview
 
 合計7試合でランキングを決定します。
 
+**決勝後のアニメーション**:
+- 決勝の選択肢ボタン押下後、黒背景オーバーレイが0.6秒かけてフェードアウト
+- フェードアウト完了後、結果画面へ遷移
+
 ### 2. レストラン検索・管理 (ManagePage)
 
 AWS Lambda経由で以下の機能を提供:
@@ -130,6 +138,12 @@ AWS Lambda経由で以下の機能を提供:
 - **Google Forms連携**: スプレッドシートから出欠情報を取得
   - 参加人数自動設定機能
   - 変更時の警告表示（取得値と異なる場合、赤色で注意喚起）
+- **AI選定**: select-restaurants APIにより8店舗を自動選定
+  - 各店舗に3名のrecommended_people（推奨者）を割り当て
+  - トーナメントラウンドごとに重複しないよう最適化アルゴリズムを実行
+    - 1回戦: recommended_people[0]を使用
+    - 準決勝: recommended_people[1]を使用
+    - 決勝・3位決定戦: recommended_people[2]を使用
 - **検索結果**: 店舗情報、写真、アクセス、設備などを表示
 
 ### 3. 結果表示 (ResultPage)
@@ -254,50 +268,73 @@ Body: {
 Response: { shops: Restaurant[], searched_count, saved_to_dynamodb }
 ```
 
-### モックサーバー API (TrolleyGame用)
+### モックサーバー API (開発環境用)
 
-#### レストラン選択肢の取得
+#### search API（エリア取得・フォーム連携）
 ```typescript
-POST /api/options
-Response: { success: boolean, options: Restaurant[] }
+POST /search
+Body: {
+  action: 'get_areas' | 'fetch_form_responses',
+  area_type?: 'large' | 'middle' | 'small',
+  parent_code?: string,
+  spreadsheet_url?: string
+}
 ```
 
-#### トーナメント結果の保存
+#### select-restaurants API（AI選定）
 ```typescript
-POST /api/results
-Body: {
-  tournament: {
-    initialOptions: Restaurant[]
-    matches: TournamentMatch[]
-    finalRanking: TournamentResult
-  }
-  completedAt: string
+POST /select-restaurants
+Body: { /* 検索条件 */ }
+Response: {
+  status: string,
+  result_id: string,
+  selected_shops: Restaurant[], // 8店舗（各店舗に3名のrecommended_people付き）
+  processing_time: number,
+  total_candidates: number,
+  selected_count: number,
+  participant_count: number
 }
-Response: { success: boolean, result: SavedResult }
 ```
 
 ### 型定義
 
 ```typescript
-// 統合Restaurant型（Lambda + モックサーバー両対応）
+// Restaurant型（Lambda API対応）
 interface Restaurant {
-  id: string;
-  shop_id?: string;           // モックサーバー用
+  id?: string;
+  shop_id?: string;
   name: string;
-  address: string;
-  genre: string;
+  address?: string;
+  genre?: string;
   catch?: string;
-  budget?: string | number;   // Lambda: string, モック: number
-  party_capacity?: string;    // Lambda用
+  budget?: string | number;
+  budget_average?: string;     // select-restaurants用
+  budget_code?: string;        // select-restaurants用
+  party_capacity?: string | number;
   url?: string;
-  photo_url?: string;         // Lambda用
-  logo_image?: string;        // Lambda用
-  station_name?: string;      // Lambda用
-  access?: string;            // Lambda用
+  photo_url?: string;
+  logo_image?: string;
+  station_name?: string;
+  access?: string;
   private_room?: string | boolean;
   free_drink?: string | boolean;
+  free_food?: string;
+  horigotatsu?: string;
+  tatami?: string;
+  karaoke?: string;
   card?: string | boolean;
   course?: string | boolean;
+  non_smoking?: string;
+  wifi?: string;               // select-restaurants用
+  lng?: number;                // select-restaurants用
+  lat?: number;                // select-restaurants用
+  created_at?: string;         // select-restaurants用
+  raw_data?: any;              // select-restaurants用
+  recommended_people?: Array<{ // select-restaurants用（AI選定）
+    name: string;
+    comment: string;
+    label?: number;            // 最適化後のラベル（0-2）
+  }>;
   walk?: number;              // モックサーバー用
   seats?: number;             // モックサーバー用
   selection_reason?: string;  // モックサーバー用
@@ -444,14 +481,16 @@ style={{
 
 - `.env.production`: Lambda API URLを定義（本番環境で使用）
   ```bash
-  VITE_API_BASE_URL=https://1tebott34m.execute-api.ap-northeast-1.amazonaws.com/prod/search
+  VITE_API_BASE_URL=https://hn9e5kup8i.execute-api.ap-northeast-1.amazonaws.com/prod/select-restaurants
   ```
 - `.env.development`: 現在未使用（コメントアウト）
 - 開発環境のAPI接続:
-  - Lambda API: `.env.production`の設定を使用
-  - モックサーバー: `api.ts`内で直接URL管理
-    - Primary: `http://localhost:3001/api`
-    - Fallback: `http://172.20.10.4:3001/api`（自動フォールバック機能付き）
+  - search API: `api.ts`内で直接URL管理（開発: localhost:3001, 本番: Lambda）
+  - select-restaurants API: `api.ts`内で直接URL管理（開発: localhost:3001, 本番: Lambda）
+  - restaurant-info API: 常にLambda API（`https://hn9e5kup8i.execute-api.ap-northeast-1.amazonaws.com/prod/restaurant-info`）
+  - 自動フォールバック機能付き:
+    - Primary: `http://localhost:3001`
+    - Fallback: `http://172.20.10.4:3001`
 
 ## 🐛 トラブルシューティング
 
