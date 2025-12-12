@@ -23,6 +23,7 @@ export default function TrolleyGame() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | null>(null);
   const [isHoverDisabled, setIsHoverDisabled] = useState(false);
+  const [shouldFadeOut, setShouldFadeOut] = useState(false);
 
   // 選択肢
   const [allOptions, setAllOptions] = useState<Restaurant[]>([]);
@@ -159,21 +160,23 @@ export default function TrolleyGame() {
     setAnimationDirection(answerIndex === 0 ? 'left' : 'right');
     setIsAnimating(true);
 
-    // 決勝の場合は背景アニメーション後に暗転→結果画面
+    // 決勝の場合は黒背景フェードアウト→結果画面
     if (currentMatch.round === '決勝') {
+      // フェードアウトを開始
+      setShouldFadeOut(true);
+      
       setTimeout(() => {
-        // 背景アニメーション完了後、画面を非表示にして暗転
+        // フェードアウト完了後、結果画面へ遷移
         setIsAnimating(false);
         setAnimationDirection(null);
-        setCurrentMatch(null); // 画面を非表示
-        setGameState('result'); // 状態を結果に変更
+        setCurrentMatch(null);
+        setGameState('result');
         
-        // 暗転エフェクトのための追加待機
         setTimeout(() => {
           setSelectedAnswer(null);
           proceedToNextMatch(currentMatch, winner, loser, updatedMatches);
-        }, 0); // 暗転時間を短縮
-      }, 1500); // 背景アニメーション時間
+        }, 0);
+      }, 2100); // 1500ms(選択アニメーション) + 600ms(フェードアウト)
     } else {
       // 通常の試合は1.5秒待機
       setTimeout(() => {
@@ -325,7 +328,7 @@ export default function TrolleyGame() {
 
         {(gameState === 'playing' || gameState === 'answering') && currentMatch && (
           <div 
-            className={`game-screen ${isAnimating ? `animating-${animationDirection}` : ''}`}
+            className={`game-screen ${isAnimating ? `animating-${animationDirection}` : ''} ${shouldFadeOut ? 'fade-out-black' : ''}`}
           >
             {/* 次の背景レイヤー - 決勝では表示しない */}
             {currentMatch.round !== '決勝' && <div className="background-next"></div>}
