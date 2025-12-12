@@ -17,7 +17,7 @@
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  padding-top: 80px; /* Headerとの間に確実なスペースを確保 */
+  padding-top: 160px; /* Headerとの間に確実なスペースを確保（Headerの高さ + 余白） */
   overflow: hidden;
   position: relative;
   box-sizing: border-box; /* paddingを含めた高さ計算 */
