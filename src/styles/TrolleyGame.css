@@ -181,7 +181,7 @@
   height: 100vh;
   background: #000000;
   z-index: 10000;
-  animation: fadeOutBlackOverlay 0.6s ease-out forwards;
+  animation: fadeOutBlackOverlay 0.1s ease-out forwards;
   pointer-events: none;
 }
 
