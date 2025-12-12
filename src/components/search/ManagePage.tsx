@@ -233,85 +233,315 @@ const ManagePage: React.FC = () => {
         return;
       }
 
+      // 重複チェック関数: 各位置で重複がないか確認
+      const checkDuplicates = (restaurants: any[]): { hasDuplicates: boolean, duplicates: any[] } => {
+        const duplicates: any[] = [];
+        
+        for (let pos = 0; pos < 3; pos++) {
+          const namesAtPos = new Map<string, number[]>();
+          
+          restaurants.forEach((r, idx) => {
+            const person = r.recommended_people?.[pos];
+            if (person?.name) {
+              if (!namesAtPos.has(person.name)) {
+                namesAtPos.set(person.name, []);
+              }
+              namesAtPos.get(person.name)!.push(idx + 1);
+            }
+          });
+          
+          namesAtPos.forEach((indices, name) => {
+            if (indices.length > 1) {
+              duplicates.push({ position: pos, name, restaurantIndices: indices });
+            }
+          });
+        }
+        
+        return { hasDuplicates: duplicates.length > 0, duplicates };
+      };
+
       // 全レストランのrecommended_peopleを重複しないように配列順序を最適化
-      const optimizeRecommendedPeople = (restaurants: any[]) => {
-        // 各ラベル位置(インデックス0, 1, 2)に割り当てられた名前を追跡
-        const positionAssignments: Map<number, Set<string>> = new Map([
-          [0, new Set()],
-          [1, new Set()],
-          [2, new Set()]
+      // トーナメントの構造:
+      // - 1回戦: 8店舗全て → インデックス0を使用
+      // - 準決勝: 勝者4店舗 → インデックス1を使用  
+      // - 決勝/3位決定戦: 勝者2店舗 → インデックス2を使用
+      const optimizeRecommendedPeopleSinglePass = (restaurants: any[]) => {
+        console.log('=== ラベリング最適化開始 ===');
+        console.log('レストラン数:', restaurants.length);
+        
+        // まず、各レストランの元の推奨者を確認
+        restaurants.forEach((r, idx) => {
+          console.log(`店舗${idx + 1} (${r.name}):`, 
+            r.recommended_people?.map((p: any) => p.name).join(', ') || 'なし'
+          );
+        });
+
+        // 結果を格納する配列（各レストランの最適化された推奨者リスト）
+        const results: any[] = [];
+        
+        // 位置ごとの割り当て追跡: 位置 -> [{restaurantIndex, person}, ...]
+        const positionAssignments: Map<number, Map<string, { restaurantIndex: number, person: any }>> = new Map([
+          [0, new Map()],
+          [1, new Map()],
+          [2, new Map()]
         ]);
 
-        return restaurants.map(restaurant => {
+        // レストランごとに処理
+        for (let restaurantIndex = 0; restaurantIndex < restaurants.length; restaurantIndex++) {
+          const restaurant = restaurants[restaurantIndex];
           const people = restaurant.recommended_people || [];
-          if (people.length === 0) return restaurant;
+          
+          if (people.length === 0) {
+            results.push(restaurant);
+            continue;
+          }
 
-          // 各人物を適切な位置(0, 1, 2)に配置する配列
-          const optimizedPeople = new Array(3);
-          const unassignedPeople: any[] = [];
+          console.log(`\n--- 店舗${restaurantIndex + 1} (${restaurant.name}) 処理開始 ---`);
+          console.log('元の推奨者:', people.map((p: any) => p.name).join(', '));
 
-          // 各人物について、重複しない位置を探す
-          people.forEach((person: any, originalIndex: number) => {
-            const name = person.name;
-            let assignedPosition = -1;
+          const optimizedPeople = new Array(3).fill(null);
+          const usedInThisRestaurant = new Set<string>();
 
-            // まず元の位置を試す
-            if (!positionAssignments.get(originalIndex)?.has(name)) {
-              assignedPosition = originalIndex;
-            } else {
-              // 元の位置が使えない場合、0, 1, 2の順で空いている位置を探す
-              for (let pos = 0; pos <= 2; pos++) {
-                if (!positionAssignments.get(pos)?.has(name)) {
-                  assignedPosition = pos;
+          // 3つの位置それぞれについて処理
+          for (let targetPos = 0; targetPos < 3; targetPos++) {
+            let assigned = false;
+
+            // ステップ1: 元の位置にいた人物を試す
+            if (people[targetPos]) {
+              const person = people[targetPos];
+              const name = person.name;
+              const posMap = positionAssignments.get(targetPos)!;
+              
+              if (!posMap.has(name) && !usedInThisRestaurant.has(name)) {
+                optimizedPeople[targetPos] = { ...person, label: targetPos };
+                posMap.set(name, { restaurantIndex, person });
+                usedInThisRestaurant.add(name);
+                assigned = true;
+                console.log(`位置${targetPos}: ${name} (元の位置)`);
+              }
+            }
+
+            // ステップ2: このレストランの他の人物を試す
+            if (!assigned) {
+              for (const person of people) {
+                const name = person.name;
+                const posMap = positionAssignments.get(targetPos)!;
+                
+                if (!posMap.has(name) && !usedInThisRestaurant.has(name)) {
+                  optimizedPeople[targetPos] = { ...person, label: targetPos };
+                  posMap.set(name, { restaurantIndex, person });
+                  usedInThisRestaurant.add(name);
+                  assigned = true;
+                  console.log(`位置${targetPos}: ${name} (代替候補)`);
                   break;
                 }
               }
             }
 
-            if (assignedPosition !== -1) {
-              // 位置を割り当て
-              positionAssignments.get(assignedPosition)?.add(name);
-              optimizedPeople[assignedPosition] = {
-                ...person,
-                label: assignedPosition
-              };
-            } else {
-              // どの位置にも割り当てられない場合（3ラベルすべてに既に存在）
-              unassignedPeople.push(person);
-            }
-          });
-
-          // 未割り当ての人物を空いている位置に配置
-          unassignedPeople.forEach(person => {
-            for (let pos = 0; pos <= 2; pos++) {
-              if (!optimizedPeople[pos]) {
-                optimizedPeople[pos] = {
-                  ...person,
-                  label: pos
-                };
-                break;
+            // ステップ3: 強制入れ替え - すでに使用されている人物を入れ替える
+            if (!assigned) {
+              console.warn(`⚠️ 位置${targetPos}で通常の割り当てができませんでした。強制入れ替えを試みます...`);
+              
+              const posMap = positionAssignments.get(targetPos)!;
+              
+              // このレストランの候補者のうち、すでにこの位置に割り当てられている人物を探す
+              for (const person of people) {
+                const name = person.name;
+                
+                if (usedInThisRestaurant.has(name)) {
+                  continue; // このレストランで既に使用済み
+                }
+                
+                if (posMap.has(name)) {
+                  // この人物は他のレストランで使用されている
+                  const previousAssignment = posMap.get(name)!;
+                  const prevRestaurantIndex = previousAssignment.restaurantIndex;
+                  const prevRestaurant = results[prevRestaurantIndex];
+                  
+                  console.log(`  🔄 入れ替え対象: ${name} (店舗${prevRestaurantIndex + 1}で使用中)`);
+                  
+                  // 前のレストランの候補者から、まだこの位置に使われていない人物を探す
+                  const prevPeople = restaurants[prevRestaurantIndex].recommended_people || [];
+                  let replacementFound = false;
+                  
+                  for (const prevPerson of prevPeople) {
+                    const prevName = prevPerson.name;
+                    
+                    // この人物が現在の位置で使われておらず、前のレストランでも他の位置で使われていない場合
+                    if (!posMap.has(prevName)) {
+                      const prevUsedNames = new Set(
+                        prevRestaurant.recommended_people
+                          .filter((p: any) => p.label !== targetPos)
+                          .map((p: any) => p.name)
+                      );
+                      
+                      if (!prevUsedNames.has(prevName)) {
+                        // 入れ替え実行
+                        console.log(`  ✅ 入れ替え実行: ${prevName} を店舗${prevRestaurantIndex + 1}の位置${targetPos}に、${name} を店舗${restaurantIndex + 1}の位置${targetPos}に`);
+                        
+                        // 前のレストランの位置を更新
+                        prevRestaurant.recommended_people = prevRestaurant.recommended_people.map((p: any) =>
+                          p.label === targetPos ? { ...prevPerson, label: targetPos } : p
+                        );
+                        
+                        // 位置マップを更新
+                        posMap.delete(name);
+                        posMap.set(prevName, { restaurantIndex: prevRestaurantIndex, person: prevPerson });
+                        
+                        // 現在のレストランに割り当て
+                        optimizedPeople[targetPos] = { ...person, label: targetPos };
+                        posMap.set(name, { restaurantIndex, person });
+                        usedInThisRestaurant.add(name);
+                        assigned = true;
+                        replacementFound = true;
+                        break;
+                      }
+                    }
+                  }
+                  
+                  if (replacementFound) break;
+                }
               }
-            }
-          });
-
-          // 空の位置を元のデータで埋める（フォールバック）
-          for (let pos = 0; pos <= 2; pos++) {
-            if (!optimizedPeople[pos] && people[pos]) {
-              optimizedPeople[pos] = {
-                ...people[pos],
-                label: pos
-              };
+              
+              if (!assigned) {
+                console.error(`❌ 店舗${restaurantIndex + 1}の位置${targetPos}に割り当てる人物が見つかりませんでした（入れ替えも失敗）`);
+              }
             }
           }
 
-          return {
+          // nullを元のデータで埋める（配列を常に3要素に保つ）
+          for (let i = 0; i < 3; i++) {
+            if (optimizedPeople[i] === null && people[i]) {
+              optimizedPeople[i] = { ...people[i], label: i };
+              console.warn(`⚠️ 位置${i}をnullから元データで補完: ${people[i].name}`);
+            }
+          }
+
+          const result = {
             ...restaurant,
-            recommended_people: optimizedPeople.filter(p => p !== undefined)
+            recommended_people: optimizedPeople.filter(p => p !== null)
           };
+
+          // 配列が3つ未満の場合は警告
+          if (result.recommended_people.length < 3) {
+            console.error(`❌ 店舗${restaurantIndex + 1}のrecommended_peopleが${result.recommended_people.length}要素しかありません！`);
+            console.error(`  元データ:`, people.map((p: any) => p.name).join(', '));
+            console.error(`  最適化後:`, result.recommended_people.map((p: any) => p.name).join(', '));
+          }
+
+          console.log(`店舗${restaurantIndex + 1} 最適化完了:`, 
+            result.recommended_people.map((p: any) => `${p.name}[${p.label}]`).join(', ')
+          );
+
+          results.push(result);
+        }
+
+        console.log('\n=== 位置別割り当て状況 ===');
+        positionAssignments.forEach((nameMap, pos) => {
+          const names = Array.from(nameMap.keys());
+          console.log(`位置${pos} (${pos === 0 ? '1回戦' : pos === 1 ? '準決勝' : '決勝/3位決定戦'}):`, 
+            names.join(', '), `(${names.length}/${restaurants.length}人)`
+          );
         });
+
+        return results;
       };
 
-      // ラベル重複を解消（配列順序を最適化）
+      // 繰り返しアルゴリズム: 重複がなくなるまで最適化を繰り返す
+      const optimizeRecommendedPeople = (restaurants: any[], maxIterations: number = 10): any[] => {
+        let currentRestaurants = restaurants;
+        let iteration = 0;
+        
+        console.log('\n========================================');
+        console.log('🔄 反復最適化アルゴリズム開始');
+        console.log('========================================\n');
+        
+        while (iteration < maxIterations) {
+          iteration++;
+          console.log(`\n--- 第${iteration}回目の最適化 ---`);
+          
+          // 1回の最適化を実行
+          const optimized = optimizeRecommendedPeopleSinglePass(currentRestaurants);
+          
+          // 重複チェック
+          const { hasDuplicates, duplicates } = checkDuplicates(optimized);
+          
+          if (!hasDuplicates) {
+            console.log('\n✅ 重複なし！最適化完了');
+            console.log(`合計試行回数: ${iteration}回`);
+            return optimized;
+          }
+          
+          console.warn(`\n⚠️ 重複が残っています:`);
+          duplicates.forEach(dup => {
+            console.warn(`  位置${dup.position}: ${dup.name} が店舗 ${dup.restaurantIndices.join(', ')} で重複`);
+          });
+          
+          // 重複がある場合、入れ替えを試みる
+          console.log('\n🔄 追加の入れ替え処理を実行...');
+          
+          // 各重複について入れ替えを試みる
+          duplicates.forEach(dup => {
+            const { position, name, restaurantIndices } = dup;
+            
+            // 最後のレストランの該当人物を別の人物と入れ替える
+            const lastRestIdx = restaurantIndices[restaurantIndices.length - 1] - 1;
+            const lastRest = optimized[lastRestIdx];
+            const people = lastRest.recommended_people;
+            
+            if (!people || people.length < 3) {
+              console.error(`  ❌ 店舗${lastRestIdx + 1}のrecommended_peopleが不完全です (長さ: ${people?.length || 0})`);
+              return;
+            }
+            
+            // この位置で使われていない他の候補を探す
+            const usedNamesAtPos = new Set<string>();
+            optimized.forEach((r: any, idx: number) => {
+              if (idx !== lastRestIdx && r.recommended_people?.[position]) {
+                usedNamesAtPos.add(r.recommended_people[position].name);
+              }
+            });
+            
+            // 入れ替え可能な候補を探す
+            let swapped = false;
+            for (let i = 0; i < people.length; i++) {
+              if (people[i] && people[i].label !== position && !usedNamesAtPos.has(people[i].name)) {
+                // 入れ替え実行
+                console.log(`  🔄 店舗${lastRestIdx + 1}: 位置${position}を ${name} から ${people[i].name} に変更`);
+                
+                // 配列を再構築（位置を保持）
+                const newPeople = [...people];
+                const targetPerson = newPeople[position];
+                const sourcePerson = newPeople[i];
+                
+                newPeople[position] = { ...sourcePerson, label: position };
+                newPeople[i] = { ...targetPerson, label: i };
+                
+                lastRest.recommended_people = newPeople;
+                swapped = true;
+                break;
+              }
+            }
+            
+            if (!swapped) {
+              console.warn(`  ❌ 店舗${lastRestIdx + 1}の位置${position}で入れ替え候補が見つかりませんでした`);
+            }
+          });
+          
+          // 次の反復に進む
+          currentRestaurants = optimized;
+        }
+        
+        console.error(`\n❌ 最大試行回数(${maxIterations}回)に達しました。重複が残っています。`);
+        const { duplicates } = checkDuplicates(currentRestaurants);
+        duplicates.forEach(dup => {
+          console.error(`  位置${dup.position}: ${dup.name} が店舗 ${dup.restaurantIndices.join(', ')} で重複`);
+        });
+        
+        return currentRestaurants;
+      };
+
+      // ラベル重複を解消（配列順序を最適化、重複がなくなるまで繰り返し）
       const optimizedRestaurants = optimizeRecommendedPeople(selectedResult.selected_shops);
       
       console.log('ラベリング最適化完了:', optimizedRestaurants);
