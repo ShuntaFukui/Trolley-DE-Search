@@ -233,7 +233,49 @@ const ManagePage: React.FC = () => {
         return;
       }
 
-      // 重複チェック関数: 各位置で重複がないか確認
+      // recommended_peopleの事前処理: 1人または2人の場合は複製して3人にする
+      // 0人の場合は重複回避アルゴリズムの対象外（そのまま残す）
+      const preprocessRecommendedPeople = (restaurants: any[]) => {
+        return restaurants.map(restaurant => {
+          const people = restaurant.recommended_people || [];
+          
+          if (people.length === 0) {
+            // 0人の場合はそのまま
+            console.log(`店舗「${restaurant.name}」: recommended_people なし（スキップ）`);
+            return restaurant;
+          } else if (people.length === 1) {
+            // 1人の場合は3人に複製
+            console.log(`店舗「${restaurant.name}」: recommended_people 1人 → 3人に複製`);
+            return {
+              ...restaurant,
+              recommended_people: [
+                { ...people[0] },
+                { ...people[0] },
+                { ...people[0] }
+              ]
+            };
+          } else if (people.length === 2) {
+            // 2人の場合は1人目を複製して3人に
+            console.log(`店舗「${restaurant.name}」: recommended_people 2人 → 3人に複製`);
+            return {
+              ...restaurant,
+              recommended_people: [
+                { ...people[0] },
+                { ...people[1] },
+                { ...people[0] }  // 1人目を複製
+              ]
+            };
+          } else {
+            // 3人以上の場合はそのまま
+            return restaurant;
+          }
+        });
+      };
+
+      // 事前処理を実行
+      const preprocessedShops = preprocessRecommendedPeople(selectedResult.selected_shops);
+
+      // 重複チェック関数: 各位置で重複がないか確認（recommended_peopleが0人の店舗は除外）
       const checkDuplicates = (restaurants: any[]): { hasDuplicates: boolean, duplicates: any[] } => {
         const duplicates: any[] = [];
         
@@ -291,7 +333,9 @@ const ManagePage: React.FC = () => {
           const restaurant = restaurants[restaurantIndex];
           const people = restaurant.recommended_people || [];
           
+          // recommended_peopleが0人の店舗は最適化の対象外（そのまま追加）
           if (people.length === 0) {
+            console.log(`店舗${restaurantIndex + 1} (${restaurant.name}): recommended_people なし（スキップ）`);
             results.push(restaurant);
             continue;
           }
@@ -542,7 +586,8 @@ const ManagePage: React.FC = () => {
       };
 
       // ラベル重複を解消（配列順序を最適化、重複がなくなるまで繰り返し）
-      const optimizedRestaurants = optimizeRecommendedPeople(selectedResult.selected_shops);
+      // 事前処理済みのデータを使用
+      const optimizedRestaurants = optimizeRecommendedPeople(preprocessedShops);
       
       console.log('ラベリング最適化完了:', optimizedRestaurants);
 

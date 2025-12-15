@@ -66,28 +66,6 @@ export default function TrolleyGame() {
     }
   };
 
-  // テスト用: ランダムなコメントを生成（10~20文字）
-  const getRandomComment = () => {
-    const comments = [
-      'ここ美味しいよ!',
-      '雰囲気が最高です',
-      'おすすめの店です',
-      'コスパが良いです',
-      'また行きたい店',
-      '接客が素晴らしい',
-      '味が絶品でした',
-      '落ち着ける空間',
-      'デートにぴったり',
-      '料理が本格的です',
-      '居心地が良い店',
-      'ボリューム満点!',
-      '新鮮な食材です',
-      'リピート確定!',
-      'みんなで楽しめる'
-    ];
-    return comments[Math.floor(Math.random() * comments.length)];
-  };
-
   // Fisher-Yates シャッフル
   const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
@@ -333,39 +311,43 @@ export default function TrolleyGame() {
             {/* 次の背景レイヤー - 決勝では表示しない */}
             {currentMatch.round !== '決勝' && <div className="background-next"></div>}
             
-            {/* 左側のアバター */}
-            <div 
-              className={`avatar avatar-left ${isAnimating ? 'avatar-fade-out' : ''}`}
-            >
-              <div className="avatar-comment">
-                {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
+            {/* 左側のアバター - recommended_peopleがある場合のみ表示 */}
+            {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)] && (
+              <div 
+                className={`avatar avatar-left ${isAnimating ? 'avatar-fade-out' : ''}`}
+              >
+                <div className="avatar-comment">
+                  {currentMatch.options[0].recommended_people[getRecommendedPersonIndex(currentMatch.round)].comment}
+                </div>
+                <img 
+                  src="/images/avatar_left.webp" 
+                  alt="Avatar Left" 
+                  className="avatar-image"
+                />
+                <div className="avatar-name">
+                  {currentMatch.options[0].recommended_people[getRecommendedPersonIndex(currentMatch.round)].name}
+                </div>
               </div>
-              <img 
-                src="/images/avatar_left.webp" 
-                alt="Avatar Left" 
-                className="avatar-image"
-              />
-              <div className="avatar-name">
-                {currentMatch.options[0]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.name || 'User'}
-              </div>
-            </div>
+            )}
 
-            {/* 右側のアバター */}
-            <div 
-              className={`avatar avatar-right ${isAnimating ? 'avatar-fade-out' : ''}`}
-            >
-              <div className="avatar-comment">
-                {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.comment || getRandomComment()}
+            {/* 右側のアバター - recommended_peopleがある場合のみ表示 */}
+            {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)] && (
+              <div 
+                className={`avatar avatar-right ${isAnimating ? 'avatar-fade-out' : ''}`}
+              >
+                <div className="avatar-comment">
+                  {currentMatch.options[1].recommended_people[getRecommendedPersonIndex(currentMatch.round)].comment}
+                </div>
+                <img 
+                  src="/images/avatar_right.webp" 
+                  alt="Avatar Right" 
+                  className="avatar-image"
+                />
+                <div className="avatar-name">
+                  {currentMatch.options[1].recommended_people[getRecommendedPersonIndex(currentMatch.round)].name}
+                </div>
               </div>
-              <img 
-                src="/images/avatar_right.webp" 
-                alt="Avatar Right" 
-                className="avatar-image"
-              />
-              <div className="avatar-name">
-                {currentMatch.options[1]?.recommended_people?.[getRecommendedPersonIndex(currentMatch.round)]?.name || 'User'}
-              </div>
-            </div>
+            )}
             
             <div className="game-header">
               <div className="tournament-info">
